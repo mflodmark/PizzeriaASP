@@ -27,6 +27,9 @@ namespace PizzeriaASP
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            // When a controller needs an implemantation of IFoodRep it should receive an instance of FoodRep
+            services.AddTransient<IProductRepository, ProductRepository>(); 
+
             services.AddMvc();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -49,6 +52,11 @@ namespace PizzeriaASP
                 app.UseDeveloperExceptionPage();
             }
 
+            // Should be removed before deployment
+            app.UseDeveloperExceptionPage();
+
+            app.UseStatusCodePages();
+
             app.UseStaticFiles();
 
             app.UseAuthentication(); // app.UseIdentity() will be removed
@@ -57,7 +65,7 @@ namespace PizzeriaASP
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Product}/{action=List}/{id?}");
             });
         }
     }

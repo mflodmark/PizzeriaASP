@@ -1,0 +1,18 @@
+﻿
+@model IEnumerable<PizzeriaASP.Models.Matratt>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h2>List</h2>
+    
+    @foreach (var p in Model)
+    {
+        <div>
+            <h3>@p.MatrattNamn</h3>
+            @p.Beskrivning
+            <h4>@p.Pris.ToString("c")</h4>
+        </div>
+    }
+
