@@ -67,6 +67,9 @@ namespace PizzeriaASP
                     name: "default",
                     template: "{controller=Product}/{action=List}/{id?}");
             });
+
+            // Populate data if no products in db
+            SeedData.EnsurePopulated(app); 
         }
     }
 }

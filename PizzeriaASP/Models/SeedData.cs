@@ -11,12 +11,19 @@ namespace PizzeriaASP
         public static void EnsurePopulated(IApplicationBuilder app)
         {
             TomasosContext context = app.ApplicationServices
-                .GetRequiredService<ApplicationDbContext>();
+                .GetRequiredService<TomasosContext>();
             context.Database.Migrate();
             if (!context.Matratt.Any())
             {
                 context.Matratt.AddRange(
-                    new Matratt() {MatrattNamn = "Hawaii", Beskrivning = "Fruktig pizza med ananas", Pris = 76});
+                    new Matratt()
+                    {
+                        MatrattNamn = "Hawaii",
+                        Beskrivning = "Fruktig pizza med ananas",
+                        Pris = 76
+                    }
+                );
+                context.SaveChanges();
             }
         }
     }
