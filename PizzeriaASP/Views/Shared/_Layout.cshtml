@@ -17,6 +17,9 @@
 
     <link href="~/CSS/main.css" rel="stylesheet" type="text/css" />
 
+    <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
+
+
     @*<script src="~/Styles/main.js" defer></script>*@
 
     <title>@ViewBag.Title</title>
@@ -35,13 +38,13 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li is-active-route asp-controller="Home" asp-action="Index">
-                    <a asp-controller="Home" asp-action="Index">
+                <li is-active-route asp-controller="Account" asp-action="Register">
+                    <a asp-controller="Account" asp-action="Register">
                         <span class="glyphicon glyphicon-user"></span> Sign Up
                     </a>
                 </li>
-                <li is-active-route asp-controller="Customer" asp-action="LogIn">
-                    <a asp-controller="Customer" asp-action="LogIn">
+                <li is-active-route asp-controller="Account" asp-action="Login">
+                    <a asp-controller="Account" asp-action="Login">
                         <span class="glyphicon glyphicon-log-in"></span> Login
                     </a>
                 </li>

@@ -14,6 +14,6 @@ namespace PizzeriaASP.ViewModels
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        public bool LogInFailed { get; set; }
+        public bool LoginFailed { get; set; }
     }
 }

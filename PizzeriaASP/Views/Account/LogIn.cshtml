@@ -1,12 +1,11 @@
-﻿@using PizzeriaASP.ViewModels
-@model PizzeriaASP.ViewModels.LogInViewModel
+﻿@model PizzeriaASP.ViewModels.LogInViewModel
 
 @{
-    ViewData["Title"] = "LogIn";
+    ViewData["Title"] = "Login";
 }
 
 <head>
-    <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
+    @*<link href="~/CSS/login.css" rel="stylesheet" type="text/css" />*@
 
     @*<script src="~/Styles/homeAdd.js" defer></script>*@
 </head>
@@ -14,7 +13,7 @@
 <div id="login-div">
     <h2>Enter User Id and Password to Log In</h2>
     
-    <form asp-controller="Customer" asp-action="TryingToLogIn" method="post">
+    <form asp-controller="Account" asp-action="Login" method="post">
         <label asp-for="UserId"></label><br />
         <input type="text" asp-for="UserId" /><br/>
 
@@ -26,10 +25,10 @@
         <br />
         <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
     </form>
-    @if (@Model.LogInFailed == true)
+    @*@if (@Model.LoginFailed)
     {
     <div class="text-danger">
         <p>Email or password is incorrect, please try again</p>
     </div>
-    }
+    }*@
 </div>

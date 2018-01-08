@@ -1,7 +1,17 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using PizzeriaASP
+@inject SignInManager<ApplicationUser> SignInManager 
+@inject UserManager<ApplicationUser> UserManager
+
+@model PizzeriaASP.Models.Kund
+
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
+@if (SignInManager.IsSignedIn(User))
+{
+    <h2>Hej @Model.Namn</h2>
+}
