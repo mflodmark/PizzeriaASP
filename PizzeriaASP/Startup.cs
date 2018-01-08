@@ -28,7 +28,7 @@ namespace PizzeriaASP
         public void ConfigureServices(IServiceCollection services)
         {
             // When a controller needs an implemantation of IFoodRep it should receive an instance of FoodRep
-            services.AddTransient<IProductRepository, ProductRepository>(); 
+            services.AddTransient<IProductRepository, EfProductRepository>(); 
 
             services.AddMvc();
 
