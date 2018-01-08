@@ -1,0 +1,35 @@
+﻿@using PizzeriaASP.ViewModels
+@model PizzeriaASP.ViewModels.LogInViewModel
+
+@{
+    ViewData["Title"] = "LogIn";
+}
+
+<head>
+    <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
+
+    @*<script src="~/Styles/homeAdd.js" defer></script>*@
+</head>
+
+<div id="login-div">
+    <h2>Enter User Id and Password to Log In</h2>
+    
+    <form asp-controller="Customer" asp-action="TryingToLogIn" method="post">
+        <label asp-for="UserId"></label><br />
+        <input type="text" asp-for="UserId" /><br/>
+
+        <label asp-for="Password"></label><br />
+        <input type="password" asp-for="Password" /><br/>
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <br />
+        <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
+    </form>
+    @if (@Model.LogInFailed == true)
+    {
+    <div class="text-danger">
+        <p>Email or password is incorrect, please try again</p>
+    </div>
+    }
+</div>
