@@ -44,7 +44,7 @@ namespace PizzeriaASP.Infrastructure
 
             TagBuilder result = new TagBuilder("div");
 
-            for (int i = 1; i < PageModel.TotalPages; i++)
+            for (int i = 1; i <= PageModel.TotalPages; i++)
             {
                 var tag = new TagBuilder("a");
                 tag.Attributes["href"] = urlHelper.Action(PageAction,

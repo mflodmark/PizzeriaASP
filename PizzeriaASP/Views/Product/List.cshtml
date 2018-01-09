@@ -5,14 +5,22 @@
     ViewData["Title"] = "List";
 }
 
-<h2>List</h2>
+<div class="row m-1 p-1">
+    <div id="categories" class="col-sm-3">
+        Put something useful here
+    </div>
+    <div class="col-sm-9">
+        @foreach (var p in Model.Products)
+        {
+            @Html.Partial("ProductSummary", p)
+        }
+        <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+             page-class="btn" page-class-normal="btn-secondary"
+             page-class-selected="btn-primary" class="btn-group m-1"></div>
+    </div>
+</div>
     
-    @foreach (var p in Model.Products)
-    {
-        @Html.Partial("ProductSummary", p)
-    }
 
-<div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-     page-class="btn" page-class-normal="btn-secondary"
-     page-class-selected="btn-primary" class="btn-group pull-right m-1"></div>
+
+
 
