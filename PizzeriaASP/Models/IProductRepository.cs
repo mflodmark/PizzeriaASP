@@ -7,5 +7,8 @@ namespace PizzeriaASP.Models
     public interface IProductRepository
     {
         IQueryable<Matratt> Products { get; }
+
+        IQueryable<MatrattTyp> Categories { get; }
+
     }
 }

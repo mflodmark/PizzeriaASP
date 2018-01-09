@@ -13,5 +13,8 @@ namespace PizzeriaASP
         }
 
         public IQueryable<Matratt> Products => _context.Matratt;
+
+        public IQueryable<MatrattTyp> Categories => _context.MatrattTyp;
+
     }
 }

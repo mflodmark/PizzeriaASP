@@ -7,6 +7,8 @@ namespace PizzeriaASP.ViewModels
     {
         public IEnumerable<Matratt> Products { get; set; }
 
+        public IEnumerable<MatrattTyp> Categories { get; set; }
+
         public PagingInfo PagingInfo { get; set; }
 
         public string CurrentCategory { get; set; }

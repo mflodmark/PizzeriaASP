@@ -31,7 +31,10 @@ namespace PizzeriaASP.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.Products.Count()
+                    TotalItems = category == null ? 
+                        repository.Products.Count() : 
+                        repository.Products.Count(x => 
+                            x.MatrattTypNavigation.Beskrivning == category)
                 },
                 CurrentCategory = category
             });
