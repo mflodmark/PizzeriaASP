@@ -32,6 +32,12 @@ namespace PizzeriaASP
 
             services.AddMvc();
 
+            // Sets upp the in-memory data store
+            services.AddMemoryCache();
+
+            // Reggisters the services used to access session data
+            services.AddSession();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -57,7 +63,11 @@ namespace PizzeriaASP
 
             app.UseStatusCodePages();
 
+            // Enable static files as css and js
             app.UseStaticFiles();
+
+            // Allows the session system to auto associate requests with sessions when arriving from the client
+            app.UseSession();
 
             app.UseAuthentication(); // app.UseIdentity() will be removed
 
