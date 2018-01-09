@@ -30,7 +30,7 @@ namespace PizzeriaASP.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = repository.Products.Count();
+                    TotalItems = repository.Products.Count()
                 }
             });
     }

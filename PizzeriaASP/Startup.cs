@@ -63,10 +63,19 @@ namespace PizzeriaASP
 
             app.UseMvc(routes =>
             {
+                //Improve routing for pagination
+                routes.MapRoute(
+                    name: "pagination",
+                    template: "Products/Page{productPage}",
+                    defaults: new { Controller = "Product", action = "List" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Product}/{action=List}/{id?}");
+
             });
+
+            
 
             // Populate data if no products in db
             SeedData.EnsurePopulated(app); 

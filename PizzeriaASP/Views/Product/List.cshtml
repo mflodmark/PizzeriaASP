@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<PizzeriaASP.Models.Matratt>
+@model PizzeriaASP.ViewModels.ProductsListViewModel
 
 @{
     ViewData["Title"] = "List";
@@ -7,12 +7,12 @@
 
 <h2>List</h2>
     
-    @foreach (var p in Model)
+    @foreach (var p in Model.Products)
     {
-        <div>
-            <h3>@p.MatrattNamn</h3>
-            @p.Beskrivning
-            <h4>@p.Pris.ToString("c")</h4>
-        </div>
+        @Html.Partial("ProductSummary", p)
     }
+
+<div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-secondary"
+     page-class-selected="btn-primary" class="btn-group pull-right m-1"></div>
 
