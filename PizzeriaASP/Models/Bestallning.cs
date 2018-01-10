@@ -52,8 +52,10 @@ namespace PizzeriaASP.Models
 
         public virtual IEnumerable<BestallningMatratt> Lines => BestallningMatratt;
 
-        //public virtual void RemoveLine(Matratt product) =>
-        //    BestallningMatratt.Where(x => x.MatrattId == product.MatrattId);
+        public virtual void RemoveLine(Matratt product)
+        {
+            BestallningMatratt.ToList().RemoveAll(p => p.Matratt.MatrattId == product.MatrattId);
+        }
 
     }
 }

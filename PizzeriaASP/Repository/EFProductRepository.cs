@@ -3,11 +3,11 @@ using PizzeriaASP.Models;
 
 namespace PizzeriaASP
 {
-    public class EfProductRepository : IProductRepository
+    public class EFProductRepository : IProductRepository
     {
         private TomasosContext _context;
 
-        public EfProductRepository(TomasosContext context)
+        public EFProductRepository(TomasosContext context)
         {
             _context = context;
         }
@@ -17,4 +17,7 @@ namespace PizzeriaASP
         public IQueryable<MatrattTyp> Categories => _context.MatrattTyp;
 
     }
+
+
+
 }

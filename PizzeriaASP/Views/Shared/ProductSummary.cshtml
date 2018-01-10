@@ -10,9 +10,11 @@
     <h3>@Model.MatrattNamn</h3>
     @Model.Beskrivning
     <h4>@Model.Pris.ToString("c")</h4>
-    <form asp-controller="Cart" asp-action="AddToCart" id="@Model.MatrattId" method="post">
+    <form id="@Model.MatrattId" asp-action="AddToCart" asp-controller="Cart" 
+           method="post">
         <input type="hidden" asp-for="MatrattId" />
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-        <input class="btn btn-primary" type="submit" value="Add to cart" />
+        @*<input class="btn btn-primary" type="submit" value="Add to cart" />*@
+        <button type="submit" class="btn btn-primary">Add to cart</button>
     </form>
 </div>

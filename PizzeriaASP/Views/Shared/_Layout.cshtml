@@ -14,11 +14,14 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
+    //Font images
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
     <link href="~/CSS/main.css" rel="stylesheet" type="text/css" />
 
     <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
 
+    @*<link rel="stylesheet" asp-href-include="/lib/fontawesome/css/*.css"/>*@
 
     @*<script src="~/Styles/main.js" defer></script>*@
 
@@ -48,7 +51,7 @@
                         <span class="glyphicon glyphicon-log-in"></span> Login
                     </a>
                 </li>
-
+                <li>@await Component.InvokeAsync("CartSummary")</li>
             </ul>
         </div>
     </nav>

@@ -28,7 +28,7 @@ namespace PizzeriaASP
         public void ConfigureServices(IServiceCollection services)
         {
             // When a controller needs an implemantation of IFoodRep it should receive an instance of FoodRep
-            services.AddTransient<IProductRepository, EfProductRepository>(); 
+            services.AddTransient<IProductRepository, EFProductRepository>(); 
 
             services.AddMvc();
 
@@ -37,6 +37,12 @@ namespace PizzeriaASP
 
             // Reggisters the services used to access session data
             services.AddSession();
+
+            // Same object for requests
+            services.AddScoped<Bestallning>(sp => SessionCart.GetCart(sp));
+
+            // Same object should always be used
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -106,7 +112,7 @@ namespace PizzeriaASP
             
 
             // Populate data if no products in db
-            SeedData.EnsurePopulated(app); 
+            //SeedData.EnsurePopulated(app); 
         }
     }
 }

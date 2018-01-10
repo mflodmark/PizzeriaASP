@@ -6,45 +6,58 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzeriaASP.Infrastructure;
 using PizzeriaASP.Models;
+using PizzeriaASP.ViewModels;
 
 namespace PizzeriaASP.Controllers
 {
     public class CartController : Controller
     {
         private IProductRepository repository;
+        private Bestallning cart;
 
-        public CartController(IProductRepository repo)
+        public CartController(IProductRepository repo, Bestallning cartService)
         {
             repository = repo;
+            cart = cartService;
         }
 
-        public IActionResult AddToCart(int productId, string returnUrl)
+        public ViewResult Index(string returnUrl)
+        {
+            return View(new CartIndexViewModel()
+            {
+                Cart = cart,
+                ReturnUrl = returnUrl
+            });
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public RedirectToActionResult AddToCart(int matrattId, string returnUrl)
         {
             var product = repository.Products
-                .FirstOrDefault( p => p.MatrattId == productId);
+                .FirstOrDefault( p => p.MatrattId == matrattId);
 
             if (product != null)
             {
-                var cart = GetCart();
-
-                
-                
+                cart.AddItem(product, 1);
             }
-                
-            return View();
+
+            return RedirectToAction("Index", new {returnUrl});
         }
 
-        private BestallningMatratt GetCart()
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
         {
-            var cart = HttpContext.Session.GetJson<BestallningMatratt>("Cart") ?? 
-                new BestallningMatratt();
+            var product = repository.Products.FirstOrDefault(p => p.MatrattId == productId);
 
-            return cart;
+            if (product != null)
+            {
+                cart.RemoveLine(product);
+            }
+
+            return RedirectToAction("Index", new {returnUrl});
         }
 
-        private void SaveCart(BestallningMatratt cart)
-        {
-            HttpContext.Session.SetJson("Cart", cart);           
-        }
     }
 }
