@@ -40,16 +40,23 @@ namespace PizzeriaASP.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Kund user)
+        public async Task<IActionResult> Login(LogInViewModel vm)
         {
-            var result = await _signInManager.PasswordSignInAsync(user.AnvandarNamn, user.Losenord, true, false);
-
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                //Om inloggningen gick bra visas startsidan
-                return RedirectToAction("Index", "Home", user);
+                //true on remember me = persistense to allow cookie login
+                var result = await _signInManager
+                    .PasswordSignInAsync(vm.UserId, vm.Password, vm.RememberMe, false);
+
+                if (result.Succeeded)
+                {
+                    //Om inloggningen gick bra visas startsidan
+                    return RedirectToAction("Index", "Home");
+                }
             }
 
+            // Errormessage that can will be shown in the view
+            ModelState.AddModelError("","Invalid Login Attempt");
             return View();
 
         }
@@ -74,11 +81,15 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
-            var unique = _context.Kund.SingleOrDefault(x => x.AnvandarNamn == register.Customer.AnvandarNamn);
+            var unique = _context.Kund.SingleOrDefault(x => 
+                x.AnvandarNamn == register.Customer.AnvandarNamn);
+
 
             if (unique != null)
             {
                 register.UniqueUsername = false;
+                _context.Dispose();
+
                 return View(register);
             }
 

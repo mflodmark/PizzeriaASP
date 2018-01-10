@@ -14,21 +14,26 @@
     <h2>Enter User Id and Password to Log In</h2>
     
     <form asp-controller="Account" asp-action="Login" method="post">
-        <label asp-for="UserId"></label><br />
-        <input type="text" asp-for="UserId" /><br/>
-
-        <label asp-for="Password"></label><br />
-        <input type="password" asp-for="Password" /><br/>
-
         <div asp-validation-summary="All" class="text-danger"></div>
 
+        <label asp-for="UserId"></label><br />
+        <input type="text" asp-for="UserId" /><br />
+
+        <label asp-for="Password"></label><br />
+        <input type="password" asp-for="Password" /><br />
+
+        <label asp-for="RememberMe"></label>
+        <input asp-for="RememberMe" /><br />
+        <span asp-validation-for="RememberMe" class="text-danger"></span>
+
         <br />
-        <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
+        <div>
+            <p>
+                <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
+            </p>
+            <p>
+                <a asp-action="Register">Register</a>
+            </p>
+        </div>
     </form>
-    @*@if (@Model.LoginFailed)
-    {
-    <div class="text-danger">
-        <p>Email or password is incorrect, please try again</p>
-    </div>
-    }*@
 </div>

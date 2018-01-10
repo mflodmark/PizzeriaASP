@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,6 +13,9 @@ namespace PizzeriaASP.ViewModels
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
-        public bool LoginFailed { get; set; }
+        [DisplayName("Remember me")]
+        public bool RememberMe { get; set; }
+
+        //public bool LoginFailed { get; set; }
     }
 }

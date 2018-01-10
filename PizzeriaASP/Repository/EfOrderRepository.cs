@@ -12,7 +12,10 @@ namespace PizzeriaASP
             _context = context;
         }
 
-        public IQueryable<Bestallning> Orders => _context.Bestallning;
+        public IQueryable<Bestallning> Orders()
+        {
+           return _context.Bestallning;
+        } 
 
         public void SaveOrder(Bestallning order)
         {
@@ -25,6 +28,8 @@ namespace PizzeriaASP
             }
 
             _context.SaveChanges();
+
+            _context.Dispose();
         }
 
 

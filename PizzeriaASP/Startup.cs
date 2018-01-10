@@ -113,6 +113,8 @@ namespace PizzeriaASP
 
             // Populate data if no products in db
             //SeedData.EnsurePopulated(app); 
+
+            new UserRoleSeed(app.ApplicationServices.GetService<RoleManager<IdentityRole>>()).Seed();
         }
     }
 }

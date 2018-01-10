@@ -41,6 +41,8 @@ namespace PizzeriaASP.Controllers
             var model = _context.Kund.SingleOrDefault(x => 
                 x.AnvandarNamn == _userManager.GetUserName(User));
 
+            _context.Dispose();
+
             return View("Index", model);
         }
     }
