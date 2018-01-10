@@ -76,6 +76,11 @@ namespace PizzeriaASP.Controllers
             return View();
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -100,13 +105,15 @@ namespace PizzeriaASP.Controllers
                 //Lägger över värdena från sidan i en ApplicationUser klass
                 var userIdentity = new ApplicationUser
                 {
-                    UserName = register.Customer.AnvandarNamn,
-                    //Customer = user,
-                    //CustomerId = user.KundId
+                    UserName = register.Customer.AnvandarNamn
                 };
 
                 //Skapar användaren i databasen
                 var result = await _userManager.CreateAsync(userIdentity, register.Customer.Losenord);
+
+                // Add default role 
+                var role = "RegularUser";
+                await _userManager.AddToRoleAsync(userIdentity, role);
 
                 //await _userManager.AddToRoleAsync(userIdentity, "RegularUser");
 
@@ -124,9 +131,11 @@ namespace PizzeriaASP.Controllers
                     return RedirectToAction("LoggedInIndex", "Home", register.Customer.KundId);
                 }
 
+                _context.Dispose();
                 return View(register);
             }
 
+            _context.Dispose();
             return View(register);
         }
     }

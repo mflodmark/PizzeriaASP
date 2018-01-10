@@ -1,0 +1,23 @@
+﻿@model PizzeriaASP.ViewModels.UserManagementIndexViewModel
+
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>Roles</th>
+        <th>Options</th>
+    </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in @Model.Users)
+        {
+        <tr>
+            <td>@user.UserName</td>
+            <td>@user.Roles</td>
+            <td><a asp-controller="UserManagement" asp-action="AddRole">Add Role</a></td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
