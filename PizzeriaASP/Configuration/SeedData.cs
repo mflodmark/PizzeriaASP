@@ -10,7 +10,7 @@ namespace PizzeriaASP
     {
         public static void EnsurePopulated(IApplicationBuilder app)
         {
-            TomasosContext context = app.ApplicationServices
+            var context = app.ApplicationServices
                 .GetRequiredService<TomasosContext>();
 
             context.Database.Migrate();

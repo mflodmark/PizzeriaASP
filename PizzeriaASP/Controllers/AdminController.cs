@@ -49,9 +49,6 @@ namespace PizzeriaASP.Controllers
             return View(product);
         }
 
-        public IActionResult Create(int productId)
-        {
-            return View("Index");
-        }
+        public IActionResult Create() => View("Edit", new Matratt());
     }
 }

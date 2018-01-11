@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PizzeriaASP.Configuration;
 using PizzeriaASP.Models;
 
 namespace PizzeriaASP
@@ -115,6 +116,9 @@ namespace PizzeriaASP
             //SeedData.EnsurePopulated(app); 
 
             new UserRoleSeed(app.ApplicationServices.GetService<RoleManager<IdentityRole>>()).Seed();
+
+            // Ensure admin user
+            IdentitySeed.EnsurePopulated(app);
         }
     }
 }

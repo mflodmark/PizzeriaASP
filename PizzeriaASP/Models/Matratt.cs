@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PizzeriaASP.Models
 {
@@ -12,9 +13,17 @@ namespace PizzeriaASP.Models
         }
 
         public int MatrattId { get; set; }
+
+        [Required]
         public string MatrattNamn { get; set; }
+
+        [Required]
         public string Beskrivning { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue)]
         public int Pris { get; set; }
+
         public int MatrattTyp { get; set; }
 
         public MatrattTyp MatrattTypNavigation { get; set; }
