@@ -51,7 +51,7 @@ namespace PizzeriaASP.Controllers
                 if (result.Succeeded)
                 {
                     //Om inloggningen gick bra visas startsidan
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("LoggedInIndex", "Home");
                 }
             }
 
@@ -114,8 +114,6 @@ namespace PizzeriaASP.Controllers
                 // Add default role 
                 var role = "RegularUser";
                 await _userManager.AddToRoleAsync(userIdentity, role);
-
-                //await _userManager.AddToRoleAsync(userIdentity, "RegularUser");
 
                 //Om det går bra loggas användaren in
                 if (result.Succeeded)
