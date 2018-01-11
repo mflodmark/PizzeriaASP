@@ -61,7 +61,7 @@ namespace PizzeriaASP
 
             if (!context.MatrattProdukt.Any())
             {
-                // PizzaId
+                // ProductId
                 var calzone = 1;
                 var hawaiiP = 101;
                 var vesuvioP = 102;
@@ -69,7 +69,7 @@ namespace PizzeriaASP
                 var kebabP = 104;
                 var tunaP = 105;
 
-                //ProduktID 
+                //IngredientID 
                 var ham = 1;
                 var mozzarella = 2;
                 var mushroom = 3;

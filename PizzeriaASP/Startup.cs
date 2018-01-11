@@ -33,12 +33,6 @@ namespace PizzeriaASP
 
             services.AddMvc();
 
-            // Sets upp the in-memory data store
-            services.AddMemoryCache();
-
-            // Reggisters the services used to access session data
-            services.AddSession();
-
             // Same object for requests
             services.AddScoped<Bestallning>(sp => SessionCart.GetCart(sp));
 
@@ -52,8 +46,18 @@ namespace PizzeriaASP
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            //services.AddIdentity<IdentityUser, IdentityRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
+
             services.AddDbContext<TomasosContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Sets upp the in-memory data store
+            services.AddMemoryCache();
+
+            // Reggisters the services used to access session data
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,8 +116,8 @@ namespace PizzeriaASP
 
 
 
-            // Populate data if no products in db
-            //SeedData.EnsurePopulated(app); 
+            // Populate with product/ingredient 
+            SeedData.EnsurePopulated(app);
 
             new UserRoleSeed(app.ApplicationServices.GetService<RoleManager<IdentityRole>>()).Seed();
 
