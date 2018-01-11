@@ -57,150 +57,165 @@ namespace PizzeriaASP
                 context.SaveChanges();
             }
 
-            //ProduktID ProduktNamn
-            //1   Skinka
-            //2   Mozzarella
-            //3   Champinjoner
-            //4   Tomat
-            //5   Fläskfile
-            //6   Lök
-            //7   Tonfisk
-            //8   Ananas
-            //9   Banan
-            //10  Curry
-            //11  Ost
+
 
             if (!context.MatrattProdukt.Any())
             {
+                // PizzaId
+                var calzone = 1;
+                var hawaiiP = 101;
+                var vesuvioP = 102;
+                var cappP = 103;
+                var kebabP = 104;
+                var tunaP = 105;
+
+                //ProduktID 
+                var ham = 1;
+                var mozzarella = 2;
+                var mushroom = 3;
+                var tomato = 4;
+                var file = 5;
+                var onion = 6;
+                var tuna = 7;
+                var pinapple = 8;
+                var banana = 9;
+                var curry = 10;
+                var cheese = 11;
+                var feferoni = 12;
+                var kebabMeat = 13;
+                var kebabSauce = 14;
+                var garlicSauce = 15;
+
+
                 context.MatrattProdukt.AddRange(
                     new MatrattProdukt()
                     {
-                        MatrattId = 2,
-                        ProduktId = 1
+                        MatrattId = hawaiiP,
+                        ProduktId = ham
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 2,
-                        ProduktId = 4
+                        MatrattId = hawaiiP,
+                        ProduktId = tomato
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 2,
-                        ProduktId = 8
+                        MatrattId = hawaiiP,
+                        ProduktId = pinapple
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 2,
-                        ProduktId = 11
+                        MatrattId = hawaiiP,
+                        ProduktId = cheese
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 3,
-                        ProduktId = 1
+                        MatrattId = vesuvioP,
+                        ProduktId = ham
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 3,
-                        ProduktId = 11
+                        MatrattId = vesuvioP,
+                        ProduktId = cheese
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 3,
-                        ProduktId = 4
+                        MatrattId = vesuvioP,
+                        ProduktId = tomato
                     }, new MatrattProdukt()
                     {
-                        MatrattId = 4,
-                        ProduktId = 1
+                        MatrattId = cappP,
+                        ProduktId = ham
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 4,
-                        ProduktId = 11
+                        MatrattId = cappP,
+                        ProduktId = cheese
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 4,
-                        ProduktId = 4
+                        MatrattId = cappP,
+                        ProduktId = tomato
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 4,
-                        ProduktId = 2
+                        MatrattId = cappP,
+                        ProduktId = mozzarella
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
-                        ProduktId = 4
+                        MatrattId = kebabP,
+                        ProduktId = tomato
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
-                        ProduktId = 15
+                        MatrattId = kebabP,
+                        ProduktId = garlicSauce
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
+                        MatrattId = kebabP,
                         ProduktId = 14
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
-                        ProduktId = 13
+                        MatrattId = kebabP,
+                        ProduktId = kebabMeat
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
-                        ProduktId = 12
+                        MatrattId = kebabP,
+                        ProduktId = feferoni
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
-                        ProduktId = 11
+                        MatrattId = kebabP,
+                        ProduktId = cheese
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 5,
-                        ProduktId = 6
+                        MatrattId = kebabP,
+                        ProduktId = onion
                     }, 
                     new MatrattProdukt()
                     {
-                        MatrattId = 1,
-                        ProduktId = 1
+                        MatrattId = calzone,
+                        ProduktId = ham
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 1,
-                        ProduktId = 2
+                        MatrattId = calzone,
+                        ProduktId = mozzarella
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 1,
-                        ProduktId = 3
+                        MatrattId = calzone,
+                        ProduktId = mushroom
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 1,
-                        ProduktId = 4
+                        MatrattId = calzone,
+                        ProduktId = tomato
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 6,
-                        ProduktId = 4
+                        MatrattId = tunaP,
+                        ProduktId = tomato
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 6,
-                        ProduktId = 11
+                        MatrattId = tunaP,
+                        ProduktId = cheese
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 6,
-                        ProduktId = 6
+                        MatrattId = tunaP,
+                        ProduktId = onion
                     },
                     new MatrattProdukt()
                     {
-                        MatrattId = 6,
-                        ProduktId = 7
+                        MatrattId = tunaP,
+                        ProduktId = tuna
                     }
 
                 );
