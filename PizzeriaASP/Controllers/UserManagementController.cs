@@ -22,9 +22,11 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult Index()
         {
-            var users = _context.Users.OrderBy(u => u.UserName).ToList();
-
-            var vm = new UserManagementIndexViewModel() {Users = users};
+           var vm = new UserManagementIndexViewModel()
+            {
+                Users = _context.Users.OrderBy(u => u.UserName).ToList(),
+                Roles = _context.Roles.Distinct().OrderBy(x => x.Name).ToList()
+            };
 
             return View(vm);
         }

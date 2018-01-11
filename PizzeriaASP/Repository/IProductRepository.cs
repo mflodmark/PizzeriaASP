@@ -8,6 +8,8 @@ namespace PizzeriaASP.Models
     {
         IQueryable<Matratt> Products { get; }
 
+        void SaveProduct(Matratt product);
+
         IQueryable<MatrattTyp> Categories { get; }
 
     }
