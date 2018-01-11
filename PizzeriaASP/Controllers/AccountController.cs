@@ -13,7 +13,7 @@ namespace PizzeriaASP.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private TomasosContext _context;
+        private readonly TomasosContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
 
@@ -70,13 +70,13 @@ namespace PizzeriaASP.Controllers
 
         }
 
-        [AllowAnonymous]
-        public IActionResult Register()
+        public IActionResult AccessDenied()
         {
             return View();
         }
 
-        public IActionResult AccessDenied()
+        [AllowAnonymous]
+        public IActionResult Register()
         {
             return View();
         }

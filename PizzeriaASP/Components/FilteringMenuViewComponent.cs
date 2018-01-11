@@ -10,22 +10,28 @@ namespace PizzeriaASP.Components
 {
     public class FilteringMenuViewComponent: ViewComponent
     {
-        private IProductRepository repository;
+        //private readonly IProductRepository repository;
+        private readonly TomasosContext _context;
 
-        public FilteringMenuViewComponent(IProductRepository repo)
+
+        //public FilteringMenuViewComponent(IProductRepository repo)
+        //{
+        //    repository = repo;
+        //}
+        public FilteringMenuViewComponent(TomasosContext context)
         {
-            repository = repo;
+            _context = context;
         }
+
 
         public IViewComponentResult Invoke()
         {
-            string currentCategory;
-            currentCategory = 
+            var currentCategory = 
                 RouteData?.Values["category"] == null ? "" : RouteData?.Values["category"].ToString();
 
             var model = new CategoryViewModel()
             {
-               Category = repository.Categories
+               Category = _context.MatrattTyp
                             .Select(x => x.Beskrivning)
                             .Distinct()
                             .OrderBy(x => x),

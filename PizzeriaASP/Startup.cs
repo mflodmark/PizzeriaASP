@@ -29,12 +29,12 @@ namespace PizzeriaASP
         public void ConfigureServices(IServiceCollection services)
         {
             // When a controller needs an implemantation of IFoodRep it should receive an instance of FoodRep
-            services.AddTransient<IProductRepository, EFProductRepository>(); 
+            //services.AddTransient<IProductRepository, EFProductRepository>();
 
             services.AddMvc();
 
             // Same object for requests
-            services.AddScoped<Bestallning>(sp => SessionCart.GetCart(sp));
+            //services.AddScoped(SessionCart.GetCart);
 
             // Same object should always be used
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -46,15 +46,12 @@ namespace PizzeriaASP
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            //services.AddIdentity<IdentityUser, IdentityRole>()
-            //    .AddEntityFrameworkStores<ApplicationDbContext>()
-            //    .AddDefaultTokenProviders();
-
             services.AddDbContext<TomasosContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Sets upp the in-memory data store
-            services.AddMemoryCache();
+            //services.AddMemoryCache();
+            services.AddDistributedMemoryCache();
 
             // Reggisters the services used to access session data
             services.AddSession();
@@ -69,9 +66,6 @@ namespace PizzeriaASP
                 app.UseDeveloperExceptionPage();
             }
 
-            // Should be removed before deployment
-            app.UseDeveloperExceptionPage();
-
             app.UseStatusCodePages();
 
             // Enable static files as css and js
@@ -85,33 +79,33 @@ namespace PizzeriaASP
             app.UseMvc(routes =>
             {
                 //Improve routing for pagination
-                routes.MapRoute(
-                    name: null,
-                    template: "{category}/Page{productPage:int}",
-                    defaults: new { Controller = "Product", action = "List" });
-
-                routes.MapRoute(
-                    name: null,
-                    template: "Page{productPage:int}",
-                    defaults: new { Controller = "Product", action = "List" , productPage = 1});
-
-                routes.MapRoute(
-                    name: null,
-                    template: "{category}",
-                    defaults: new { Controller = "Product", action = "List", productPage = 1 });
-
-                routes.MapRoute(
-                    name: null,
-                    template: "",
-                    defaults: new { Controller = "Product", action = "List", productPage = 1 });
-
-                routes.MapRoute(
-                    name: null,
-                    template: "{controller}/{action}/{id?}");
+                //routes.MapRoute(
+                //    name: null,
+                //    template: "{category}/Page{productPage:int}",
+                //    defaults: new { Controller = "Product", action = "List" });
 
                 //routes.MapRoute(
-                //    name: "default",
-                //    template: "{controller=Product}/{action=List}/{id?}"); 
+                //    name: null,
+                //    template: "Page{productPage:int}",
+                //    defaults: new { Controller = "Product", action = "List" , productPage = 1});
+
+                //routes.MapRoute(
+                //    name: null,
+                //    template: "{category}",
+                //    defaults: new { Controller = "Product", action = "List", productPage = 1 });
+
+                //routes.MapRoute(
+                //    name: null,
+                //    template: "",
+                //    defaults: new { Controller = "Product", action = "List", productPage = 1 });
+
+                //routes.MapRoute(
+                //    name: null,
+                //    template: "{controller}/{action}/{id?}");
+
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Product}/{action=List}/{id?}");
             });
 
 

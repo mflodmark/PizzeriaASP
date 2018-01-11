@@ -1,19 +1,36 @@
 ﻿@using PizzeriaASP.Infrastructure
-@model PizzeriaASP.Models.Bestallning
+@*@model PizzeriaASP.Models.Bestallning*@
+@model List<PizzeriaASP.Models.BestallningMatratt>
+@*<div class="">
+        @if (Model.Lines.Any())
+        {
+            <small class="navbar-text">
+                <b>Your cart:</b>
+                @Model.Lines.Sum(x => x.Antal) item(s)
+                @Model.ComputeTotalValue().ToString("c")
+            </small>
+        }
+        <a class="btn btn-sm btn-secondary navbar-btn"
+           asp-controller="Cart" asp-action="Index"
+           asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+            <i class="icon-2x icon-shopping-cart"></i>
+        </a>
+    </div>*@
+
 
 <div class="">
-    @if (Model.Lines.Any())
-    {
-        <small class="navbar-text">
-            <b>Your cart:</b>
-            @Model.Lines.Sum(x => x.Antal) item(s)
-            @Model.ComputeTotalValue().ToString("c")
-        </small>
-    }
-    <a class="btn btn-sm btn-secondary navbar-btn" 
-       asp-controller="Cart" asp-action="Index" 
-       asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
-        <i class="icon-2x icon-shopping-cart"></i>
-    </a>
-</div>
+        @if (Model.Any())
+        {
+            <small class="navbar-text">
+                <b>Your cart:</b>
+                @Model.Sum(x => x.Antal) item(s)
+                @*@Model.ComputeTotalValue().ToString("c")*@
+            </small>
+        }
+        <a class="btn btn-sm btn-secondary navbar-btn"
+           asp-controller="Cart" asp-action="Index"
+           asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+            <i class="icon-2x icon-shopping-cart"></i>
+        </a>
+    </div>
 

@@ -15,6 +15,14 @@ namespace PizzeriaASP
 
             context.Database.Migrate();
 
+            SeedProducts(context);
+            SeedLinkProductIngredient(context);
+            
+            context.Dispose();
+        }
+
+        private static void SeedProducts(TomasosContext context)
+        {
             if (context.Matratt.ToList().Count == 1)
             {
                 context.Matratt.AddRange(
@@ -56,9 +64,10 @@ namespace PizzeriaASP
                 );
                 context.SaveChanges();
             }
+        }
 
-
-
+        private static void SeedLinkProductIngredient(TomasosContext context)
+        {
             if (!context.MatrattProdukt.Any())
             {
                 // ProductId
@@ -176,7 +185,7 @@ namespace PizzeriaASP
                     {
                         MatrattId = kebabP,
                         ProduktId = onion
-                    }, 
+                    },
                     new MatrattProdukt()
                     {
                         MatrattId = calzone,
@@ -217,9 +226,10 @@ namespace PizzeriaASP
                         MatrattId = tunaP,
                         ProduktId = tuna
                     }
-
                 );
+                context.SaveChanges();
             }
         }
+
     }
 }

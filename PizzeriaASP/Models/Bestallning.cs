@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace PizzeriaASP.Models
 {
@@ -30,6 +32,22 @@ namespace PizzeriaASP.Models
         public virtual void AddItem(Matratt product, int quantity)
         {
             var line = BestallningMatratt.FirstOrDefault(p => p.Matratt.MatrattId == product.MatrattId);
+
+            //List<BestallningMatratt> prodList;
+            //BestallningMatratt newProd = new BestallningMatratt() {Antal = 1, Matratt = product};
+
+            //if (HttpContext.Session.GetString("Varukorg") == null)
+            //{
+            //    prodList = new List<BestallningMatratt>();
+            //}
+            //else
+            //{
+            //    // Hämta listan från sessionen
+            //    var serValue = HttpContext.Session.GetString("Varukorg");
+            //    prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serValue);
+            //}
+            
+            //prodList.Add(newProd);
 
             if (line == null)
             {

@@ -20,7 +20,7 @@ namespace PizzeriaASP
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseDefaultServiceProvider(options => 
+                .UseDefaultServiceProvider(options =>
                     options.ValidateScopes = false)
                 .Build();
     }

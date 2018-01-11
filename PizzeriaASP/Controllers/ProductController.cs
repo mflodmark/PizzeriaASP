@@ -6,25 +6,34 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
+using SQLitePCL;
 
 namespace PizzeriaASP.Controllers
 {
     //[Authorize]
     public class ProductController : Controller
     {
-        private IProductRepository repository;
+        private readonly IProductRepository _repository;
 
         public int PageSize = 4;
+        private readonly TomasosContext _context;
 
-        public ProductController(IProductRepository repo)
+        //public ProductController(IProductRepository repo)
+        //{
+        //    _repository = repo;
+        //}
+
+
+        public ProductController(TomasosContext context)
         {
-            repository = repo;
+            _context = context;
         }
 
-        public ViewResult List(string category, int productPage = 1) 
-            => View(new ProductsListViewModel
+        public IActionResult List(string category, int productPage = 1)
+        {
+            var model = new ProductsListViewModel
             {
-                Products = repository.Products
+                Products = _context.Matratt
                     .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null)
                     .OrderBy(p => p.MatrattNamn)
                     .Skip((productPage - 1) * PageSize)
@@ -33,12 +42,15 @@ namespace PizzeriaASP.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = category == null ? 
-                        repository.Products.Count() : 
-                        repository.Products.Count(x => 
+                    TotalItems = category == null ?
+                        _context.Matratt.Count() :
+                        _context.Matratt.Count(x =>
                             x.MatrattTypNavigation.Beskrivning == category)
                 },
                 CurrentCategory = category
-            });
+            };
+
+            return View(model);
+        }
     }
 }

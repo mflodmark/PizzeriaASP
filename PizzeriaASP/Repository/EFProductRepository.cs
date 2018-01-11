@@ -5,7 +5,7 @@ namespace PizzeriaASP
 {
     public class EFProductRepository : IProductRepository
     {
-        private TomasosContext _context;
+        private readonly TomasosContext _context;
 
         public EFProductRepository(TomasosContext context)
         {

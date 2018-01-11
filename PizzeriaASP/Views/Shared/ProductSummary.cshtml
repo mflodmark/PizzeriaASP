@@ -2,19 +2,12 @@
 @using PizzeriaASP.Infrastructure
 @model PizzeriaASP.Models.Matratt
 
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
 <div>
     <h3>@Model.MatrattNamn</h3>
     @Model.Beskrivning
     <h4>@Model.Pris.ToString("c")</h4>
-    <form id="@Model.MatrattId" asp-action="AddToCart" asp-controller="Cart" 
-           method="post">
-        <input type="hidden" asp-for="MatrattId" />
+    <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.MatrattId" method="post">
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-        @*<input class="btn btn-primary" type="submit" value="Add to cart" />*@
-        <button type="submit" class="btn btn-primary">Add to cart</button>
+        <input type="submit" class="btn btn-primary" value= "Add to cart" />
     </form>
 </div>

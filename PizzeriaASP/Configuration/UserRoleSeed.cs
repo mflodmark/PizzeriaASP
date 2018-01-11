@@ -5,7 +5,7 @@ namespace PizzeriaASP
 {
     public class UserRoleSeed
     {
-        private RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public UserRoleSeed(RoleManager<IdentityRole> roleManager)
         {
