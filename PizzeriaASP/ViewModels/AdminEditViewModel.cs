@@ -9,5 +9,10 @@ namespace PizzeriaASP.ViewModels
         public Matratt Product { get; set; }
 
         public List<SelectListItem> ProductTypes { get; set; }
+
+        public List<Produkt> IngredientList { get; set; }
+
+        public List<SelectListItem> OptionalIngredientsList { get; set; }
+
     }
 }

@@ -62,7 +62,9 @@ namespace PizzeriaASP.Controllers
             var model = new AdminEditViewModel()
             {
                 Product = _context.Matratt.FirstOrDefault(p => p.MatrattId == productId),
-                ProductTypes = GetProductTypes()
+                ProductTypes = GetProductTypes(),
+                OptionalIngredientsList = GetIngredients(),
+                IngredientList = GetIngredients(productId)
             };
 
             return View(model);
@@ -106,7 +108,9 @@ namespace PizzeriaASP.Controllers
             return View(new AdminEditViewModel()
             {
                 Product = product,
-                ProductTypes = GetProductTypes()
+                ProductTypes = GetProductTypes(),
+                OptionalIngredientsList = GetIngredients(),
+                IngredientList = GetIngredients(product.MatrattId)
             });
         }
 
@@ -116,6 +120,16 @@ namespace PizzeriaASP.Controllers
             ProductTypes = GetProductTypes()
         });
 
+        public IActionResult AddIngredient()
+        {
+            return View("Edit");
+        }
+
+        public IActionResult RemoveIngredient()
+        {
+            return View("Edit");
+        }
+
         private List<SelectListItem> GetProductTypes()
         {
             return _context.MatrattTyp.Select(p => new SelectListItem()
@@ -123,6 +137,22 @@ namespace PizzeriaASP.Controllers
                 Value = p.MatrattTyp1.ToString(),
                 Text = p.Beskrivning
             }).OrderBy(o => o.Text).ToList();
+        }
+
+        private List<SelectListItem> GetIngredients()
+        {
+            return _context.Produkt.Select(p => new SelectListItem()
+            {
+                Value = p.ProduktId.ToString(),
+                Text = p.ProduktNamn
+            }).OrderBy(o => o.Text).ToList();
+        }
+
+        private List<Produkt> GetIngredients(int id)
+        {
+            var i = _context.MatrattProdukt.Where(x => x.MatrattId == id).Select(y => y.Produkt).ToList();
+
+            return i;
         }
     }
 }
