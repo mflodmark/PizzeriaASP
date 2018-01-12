@@ -3,24 +3,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzeriaASP.Models;
+using PizzeriaASP.ViewModels;
 
 namespace PizzeriaASP.Components
 {
     public class CartSummaryViewComponent: ViewComponent
     {
-        //private readonly Bestallning _cart;
-
-        //public CartSummaryViewComponent(Bestallning cartService)
-        //{
-        //    _cart = cartService;
-        //}
-
-        //public IViewComponentResult Invoke()
-        //{
-        //    return View(_cart);
-        //}
-
-        
+     
 
         private Bestallning GetCart()
         {
@@ -42,8 +31,12 @@ namespace PizzeriaASP.Components
 
         public IViewComponentResult Invoke()
         {
+            var model = new CartIndexViewModel()
+            {
+                Cart = GetCart()
+            };
 
-            return View(GetCart());
+            return View(model);
         }
     }
 }

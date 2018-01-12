@@ -15,15 +15,18 @@ namespace PizzeriaASP.Models
         public int MatrattId { get; set; }
 
         [Required]
+        [MaxLength(50)]
         public string MatrattNamn { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Beskrivning { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue)]
         public int Pris { get; set; }
 
+        [Required]
         public int MatrattTyp { get; set; }
 
         public MatrattTyp MatrattTypNavigation { get; set; }

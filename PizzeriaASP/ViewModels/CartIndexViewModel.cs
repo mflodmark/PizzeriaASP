@@ -10,7 +10,7 @@ namespace PizzeriaASP.ViewModels
     {
         public Bestallning Cart { get; set; }
 
-        //public List<BestallningMatratt> Orders { get; set; }
+        public int CartTotalValue { get; set; }
 
         public string ReturnUrl { get; set; }
     }

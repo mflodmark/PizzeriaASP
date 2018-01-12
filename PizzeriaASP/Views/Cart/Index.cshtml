@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var line in Model.Cart.Lines)
+        @foreach (var line in Model.Cart.BestallningMatratt)
         {
             <tr>
                 <td class="text-center">@line.Antal</td>
@@ -38,7 +38,7 @@
         <tfoot>
         <tr>
             <td colspan="3" class="text-right">Total:</td>
-            <td class="text-right">@Model.Cart.ComputeTotalValue().ToString("c")</td>
+            <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
         </tr>
         </tfoot>
     </table>
@@ -46,8 +46,12 @@
 
 <div class="text-center">
     <a class="btn btn-primary" href="@Model.ReturnUrl">Continue shopping</a>
-    <a class="btn btn-success" asp-controller="Order" asp-action="CheckOut"
-       asp-route-order="@Model.Cart"><i class="icon-shopping-cart icon-large"></i> Place order</a>
+    <form asp-controller="Order" asp-action="CheckOut"
+          method="post">
+        <button type="submit" class="btn btn-success">
+            <i class="icon-shopping-cart icon-large"></i> Place order
+        </button>
+    </form>
 </div>
 
 

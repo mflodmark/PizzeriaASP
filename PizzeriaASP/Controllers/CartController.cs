@@ -41,7 +41,8 @@ namespace PizzeriaASP.Controllers
             return View(new CartIndexViewModel()
             {
                 Cart = cart,
-                ReturnUrl = returnUrl
+                ReturnUrl = returnUrl,
+                CartTotalValue = prodList.Sum(e => e.Matratt.Pris * e.Antal)
             });
         }
 

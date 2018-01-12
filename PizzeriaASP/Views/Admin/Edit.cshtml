@@ -1,25 +1,29 @@
-﻿@model PizzeriaASP.Models.Matratt
+﻿@model PizzeriaASP.ViewModels.AdminEditViewModel
 
 @{
     ViewData["Title"] = "Edit Product";
 }
 
-<form asp-action="Edit" asp-route-productId ="@Model.MatrattId" method="post">
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Product.MatrattId"/>
+    
+    <div asp-validation-summary="All" class="text-danger"></div>
+
     <div class="form-group">
-        <label asp-for="MatrattNamn"></label>
-        <input asp-for="MatrattNamn" class="form-control"/>
+        <label asp-for="@Model.Product.MatrattNamn"></label>
+        <input asp-for="@Model.Product.MatrattNamn" class="form-control"/>
     </div>
     <div class="form-group">
-        <label asp-for="Beskrivning"></label>
-        <textarea asp-for="Beskrivning" class="form-control"></textarea>
+        <label asp-for="@Model.Product.Beskrivning"></label>
+        <textarea asp-for="@Model.Product.Beskrivning" class="form-control"></textarea>
     </div>
     <div class="form-group">
-        <label asp-for="MatrattTyp"></label>
-        <input asp-for="MatrattTyp" class="form-control"/>
+        <label asp-for="@Model.Product.MatrattTyp"></label>
+        <select asp-for="@Model.Product.MatrattTyp" asp-items="@Model.ProductTypes" class="form-control"></select>
     </div>
     <div class="form-group">
-        <label asp-for="Pris"></label>
-        <input asp-for="Pris" class="form-control"/>
+        <label asp-for="@Model.Product.Pris"></label>
+        <input asp-for="@Model.Product.Pris" class="form-control"/>
     </div>
     <div class="text-center">
         <button class="btn btn-primary" type="submit">Save</button>

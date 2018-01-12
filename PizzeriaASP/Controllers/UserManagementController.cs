@@ -13,7 +13,7 @@ namespace PizzeriaASP.Controllers
     [Authorize(Roles = "Admin")]
     public class UserManagementController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
         private UserManager<ApplicationUser> _userManager;
 
         public UserManagementController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)

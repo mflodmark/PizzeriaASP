@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzeriaASP.Models;
+using PizzeriaASP.ViewModels;
 
 namespace PizzeriaASP.Controllers
 {
@@ -39,10 +40,9 @@ namespace PizzeriaASP.Controllers
             _signInManager = signInManager;
         }
 
-        //public ViewResult CheckOut() => View(new Bestallning());
-
-        //[HttpPost]
-        public IActionResult CheckOut(Bestallning order)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CheckOut()
         {
             var cart = GetCart();
 
@@ -51,17 +51,35 @@ namespace PizzeriaASP.Controllers
                 ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
 
+            // Behövs denna?
             if (ModelState.IsValid)
             {
-                //order.Lines = cart.Lines.ToArray();
-                //repository.SaveOrder(order);
+                var customer = _context.Kund.Single(x => x.AnvandarNamn == _userManager.GetUserName(User));
 
-                order.BestallningDatum = DateTime.Now;
-                order.Kund = _context.Kund.Single(x => x.AnvandarNamn == _userManager.GetUserName(User));
-                order.Totalbelopp = order.ComputeTotalValue();
+                var order = new Bestallning
+                {
+                    BestallningDatum = DateTime.Now,
+                    KundId = customer.KundId,
+                    Levererad = false,
+                    Totalbelopp = cart.Sum(e => e.Matratt.Pris * e.Antal)
+                };
 
                 _context.Bestallning.Add(order);
 
+                // Save order
+                _context.SaveChanges();
+
+                foreach (var c in cart)
+                {
+                    _context.BestallningMatratt.Add(new BestallningMatratt()
+                    {
+                        BestallningId = order.BestallningId,
+                        MatrattId = c.MatrattId,
+                        Antal = c.Antal
+                    });
+                }
+
+                // Save orderlist
                 _context.SaveChanges();
 
                 _context.Dispose();
