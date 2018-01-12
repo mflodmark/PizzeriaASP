@@ -10,10 +10,10 @@ using SQLitePCL;
 
 namespace PizzeriaASP.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class ProductController : Controller
     {
-        private readonly IProductRepository _repository;
+        //private readonly IProductRepository _repository;
 
         public int PageSize = 4;
         private readonly TomasosContext _context;
@@ -38,6 +38,7 @@ namespace PizzeriaASP.Controllers
                     .OrderBy(p => p.MatrattNamn)
                     .Skip((productPage - 1) * PageSize)
                     .Take(PageSize),
+
                 PagingInfo = new PagingInfo()
                 {
                     CurrentPage = productPage,

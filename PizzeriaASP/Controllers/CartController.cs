@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
 using PizzeriaASP.Infrastructure;
 using PizzeriaASP.Models;
@@ -11,12 +13,12 @@ using PizzeriaASP.ViewModels;
 
 namespace PizzeriaASP.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         //private readonly IProductRepository _repository;
         //private readonly Bestallning _cart;
         private readonly TomasosContext _context;
-
 
         //public CartController(IProductRepository repo, Bestallning cartService)
         //{
@@ -34,9 +36,11 @@ namespace PizzeriaASP.Controllers
             // Get session value
             var prodList = GetCart();
 
+            var cart = new Bestallning() {BestallningMatratt = prodList};
+
             return View(new CartIndexViewModel()
             {
-                Orders = prodList,
+                Cart = cart,
                 ReturnUrl = returnUrl
             });
         }
@@ -49,28 +53,27 @@ namespace PizzeriaASP.Controllers
             var product = _context.Matratt
                 .FirstOrDefault(p => p.MatrattId == productId);
 
-            var newProd = new BestallningMatratt()
-            {
-                Antal = 1, Matratt = product, MatrattId = productId
-            };
-
             var prodList = GetCart();
 
-            prodList.Add(newProd); 
+            // Check if product exist in cart => add qty 1
+            if (prodList.Any(x => x.MatrattId == productId))
+            {
+                prodList.Single(x => x.MatrattId == productId).Antal += 1;
+            }
+            else
+            {
+                var newProd = new BestallningMatratt()
+                {
+                    Antal = 1,
+                    Matratt = product,
+                    MatrattId = productId
+                };
+                prodList.Add(newProd);
+            }
 
             SetCart(prodList);
 
             return RedirectToAction("Index", new { returnUrl });
-
-            //var product = _repository.Products
-            //    .FirstOrDefault(p => p.MatrattId == productId);
-
-            //if (product != null)
-            //{
-            //    _cart.AddItem(product, 1);
-            //}
-
-            //return RedirectToAction("Index", new { returnUrl });
         }
 
         private List<BestallningMatratt> GetCart()
@@ -95,45 +98,6 @@ namespace PizzeriaASP.Controllers
             HttpContext.Session.SetString("Varukorg", temp);
         }
 
-        //[HttpPost]
-        //[AutoValidateAntiforgeryToken]
-        //public RedirectToActionResult AddToCart(int matrattId, string returnUrl)
-        //{
-        //    ICollection<BestallningMatratt> prodList;
-
-        //    //Hämta produkten som objekt med hjälp av id (oftast från databasen) 
-        //    var product = repository.Products.SingleOrDefault(p => p.MatrattId == matrattId);
-
-
-        //    //OM det är första gången finns ingen varukorg
-        //    if (HttpContext.Session.GetString("Varukorg") == null)
-        //    {
-        //        prodList = new List<BestallningMatratt>();
-        //    }
-        //    else
-        //    {
-        //        //Om det redan finns en varukorg. Hämta listan från sessionsvariabeln
-        //        var serializedValue = (HttpContext.Session.GetString("Varukorg"));
-        //        prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serializedValue);
-
-        //    }
-
-        //    var pl = new BestallningMatratt()
-        //    {
-        //        Antal = 1,
-
-        //    };
-
-        //    prodList.Add(product);
-
-        //    cart.BestallningMatratt = prodList;
-
-        //    //Lägga tillbaka listan i sessionsvariabeln
-        //    var temp = JsonConvert.SerializeObject(prodList);
-        //    HttpContext.Session.SetString("Varukorg", temp);
-
-        //    return RedirectToAction("Index", new { returnUrl });
-        //}
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]

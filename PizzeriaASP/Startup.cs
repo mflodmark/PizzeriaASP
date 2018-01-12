@@ -64,9 +64,9 @@ namespace PizzeriaASP
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseStatusCodePages();
             }
 
-            app.UseStatusCodePages();
 
             // Enable static files as css and js
             app.UseStaticFiles();

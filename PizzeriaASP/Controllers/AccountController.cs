@@ -66,6 +66,8 @@ namespace PizzeriaASP.Controllers
         {
             await _signInManager.SignOutAsync();
 
+            HttpContext.Session.Remove("Varukorg");
+
             return RedirectToAction("Index", "Home");
 
         }

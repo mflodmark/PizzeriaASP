@@ -16,7 +16,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var line in Model.Orders)
+        @foreach (var line in Model.Cart.Lines)
         {
             <tr>
                 <td class="text-center">@line.Antal</td>
@@ -27,7 +27,9 @@
                     <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
                         <input type="hidden" name="productId" value="@line.Matratt.MatrattId" />
                         <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                        <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="icon-trash icon-large"></i> Delete
+                        </button>
                     </form>
                 </td>
             </tr>
@@ -36,7 +38,7 @@
         <tfoot>
         <tr>
             <td colspan="3" class="text-right">Total:</td>
-            @*<td class="text-right">@Model.Cart.ComputeTotalValue().ToString("c")</td>*@
+            <td class="text-right">@Model.Cart.ComputeTotalValue().ToString("c")</td>
         </tr>
         </tfoot>
     </table>
@@ -44,8 +46,8 @@
 
 <div class="text-center">
     <a class="btn btn-primary" href="@Model.ReturnUrl">Continue shopping</a>
-    <a class="btn btn-primary" asp-controller="Order" asp-action="CheckOut" 
-       asp-route-order="@Model">Checkout</a>
+    <a class="btn btn-success" asp-controller="Order" asp-action="CheckOut"
+       asp-route-order="@Model.Cart"><i class="icon-shopping-cart icon-large"></i> Place order</a>
 </div>
 
 

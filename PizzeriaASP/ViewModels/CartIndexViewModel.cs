@@ -8,9 +8,9 @@ namespace PizzeriaASP.ViewModels
 {
     public class CartIndexViewModel
     {
-        //public Bestallning Cart { get; set; }
+        public Bestallning Cart { get; set; }
 
-        public List<BestallningMatratt> Orders { get; set; }
+        //public List<BestallningMatratt> Orders { get; set; }
 
         public string ReturnUrl { get; set; }
     }

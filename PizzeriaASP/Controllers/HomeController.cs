@@ -11,7 +11,7 @@ namespace PizzeriaASP.Controllers
 {
     public class HomeController : Controller
     {
-        private TomasosContext _context;
+        private readonly TomasosContext _context;
 
         private readonly UserManager<ApplicationUser> _userManager;
 

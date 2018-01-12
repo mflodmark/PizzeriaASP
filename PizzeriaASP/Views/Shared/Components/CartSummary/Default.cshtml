@@ -1,6 +1,6 @@
 ﻿@using PizzeriaASP.Infrastructure
 @*@model PizzeriaASP.Models.Bestallning*@
-@model List<PizzeriaASP.Models.BestallningMatratt>
+@model PizzeriaASP.Models.Bestallning
 @*<div class="">
         @if (Model.Lines.Any())
         {
@@ -19,13 +19,13 @@
 
 
 <div class="">
-        @if (Model.Any())
+        @if (Model.BestallningMatratt.Any())
         {
-            <small class="navbar-text">
-                <b>Your cart:</b>
-                @Model.Sum(x => x.Antal) item(s)
-                @*@Model.ComputeTotalValue().ToString("c")*@
-            </small>
+    <small class="navbar-text">
+        <b>Your cart:</b>
+        @Model.BestallningMatratt.Sum(x => x.Antal) item(s)
+        @Model.ComputeTotalValue().ToString("c")
+    </small>
         }
         <a class="btn btn-sm btn-secondary navbar-btn"
            asp-controller="Cart" asp-action="Index"

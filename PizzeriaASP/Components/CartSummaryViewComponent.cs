@@ -20,8 +20,9 @@ namespace PizzeriaASP.Components
         //    return View(_cart);
         //}
 
+        
 
-        private List<BestallningMatratt> GetCart()
+        private Bestallning GetCart()
         {
             List<BestallningMatratt> prodList;
             if (HttpContext.Session.GetString("Varukorg") == null)
@@ -34,7 +35,9 @@ namespace PizzeriaASP.Components
                 prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serializedValue);
             }
 
-            return prodList;
+            var order = new Bestallning() {BestallningMatratt = prodList};
+
+            return order;
         }
 
         public IViewComponentResult Invoke()

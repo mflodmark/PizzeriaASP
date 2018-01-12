@@ -29,41 +29,41 @@ namespace PizzeriaASP.Models
 
         public ICollection<BestallningMatratt> BestallningMatratt { get; set; } 
 
-        public virtual void AddItem(Matratt product, int quantity)
-        {
-            var line = BestallningMatratt.FirstOrDefault(p => p.Matratt.MatrattId == product.MatrattId);
+        //public virtual void AddItem(Matratt product, int quantity)
+        //{
+        //    var line = BestallningMatratt.FirstOrDefault(p => p.Matratt.MatrattId == product.MatrattId);
 
-            //List<BestallningMatratt> prodList;
-            //BestallningMatratt newProd = new BestallningMatratt() {Antal = 1, Matratt = product};
+        //    //List<BestallningMatratt> prodList;
+        //    //BestallningMatratt newProd = new BestallningMatratt() {Antal = 1, Matratt = product};
 
-            //if (HttpContext.Session.GetString("Varukorg") == null)
-            //{
-            //    prodList = new List<BestallningMatratt>();
-            //}
-            //else
-            //{
-            //    // Hämta listan från sessionen
-            //    var serValue = HttpContext.Session.GetString("Varukorg");
-            //    prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serValue);
-            //}
+        //    //if (HttpContext.Session.GetString("Varukorg") == null)
+        //    //{
+        //    //    prodList = new List<BestallningMatratt>();
+        //    //}
+        //    //else
+        //    //{
+        //    //    // Hämta listan från sessionen
+        //    //    var serValue = HttpContext.Session.GetString("Varukorg");
+        //    //    prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serValue);
+        //    //}
             
-            //prodList.Add(newProd);
+        //    //prodList.Add(newProd);
 
-            if (line == null)
-            {
-                BestallningMatratt.Add(new BestallningMatratt()
-                {
-                    Antal = quantity,
-                    Matratt = product
-                });
-            }
-            else
-            {
-                line.Antal += quantity;
-            }
-        }
+        //    if (line == null)
+        //    {
+        //        BestallningMatratt.Add(new BestallningMatratt()
+        //        {
+        //            Antal = quantity,
+        //            Matratt = product
+        //        });
+        //    }
+        //    else
+        //    {
+        //        line.Antal += quantity;
+        //    }
+        //}
 
-        public virtual decimal ComputeTotalValue() => 
+        public virtual int ComputeTotalValue() => 
             BestallningMatratt.Sum(e => e.Matratt.Pris * e.Antal);
 
         public virtual void Clear() => BestallningMatratt.Clear();

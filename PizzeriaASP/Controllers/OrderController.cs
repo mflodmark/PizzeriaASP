@@ -2,28 +2,51 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PizzeriaASP.Models;
 
 namespace PizzeriaASP.Controllers
 {
     public class OrderController : Controller
     {
-        private IOrderRepository repository;
-        private Bestallning cart;
 
-        public OrderController(IOrderRepository repo, Bestallning cartService)
+        //private IOrderRepository repository;
+        //private Bestallning cart;
+
+        //public OrderController(IOrderRepository repo, Bestallning cartService)
+        //{
+        //    repository = repo;
+        //    cart = cartService;
+        //}
+
+        private readonly TomasosContext _context;
+
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        private readonly SignInManager<ApplicationUser> _signInManager;
+
+        //Dependency Injection via konstruktorn
+        public OrderController(TomasosContext context,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager
+        )
         {
-            repository = repo;
-            cart = cartService;
+            _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public ViewResult CheckOut() => View(new Bestallning());
+        //public ViewResult CheckOut() => View(new Bestallning());
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult CheckOut(Bestallning order)
         {
-            if (!cart.Lines.Any())
+            var cart = GetCart();
+
+            if (!cart.Any())
             {
                 ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
@@ -31,20 +54,47 @@ namespace PizzeriaASP.Controllers
             if (ModelState.IsValid)
             {
                 //order.Lines = cart.Lines.ToArray();
-                repository.SaveOrder(order);
+                //repository.SaveOrder(order);
+
+                order.BestallningDatum = DateTime.Now;
+                order.Kund = _context.Kund.Single(x => x.AnvandarNamn == _userManager.GetUserName(User));
+                order.Totalbelopp = order.ComputeTotalValue();
+
+                _context.Bestallning.Add(order);
+
+                _context.SaveChanges();
+
+                _context.Dispose();
 
                 return RedirectToAction("Completed");
             }
             else
             {
-                return View();
+                return RedirectToAction("Index","Cart");
             }
         }
 
         public ViewResult Completed()
         {
-            cart.Clear();
+            //cart.Clear();
+            HttpContext.Session.Clear();
             return View();
+        }
+
+        private List<BestallningMatratt> GetCart()
+        {
+            List<BestallningMatratt> prodList;
+            if (HttpContext.Session.GetString("Varukorg") == null)
+            {
+                prodList = new List<BestallningMatratt>();
+            }
+            else
+            {
+                var serializedValue = HttpContext.Session.GetString("Varukorg");
+                prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serializedValue);
+            }
+
+            return prodList;
         }
 
     }

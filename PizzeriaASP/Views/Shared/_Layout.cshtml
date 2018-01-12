@@ -1,4 +1,9 @@
-﻿<!doctype html>
+﻿@using Microsoft.AspNetCore.Identity
+@using PizzeriaASP
+@inject SignInManager<ApplicationUser> SignInManager 
+@inject UserManager<ApplicationUser> UserManager
+
+<!doctype html>
 <html>
 <head>
     <!-- Latest compiled and minified CSS -->
@@ -27,36 +32,62 @@
 </head>
 
 <body>
-<header>
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">WebSiteName</a>
-            </div>
-            <ul class="nav navbar-nav">
-                <li is-active-route asp-controller="Home" asp-action="Index">
-                    <a asp-controller="Home" asp-action="Index">Home</a>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li is-active-route asp-controller="Account" asp-action="Register">
-                    <a asp-controller="Account" asp-action="Register">
-                        <span class="glyphicon glyphicon-user"></span> Sign Up
-                    </a>
-                </li>
-                <li is-active-route asp-controller="Account" asp-action="Login">
-                    <a asp-controller="Account" asp-action="Login">
-                        <span class="glyphicon glyphicon-log-in"></span> Login
-                    </a>
-                </li>
-                <li>@await Component.InvokeAsync("CartSummary")</li>
-            </ul>
-        </div>
-    </nav>
+    <header>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li is-active-route asp-controller="Home" asp-action="Index">
+                        <a asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li is-active-route asp-controller="Product" asp-action="List">
+                        <a asp-controller="Product" asp-action="List">Products</a>
+                    </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li is-active-route asp-controller="Admin" asp-action="Index">
+                            <a asp-controller="Admin" asp-action="Index">Admin</a>
+                        </li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
 
-</header>
-<div id="main">
-    @RenderBody()
-</div>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" date-toggle="dropdown" href="#">
+                                <i class="icon-user"></i> @UserManager.GetUserName(User)
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Edit user</a></li>
+                                <li><a asp-controller="Account" asp-action="LogOff">Logg off</a></li>
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li is-active-route asp-controller="Account" asp-action="Register">
+                            <a asp-controller="Account" asp-action="Register">
+                                <span class="glyphicon glyphicon-user"></span> Sign Up
+                            </a>
+                        </li>
+                        <li is-active-route asp-controller="Account" asp-action="Login">
+                            <a asp-controller="Account" asp-action="Login">
+                                <span class="glyphicon glyphicon-log-in"></span> Login
+                            </a>
+                        </li>
+                    }
+                    <li>@await Component.InvokeAsync("CartSummary")</li>
+                </ul>
+            </div>
+        </nav>
+
+    </header>
+    <div id="main">
+        @RenderBody()
+    </div>
 </body>
 </html>
