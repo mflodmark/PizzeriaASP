@@ -120,14 +120,36 @@ namespace PizzeriaASP.Controllers
             ProductTypes = GetProductTypes()
         });
 
-        public IActionResult AddIngredient()
+        public IActionResult AddIngredient(AdminEditViewModel vm)
         {
-            return View("Edit");
+            var ingredients = GetIngredients(vm.Product.MatrattId);
+            var ingredient = _context.Produkt.Find(vm.SelectedIngredientId);
+
+            ingredients.Add(ingredient);
+
+            return View("Edit", new AdminEditViewModel()
+            {
+                Product = vm.Product,
+                ProductTypes = GetProductTypes(),
+                OptionalIngredientsList = GetIngredients(),
+                IngredientList = ingredients
+            });
         }
 
-        public IActionResult RemoveIngredient()
+        public IActionResult RemoveIngredient(AdminEditViewModel vm)
         {
-            return View("Edit");
+            var ingredients = GetIngredients(vm.Product.MatrattId);
+            var ingredient = _context.Produkt.Find(vm.SelectedIngredientId);
+
+            ingredients.Remove(ingredient);
+
+            return View("Edit", new AdminEditViewModel()
+            {
+                Product = vm.Product,
+                ProductTypes = GetProductTypes(),
+                OptionalIngredientsList = GetIngredients(),
+                IngredientList = ingredients
+            });
         }
 
         private List<SelectListItem> GetProductTypes()

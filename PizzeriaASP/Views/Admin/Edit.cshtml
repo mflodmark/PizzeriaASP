@@ -35,9 +35,9 @@
             <tr>
                 <td>@item.ProduktNamn</td>
                 <td class="text-center">
-                    <a asp-action="RemoveIngredient">
-                        <input type="hidden" asp-for="@item.ProduktId" class="btn btn-danger btn-sm"/>
-                        <i class="icon-trash icon-large"></i> Delete   
+                    <a asp-action="RemoveIngredient" class="btn btn-danger btn-sm">
+                        <input type="hidden" asp-for="@item.ProduktId"/>
+                        <i class="icon-trash icon-large "></i> Delete   
                     </a>
                 </td>
             </tr>

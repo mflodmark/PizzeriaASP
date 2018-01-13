@@ -51,8 +51,13 @@
                     </li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li is-active-route asp-controller="Admin" asp-action="Index">
-                            <a asp-controller="Admin" asp-action="Index">Admin</a>
+                        <li class="dropdown" is-active-route asp-controller="Admin" asp-action="Index">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a asp-controller="Admin" asp-action="Index">Add/Edit/Delete Products</a></li>
+                                <li><a href="#">Add/Edit/Delete Users</a></li>
+                            </ul>
                         </li>
                     }
                 </ul>
@@ -61,13 +66,13 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="dropdown">
-                            <a class="dropdown-toggle" date-toggle="dropdown" href="#">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                 <i class="icon-user"></i> @UserManager.GetUserName(User)
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Edit user</a></li>
-                                <li><a asp-controller="Account" asp-action="LogOff">Logg off</a></li>
+                                <li><a href="#">Edit User</a></li>
+                                <li><a asp-controller="Account" asp-action="LogOff">Logg Off</a></li>
                             </ul>
                         </li>
                     }

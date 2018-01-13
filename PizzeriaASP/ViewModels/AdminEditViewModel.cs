@@ -14,5 +14,7 @@ namespace PizzeriaASP.ViewModels
 
         public List<SelectListItem> OptionalIngredientsList { get; set; }
 
+        public int SelectedIngredientId { get; set; }
+
     }
 }
