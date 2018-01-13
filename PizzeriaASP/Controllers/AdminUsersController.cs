@@ -11,12 +11,12 @@ using PizzeriaASP.ViewModels;
 namespace PizzeriaASP.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class UserManagementController : Controller
+    public class AdminUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
         private UserManager<ApplicationUser> _userManager;
 
-        public UserManagementController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdminUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;

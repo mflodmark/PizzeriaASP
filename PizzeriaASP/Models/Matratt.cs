@@ -23,7 +23,7 @@ namespace PizzeriaASP.Models
         public string Beskrivning { get; set; }
 
         [Required]
-        [Range(0.01, double.MaxValue)]
+        [Range(1, 10000)]
         public int Pris { get; set; }
 
         [Required]

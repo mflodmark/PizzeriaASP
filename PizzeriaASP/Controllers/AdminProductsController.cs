@@ -12,7 +12,7 @@ using PizzeriaASP.ViewModels;
 namespace PizzeriaASP.Controllers
 {
     [Authorize(Roles = "Admin")]
-    public class AdminController : Controller
+    public class AdminProductsController : Controller
     {
         private readonly TomasosContext _context;
 
@@ -23,7 +23,7 @@ namespace PizzeriaASP.Controllers
         //    repository = repo;
         //}
 
-        public AdminController(TomasosContext context)
+        public AdminProductsController(TomasosContext context)
         {
             _context = context;
         }
@@ -91,6 +91,8 @@ namespace PizzeriaASP.Controllers
             return View();
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddProduct(Matratt product)
         {
             if (ModelState.IsValid)
@@ -108,6 +110,9 @@ namespace PizzeriaASP.Controllers
                         MatrattNamn = product.MatrattNamn
                     });
                 }
+
+                _context.SaveChanges();
+
                 _context.Dispose();
 
                 return RedirectToAction("Index");
@@ -119,7 +124,9 @@ namespace PizzeriaASP.Controllers
         public IActionResult AddProduct() => View(new AdminEditViewModel()
         {
             Product = new Matratt(),
-            ProductTypes = GetProductTypes()
+            ProductTypes = GetProductTypes(),
+            OptionalIngredientsList = GetIngredients(),
+            IngredientList = new List<Produkt>()
         });
 
 
@@ -151,7 +158,7 @@ namespace PizzeriaASP.Controllers
 
             ingredients.Remove(ingredient);
 
-            return View("Edit", new AdminEditViewModel()
+            return View("EditProduct", new AdminEditViewModel()
             {
                 Product = vm.Product,
                 ProductTypes = GetProductTypes(),
