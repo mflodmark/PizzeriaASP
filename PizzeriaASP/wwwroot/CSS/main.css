@@ -1,1 +1,14 @@
-﻿
+﻿.div-min {
+    width: 70%;
+    margin: 0 auto;
+}
+
+#table-ingredients {
+    float: left;
+    width: 70%;
+    margin-right: 10px;
+}
+
+#save-edit-product {
+    clear: left;
+}

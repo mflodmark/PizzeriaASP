@@ -1,0 +1,27 @@
+﻿
+@model PizzeriaASP.ViewModels.AdminEditViewModel
+
+
+<input type="hidden" asp-for="Product.MatrattId" />
+<input type="hidden" name="IngredientList" value="IngredientList"/>
+<input type="hidden" asp-for="OptionalIngredientsList" />
+<input type="hidden" asp-for="ProductTypes" />
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div class="form-group">
+    <label asp-for="@Model.Product.MatrattNamn"></label>
+    <input asp-for="@Model.Product.MatrattNamn" class="form-control" />
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Product.Beskrivning"></label>
+    <textarea asp-for="@Model.Product.Beskrivning" class="form-control"></textarea>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Product.MatrattTyp"></label>
+    <select asp-for="@Model.Product.MatrattTyp" asp-items="@Model.ProductTypes" class="form-control"></select>
+</div>
+<div class="form-group">
+    <label asp-for="@Model.Product.Pris"></label>
+    <input asp-for="@Model.Product.Pris" class="form-control" />
+</div>

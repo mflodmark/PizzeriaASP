@@ -41,7 +41,7 @@ namespace PizzeriaASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int productId)
+        public IActionResult DeleteProduct(int productId)
         {
             if (ModelState.IsValid)
             {
@@ -57,7 +57,7 @@ namespace PizzeriaASP.Controllers
             return View("Index");
         }
 
-        public IActionResult Edit(int productId)
+        public IActionResult EditProduct(int productId)
         {
             var model = new AdminEditViewModel()
             {
@@ -72,7 +72,26 @@ namespace PizzeriaASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Matratt product)
+        public IActionResult EditProduct(Matratt product)
+        {
+            if (ModelState.IsValid)
+            {
+                var p = _context.Matratt.Find(product.MatrattId);
+
+                _context.Entry(p).CurrentValues.SetValues(product);
+   
+                _context.SaveChanges();
+
+                _context.Dispose();
+
+                return RedirectToAction("Index");
+            }
+
+            // Indata will resist in view if not modelstat.clear is used
+            return View();
+        }
+
+        public IActionResult AddProduct(Matratt product)
         {
             if (ModelState.IsValid)
             {
@@ -89,56 +108,45 @@ namespace PizzeriaASP.Controllers
                         MatrattNamn = product.MatrattNamn
                     });
                 }
-                else
-                {
-                    // Old
-                    p.MatrattTyp = product.MatrattTyp;
-                    p.Beskrivning = product.Beskrivning;
-                    p.Pris = product.Pris;
-                    p.MatrattNamn = product.MatrattNamn;
-                }
-                
-                _context.SaveChanges();
-
                 _context.Dispose();
 
                 return RedirectToAction("Index");
             }
 
-            return View(new AdminEditViewModel()
-            {
-                Product = product,
-                ProductTypes = GetProductTypes(),
-                OptionalIngredientsList = GetIngredients(),
-                IngredientList = GetIngredients(product.MatrattId)
-            });
+            return View();
         }
 
-        public IActionResult Create() => View("Edit", new AdminEditViewModel()
+        public IActionResult AddProduct() => View(new AdminEditViewModel()
         {
             Product = new Matratt(),
             ProductTypes = GetProductTypes()
         });
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult AddIngredient(AdminEditViewModel vm)
         {
-            var ingredients = GetIngredients(vm.Product.MatrattId);
+            var ingredients = vm.IngredientList;
             var ingredient = _context.Produkt.Find(vm.SelectedIngredientId);
 
             ingredients.Add(ingredient);
 
-            return View("Edit", new AdminEditViewModel()
+            return View("EditProduct", new AdminEditViewModel()
             {
                 Product = vm.Product,
                 ProductTypes = GetProductTypes(),
                 OptionalIngredientsList = GetIngredients(),
                 IngredientList = ingredients
             });
+
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult RemoveIngredient(AdminEditViewModel vm)
         {
-            var ingredients = GetIngredients(vm.Product.MatrattId);
+            var ingredients = vm.IngredientList;
             var ingredient = _context.Produkt.Find(vm.SelectedIngredientId);
 
             ingredients.Remove(ingredient);

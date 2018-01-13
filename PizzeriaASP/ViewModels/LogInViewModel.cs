@@ -15,7 +15,5 @@ namespace PizzeriaASP.ViewModels
 
         [DisplayName("Remember me")]
         public bool RememberMe { get; set; }
-
-        //public bool LoginFailed { get; set; }
     }
 }
