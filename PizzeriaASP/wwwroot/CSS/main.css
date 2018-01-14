@@ -1,6 +1,22 @@
 ﻿.div-min {
     width: 70%;
     margin: 0 auto;
+    display: flex;
+    /*display: block;*/
+    padding: 10px;
+}
+
+.div-half {
+    width: 50%;
+    float: left;
+}
+
+table, form {
+    margin: auto;
+}
+
+td, th {
+    padding: 5px;
 }
 
 #table-ingredients {
@@ -11,4 +27,19 @@
 
 #save-edit-product {
     clear: left;
+}
+
+input, select {
+    margin: 4px;
+}
+
+.div-min button, .div-min a, .validation {
+    margin: 10px 5px 10px 5px;
+}
+
+label {
+    display: block;
+    float: left;
+    margin: 2px;
+    width: 100px;
 }

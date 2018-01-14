@@ -1,0 +1,26 @@
+﻿@model PizzeriaASP.ViewModels.AdminUsersEditRoleViewModel
+
+<div class="div-min">
+    <form asp-controller="AdminUsers" asp-action="EditRole" method="post">
+        <label asp-for="User.UserName"></label>
+        <input type="hidden" asp-for="User.UserName"/>
+        <input disabled asp-for="User.UserName" /><br />
+
+        <label asp-for="Role"></label>
+        <input type="hidden"  asp-for="Role"/>
+        <input disabled asp-for="Role" /><br />
+
+        <label asp-for="SelectedRole"></label>
+        <select asp-for="SelectedRole" asp-items="@Model.Roles">
+            <option disabled selected value="">Select Role</option>
+        </select><br />
+
+        <button type="submit" class="btn btn-success">
+            <i class="icon-save"> Save</i>
+        </button>
+        <a asp-controller="AdminUsers" asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+        <div asp-validation-summary="All" class="text-danger validation"></div><br />
+    </form>
+</div>
+

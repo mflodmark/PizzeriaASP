@@ -1,12 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PizzeriaASP
-@inject SignInManager<ApplicationUser> SignInManager 
+@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 <!doctype html>
 <html>
 <head>
-    
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -26,9 +26,9 @@
     <!-- Font images -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
-    <link href="~/CSS/main.css" rel="stylesheet" type="text/css"/>
+    <link href="~/CSS/main.css" rel="stylesheet" type="text/css" />
 
-    <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css"/>
+    <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
 
     <link rel="icon" type="image/jpg" href="~/Images/_MG_1519.JPG" sizes="32x32">
 
@@ -52,12 +52,26 @@
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <li class="dropdown" is-active-route asp-controller="Admin" asp-action="Index">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin
-                                <span class="caret"></span></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Admin
+                                <span class="caret"></span>
+                            </a>
                             <ul class="dropdown-menu">
-                                <li><a asp-controller="AdminCarts" asp-action="Index">Edit/Delete Orders</a></li>
-                                <li><a asp-controller="AdminProducts" asp-action="Index">Add/Edit/Delete Products</a></li>
-                                <li><a asp-controller="AdminUsers" asp-action="Index">Add/Edit/Delete Users</a></li>
+                                <li>
+                                    <a asp-controller="AdminCarts" asp-action="Index">
+                                        <i class="icon-cog"></i> Orders
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-controller="AdminProducts" asp-action="Index">
+                                        <i class="icon-cog"></i> Products
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-controller="AdminUsers" asp-action="Index">
+                                        <i class="icon-cog"></i> Users
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                     }
@@ -72,7 +86,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Edit User</a></li>
+                                <li><a href="#"><i class="icon-cog"></i> User</a></li>
                                 <li><a asp-controller="Account" asp-action="LogOff">Logg Off</a></li>
                             </ul>
                         </li>

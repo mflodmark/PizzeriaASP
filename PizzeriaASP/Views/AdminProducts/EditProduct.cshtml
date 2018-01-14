@@ -7,7 +7,7 @@
 <div class="div-min">
     <form asp-action="" method="post">
 
-        @Html.Partial("_EditAddProductLayout", Model);
+        @Html.Partial("_EditAddProductLayout", Model)
 
         <div class="div-min">
             <table id="table-ingredients" class="table table-striped, table-bordered table-sm">
@@ -28,7 +28,9 @@
                     </tr>
                 }
             </table>
-            <select asp-for="SelectedIngredientId" asp-items="@Model.OptionalIngredientsList"></select>
+            <select asp-for="SelectedIngredientId" asp-items="@Model.OptionalIngredientsList">
+                <option disabled selected value="">Select Ingredient</option>
+            </select>
             <button type="submit" formaction="AddIngredient" class="btn btn-primary">Add Ingredient</button>
             <div class="text-center">
 
