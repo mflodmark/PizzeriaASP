@@ -1,1 +1,45 @@
-﻿
+﻿@model PizzeriaASP.ViewModels.AdminCartViewModel
+
+<div class="div-min">
+    <table class="table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Username</th>
+            <th>Order</th>
+            <th>Products</th>
+            <th>Delivered</th>
+            <th>Option</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Orders)
+        {
+
+            <tr>
+                <td>@item.BestallningId</td>
+                <td>@item.Kund.AnvandarNamn</td>
+                <td>@item.BestallningDatum</td>
+                <td>@item.BestallningMatratt.Count</td>
+                <td>@item.Levererad</td>
+                <td>
+                    <form asp-controller="AdminCarts" asp-route-id="@item.BestallningId" method="post">
+                        <button asp-action="DeleteCart" asp-route-id="@item.BestallningId"
+                           class="btn btn-sm btn-danger">
+                            <i class="icon-trash"></i> Delete
+                        </button>
+                        <button asp-action="UpdateCart" asp-route-id="@item.BestallningId"
+                           class="btn btn-success">
+                            <i class="icon-edit"></i> Set as delivered
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+</div>
+
+
+
