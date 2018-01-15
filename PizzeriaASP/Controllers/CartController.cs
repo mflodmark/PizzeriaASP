@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -50,7 +51,6 @@ namespace PizzeriaASP.Controllers
         [AutoValidateAntiforgeryToken]
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
-
             var product = _context.Matratt
                 .FirstOrDefault(p => p.MatrattId == productId);
 
@@ -116,7 +116,7 @@ namespace PizzeriaASP.Controllers
                 //_cart.RemoveLine(product);
             }
 
-            return RedirectToAction("Index", new {returnUrl});
+            return RedirectToAction("Index", new { returnUrl });
         }
 
     }

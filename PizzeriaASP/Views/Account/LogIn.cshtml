@@ -10,16 +10,17 @@
     @*<script src="~/Styles/homeAdd.js" defer></script>*@
 </head>
 
-<div id="login-div">
-    <h2>Login</h2>
-    
+<h2 class="text-center">Login</h2>
+
+<div class="div-min">
+   
     <form asp-controller="Account" asp-action="Login" method="post">
         <div asp-validation-summary="All" class="text-danger"></div>
 
-        <label asp-for="UserId"></label><br />
+        <label asp-for="UserId"></label>
         <input type="text" asp-for="UserId" /><br />
 
-        <label asp-for="Password"></label><br />
+        <label asp-for="Password"></label>
         <input type="password" asp-for="Password" /><br />
 
         <label asp-for="RememberMe"></label>
@@ -28,12 +29,8 @@
 
         <br />
         <div>
-            <p>
-                <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
-            </p>
-            <p>
-                <a asp-action="Register">Register</a>
-            </p>
+            <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
+            <a asp-action="Register">Register</a>
         </div>
     </form>
 </div>

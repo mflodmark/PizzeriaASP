@@ -23,6 +23,9 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
+    <!-- AJAX -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery-ajax-unobtrusive@3.2.4/jquery.unobtrusive-ajax.min.js"></script>
+
     <!-- Font images -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
@@ -77,6 +80,7 @@
                     }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li>@await Component.InvokeAsync("CartSummary")</li>
 
                     @if (SignInManager.IsSignedIn(User))
                     {
@@ -86,7 +90,11 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><i class="icon-cog"></i> User</a></li>
+                                <li>
+                                    <a asp-controller="Account" asp-action="EditUser" asp-route-username="@UserManager.GetUserName(User)">
+                                        <i class="icon-cog"></i> User
+                                    </a>
+                                </li>
                                 <li><a asp-controller="Account" asp-action="LogOff">Logg Off</a></li>
                             </ul>
                         </li>
@@ -104,7 +112,6 @@
                             </a>
                         </li>
                     }
-                    <li>@await Component.InvokeAsync("CartSummary")</li>
                 </ul>
             </div>
         </nav>

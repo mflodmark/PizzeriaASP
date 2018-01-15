@@ -5,41 +5,15 @@
 }
 
 
-<div id="register-div">
+<div class="div-min">
     <h2>Register</h2>
-
     <form asp-controller="Account" asp-action="Register" method="post">
-        <label asp-for="Customer.AnvandarNamn"></label><br />
-        <input type="text" asp-for="Customer.AnvandarNamn" /><br />
+        @Html.Partial("_UserRegistration", Model)
         
-        @if (@Model != null && @Model.UniqueUsername == false)
-        {
-            <p class="text-danger">Username must be unique</p>
-        }
-
-        <label asp-for="Customer.Email"></label><br />
-        <input type="email" asp-for="Customer.Email" /><br />
-
-        <label asp-for="Customer.Namn"></label><br />
-        <input type="text" asp-for="Customer.Namn" /><br />
-        <span asp-validation-for="Customer.Namn" class="text-danger"></span>
-
-        <label asp-for="Customer.Gatuadress"></label><br />
-        <input type="text" asp-for="Customer.Gatuadress" /><br />
-
-        <label asp-for="Customer.Postnr"></label><br />
-        <input type="text" asp-for="Customer.Postnr" /><br />
-
-        <label asp-for="Customer.Postort"></label><br />
-        <input type="text" asp-for="Customer.Postort" /><br />
-
-        <label asp-for="Customer.Telefon"></label><br />
-        <input type="text" asp-for="Customer.Telefon" /><br />
-
-        <label asp-for="Customer.Losenord"></label><br />
+        <label asp-for="Customer.Losenord"></label>
         <input type="password" asp-for="Customer.Losenord" /><br />
-
-        <br />
+        
         <input id="submit" class="btn btn-primary" type="submit" value="Register" />
-        </form>
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </form>
 </div>

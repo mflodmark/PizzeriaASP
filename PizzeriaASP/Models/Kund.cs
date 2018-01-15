@@ -37,10 +37,8 @@ namespace PizzeriaASP.Models
         [Required]
         public string Losenord { get; set; }
 
-        //public int UserId { get; set; }
-
-        //public ApplicationUser User { get; set; }
-
         public ICollection<Bestallning> Bestallning { get; set; }
+
+        public int Poang { get; set; }
     }
 }

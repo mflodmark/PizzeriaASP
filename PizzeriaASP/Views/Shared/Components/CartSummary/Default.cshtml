@@ -3,18 +3,18 @@
 
 
 <div class="">
-        @if (Model.Cart.BestallningMatratt.Any())
-        {
-    <small class="navbar-text">
-        <b>Your cart:</b>
-        @Model.Cart.BestallningMatratt.Sum(x => x.Antal) item(s)
-        @Model.CartTotalValue.ToString("c")
-    </small>
-        }
-        <a class="btn btn-sm btn-secondary navbar-btn"
-           asp-controller="Cart" asp-action="Index"
-           asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
-            <i class="icon-2x icon-shopping-cart"></i>
-        </a>
-    </div>
+    @if (Model.Cart.BestallningMatratt.Any())
+    {
+        <small class="navbar-text">
+            <b>Your cart:</b>
+            @Model.Cart.BestallningMatratt.Sum(x => x.Antal) item(s)
+            @Model.CartTotalValue.ToString("c")
+        </small>
+    }
+    <a class="btn btn-sm btn-secondary navbar-btn"
+       asp-controller="Cart" asp-action="Index"
+       asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+        <i class="icon-2x icon-shopping-cart"></i>
+    </a>
+</div>
 

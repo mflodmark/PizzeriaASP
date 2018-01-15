@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -31,9 +32,12 @@ namespace PizzeriaASP.Components
 
         public IViewComponentResult Invoke()
         {
+            var cart = GetCart();
+
             var model = new CartIndexViewModel()
             {
-                Cart = GetCart()
+                Cart = cart,
+                CartTotalValue = cart.BestallningMatratt.Sum(e => e.Matratt.Pris * e.Antal)
             };
 
             return View(model);

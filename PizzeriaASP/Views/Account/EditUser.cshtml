@@ -1,0 +1,38 @@
+﻿@model PizzeriaASP.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<head>
+    <script src="~/JS/AccountEditUser.js" type="text/javascript" defer></script>
+</head>
+
+<h2 class="text-center">Edit user</h2>
+
+<div class="div-min">
+    <form asp-controller="Account" asp-action="EditUser" method="post">
+        @Html.Partial("_UserRegistration", Model)
+
+        <input type="hidden" asp-for="Customer.KundId" />
+
+        <label asp-for="KeepCurrentPassword"></label>
+
+        <a asp-controller="Account" asp-action="KeepPassword" class="btn btn-warning"
+                data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#pw">
+            <i class="icon-edit">Edit password</i>
+        </a>
+        
+        @Html.Partial("_KeepPassword", Model)
+        @{ var m = @Html.Partial("_KeepPassword", Model);}
+
+        <input type="hidden" asp-for="Customer.Losenord" value="m" />
+
+
+        <button class="btn btn-success" type="submit">
+            <i class="icon-save"></i> Save
+        </button>
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </form>
+</div>
+

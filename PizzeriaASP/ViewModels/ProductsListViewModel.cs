@@ -12,5 +12,6 @@ namespace PizzeriaASP.ViewModels
         public PagingInfo PagingInfo { get; set; }
 
         public string CurrentCategory { get; set; }
+
     }
 }

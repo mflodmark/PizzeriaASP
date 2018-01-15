@@ -1,0 +1,31 @@
+﻿@model PizzeriaASP.ViewModels.RegisterViewModel
+
+
+<label asp-for="Customer.AnvandarNamn"></label>
+<input type="text" asp-for="Customer.AnvandarNamn" /><br />
+
+
+@if (@Model != null && @Model.UniqueUsername == false)
+{
+    <p class="text-danger">Username must be unique</p>
+}
+
+<label asp-for="Customer.Email"></label>
+<input type="email" asp-for="Customer.Email" /><br />
+
+<label asp-for="Customer.Namn"></label>
+<input type="text" asp-for="Customer.Namn" /><br />
+<span asp-validation-for="Customer.Namn" class="text-danger"></span>
+
+<label asp-for="Customer.Gatuadress"></label>
+<input type="text" asp-for="Customer.Gatuadress" /><br />
+
+<label asp-for="Customer.Postnr"></label>
+<input type="text" asp-for="Customer.Postnr" /><br />
+
+<label asp-for="Customer.Postort"></label>
+<input type="text" asp-for="Customer.Postort" /><br />
+
+<label asp-for="Customer.Telefon"></label>
+<input type="text" asp-for="Customer.Telefon" /><br />
+

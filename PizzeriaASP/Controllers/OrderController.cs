@@ -84,7 +84,14 @@ namespace PizzeriaASP.Controllers
 
                 _context.Dispose();
 
-                return RedirectToAction("Completed");
+                // Add values to pass to order confirmation
+                order.Kund = customer;
+                order.BestallningMatratt = cart;
+
+                HttpContext.Session.Clear();
+
+                return View("Completed", order);
+                //return RedirectToAction("Completed", order);
             }
             else
             {
@@ -92,11 +99,9 @@ namespace PizzeriaASP.Controllers
             }
         }
 
-        public ViewResult Completed()
+        public ViewResult Completed(Bestallning order)
         {
-            //cart.Clear();
-            HttpContext.Session.Clear();
-            return View();
+            return View(order);
         }
 
         private List<BestallningMatratt> GetCart()
