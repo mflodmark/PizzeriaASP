@@ -6,6 +6,11 @@
     padding: 10px;
 }
 
+table, form {
+    background-color: white;
+    opacity: 0.9;
+}
+
 .div-min-block {
     width: 70%;
     margin: 0 auto;

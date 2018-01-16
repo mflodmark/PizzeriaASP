@@ -1,0 +1,75 @@
+﻿
+#div-contact, #div-learn-more {
+    background-color: #ecf0f1;
+    height: 150px;
+    width: 20%;
+    float: left;
+    margin-top: 60px;
+}
+
+#div-footer-center {
+    background-color: #ecf0f1;
+    height: 150px;
+    width: 60%;
+    float: left;
+    margin-top: 60px;
+}
+
+#div-footer {
+    clear: left;
+    background-color: #bdc3c7;
+    height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 30px;
+}
+
+.border {
+    border-top: solid 1px #bdc3c7;
+    border-bottom: solid 2px #bdc3c7;
+    margin: 20px;
+}
+
+.border h6 {
+    font-size: 20px;
+    font-family: 'PT Serif', serif;
+}
+
+.nav a, .nav a:visited, .nav a:active, .nav a.icon-cart span  {   
+    font-family: 'Just Another Hand', cursive;
+    font-weight: bold;      
+    font-size: 26px; 
+    text-transform: uppercase;
+    color: #404040;
+    position: relative;
+    display:block;
+    letter-spacing: 1px;
+    padding-bottom: 10px;
+}
+
+.header {
+    background-color: #ffffff;
+    border-bottom: solid 1px #ded6c7;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    opacity: 0.8;
+}
+
+body {
+    background-image: url('../images/pizza.jpg');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: right top;
+    background-attachment: fixed;
+}
+
+#main {
+    margin-top: 150px;
+    min-height: 600px;
+}
+
+#logo a{
+    font-size: 52px;
+}

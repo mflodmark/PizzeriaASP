@@ -1,13 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PizzeriaASP
-@using PizzeriaASP.ViewModels
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 <!doctype html>
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -25,110 +23,133 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
 
     <!-- AJAX -->
-    <script src="https://cdn.jsdelivr.net/jquery.ajax.unobtrusive/3.2.4/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.ajax.unobtrusive/3.2.4/jquery.unobtrusive-ajax.min.js"></script>
 
     <!-- Font images -->
     <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 
+    <!-- Own stylesheets -->
+    <link href="~/CSS/layout.css" rel="stylesheet" type="text/css" />
     <link href="~/CSS/main.css" rel="stylesheet" type="text/css" />
-
     <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
 
+    <!-- Icon image -->
     <link rel="icon" type="image/jpg" href="~/Images/_MG_1519.JPG" sizes="32x32">
+
+    <!-- Font styles-->
+    <<link href="https://fonts.googleapis.com/css?family=Just+Another+Hand|PT+Serif" rel="stylesheet">
 
     <title>@ViewBag.Title</title>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-inverse">
+        <nav class="header">
             <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">WebSiteName</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li is-active-route asp-controller="Home" asp-action="Index">
-                        <a asp-controller="Home" asp-action="Index">Home</a>
-                    </li>
-                    <li is-active-route asp-controller="Product" asp-action="List">
-                        <a asp-controller="Product" asp-action="List">Products</a>
-                    </li>
+                <div class="navbar-header col-sm-4">
+                    <ul class="nav navbar-nav">
+                        <li is-active-route asp-controller="Home" asp-action="Index">
+                            <a asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li is-active-route asp-controller="Product" asp-action="List">
+                            <a asp-controller="Product" asp-action="List">Products</a>
+                        </li>
                     
-                    @{
-                        var userMgm = await UserManager.GetUserAsync(User);
+                        @{
+                            var userMgm = await UserManager.GetUserAsync(User);
 
-                        bool admin;
+                            bool admin;
 
-                        admin = SignInManager.IsSignedIn(User) && SignInManager.UserManager.IsInRoleAsync(userMgm, "Admin").Result;
-                    }
+                            admin = SignInManager.IsSignedIn(User) && SignInManager.UserManager.IsInRoleAsync(userMgm, "Admin").Result;
+                        }
 
-                    @if (admin)
-                    {
-                        <li class="dropdown" is-active-route asp-controller="Admin" asp-action="Index">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                Admin
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a asp-controller="AdminCarts" asp-action="Index">
-                                        <i class="icon-cog"></i> Orders
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-controller="AdminProducts" asp-action="Index">
-                                        <i class="icon-cog"></i> Products
-                                    </a>
-                                </li>
-                                <li>
-                                    <a asp-controller="AdminUsers" asp-action="Index">
-                                        <i class="icon-cog"></i> Users
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    }
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>@await Component.InvokeAsync("CartSummary")</li>
+                        @if (admin)
+                        {
+                            <li class="dropdown" is-active-route asp-controller="Admin" asp-action="Index">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Admin
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a asp-controller="AdminCarts" asp-action="Index">
+                                            <i class="icon-cog"></i> Orders
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="AdminProducts" asp-action="Index">
+                                            <i class="icon-cog"></i> Products
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a asp-controller="AdminUsers" asp-action="Index">
+                                            <i class="icon-cog"></i> Users
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </div>
+                <div id="logo" class="nav navbar-nav col-sm-4 text-center">
+                    <a asp-controller="Home" asp-action="Index">Tomasos pizzeria</a>
+                </div>
+                <div class="col-sm-4">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@await Component.InvokeAsync("CartSummary")</li>
 
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-user"></i> @UserManager.GetUserName(User)
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a asp-controller="Account" asp-action="EditUser" asp-route-username="@UserManager.GetUserName(User)">
-                                        <i class="icon-cog"></i> User
-                                    </a>
-                                </li>
-                                <li><a asp-controller="Account" asp-action="LogOff">Logg Off</a></li>
-                            </ul>
-                        </li>
-                    }
-                    else
-                    {
-                        <li is-active-route asp-controller="Account" asp-action="Register">
-                            <a asp-controller="Account" asp-action="Register">
-                                <span class="glyphicon glyphicon-user"></span> Sign Up
-                            </a>
-                        </li>
-                        <li is-active-route asp-controller="Account" asp-action="Login">
-                            <a asp-controller="Account" asp-action="Login">
-                                <span class="glyphicon glyphicon-log-in"></span> Login
-                            </a>
-                        </li>
-                    }
-                </ul>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="icon-user"></i> @UserManager.GetUserName(User)
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a asp-controller="Account" asp-action="EditUser" asp-route-username="@UserManager.GetUserName(User)">
+                                            <i class="icon-cog"></i> User
+                                        </a>
+                                    </li>
+                                    <li><a asp-controller="Account" asp-action="LogOff">Logg Off</a></li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li is-active-route asp-controller="Account" asp-action="Register">
+                                <a asp-controller="Account" asp-action="Register">
+                                    <span class="glyphicon glyphicon-user"></span> Sign Up
+                                </a>
+                            </li>
+                            <li is-active-route asp-controller="Account" asp-action="Login">
+                                <a asp-controller="Account" asp-action="Login">
+                                    <span class="glyphicon glyphicon-log-in"></span> Login
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
         </nav>
 
     </header>
-    <div id="main">
-        @RenderBody()
+<div id="main">
+    @RenderBody()
+</div>
+<footer>
+    <div id="div-contact">
+        <div class="border"><h6>CONTACT</h6></div>
     </div>
+    <div id="div-footer-center">
+        <div class="border"><h6>TOMASOS PIZZA</h6></div>
+    </div>
+    <div id="div-learn-more">
+        <div class="border"><h6>LEARN MORE</h6></div>
+    </div>
+    <div id="div-footer">
+        <p>&copy; 2018 Tomasos. All rights reserved</p>
+    </div>
+</footer>
 </body>
 </html>
