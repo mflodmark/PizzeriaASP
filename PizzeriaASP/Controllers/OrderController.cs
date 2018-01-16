@@ -24,17 +24,18 @@ namespace PizzeriaASP.Controllers
         //}
 
         private readonly TomasosContext _context;
-
+        private readonly ApplicationDbContext _contextUserMgm;
         private readonly UserManager<ApplicationUser> _userManager;
-
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         //Dependency Injection via konstruktorn
         public OrderController(TomasosContext context,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext contextUserMgm
         )
         {
+            _contextUserMgm = contextUserMgm;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -42,7 +43,7 @@ namespace PizzeriaASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CheckOut()
+        public async Task<IActionResult> CheckOut()
         {
             var cart = GetCart();
 
@@ -79,6 +80,15 @@ namespace PizzeriaASP.Controllers
                     });
                 }
 
+                // Add points to Premium users
+                var userMgm = await _userManager.GetUserAsync(User);
+
+                if (_signInManager.UserManager.IsInRoleAsync(userMgm, "PremiumUser").Result)
+                {
+                    var user = _context.Kund.Single(x => x.AnvandarNamn == _userManager.GetUserName(User));
+                    user.Poang += cart.Sum(x => x.Antal) * 10;
+                }
+                
                 // Save orderlist
                 _context.SaveChanges();
 

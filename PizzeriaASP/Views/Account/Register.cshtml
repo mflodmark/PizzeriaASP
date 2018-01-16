@@ -4,15 +4,16 @@
     ViewData["Title"] = "New";
 }
 
+<h2 class="text-center">Register</h2>
 
 <div class="div-min-flex">
-    <h2>Register</h2>
+
     <form asp-controller="Account" asp-action="Register" method="post">
         @Html.Partial("_UserRegistration", Model)
-        
+
         <label asp-for="Customer.Losenord"></label>
         <input type="password" asp-for="Customer.Losenord" /><br />
-        
+
         <input id="submit" class="btn btn-primary" type="submit" value="Register" />
         <div asp-validation-summary="All" class="text-danger"></div>
     </form>

@@ -22,7 +22,6 @@ namespace PizzeriaASP.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IPasswordHasher<ApplicationUser> passwordHasher;
 
-        //Dependency Injection via konstruktorn
         public AccountController(TomasosContext context, UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager, ApplicationDbContext appDbContext,
             IPasswordHasher<ApplicationUser> passwordHash)
@@ -95,7 +94,7 @@ namespace PizzeriaASP.Controllers
             var unique = _context.Kund.SingleOrDefault(x => 
                 x.AnvandarNamn == register.Customer.AnvandarNamn);
 
-
+            // Check unique username
             if (unique != null)
             {
                 register.UniqueUsername = false;
@@ -178,9 +177,9 @@ namespace PizzeriaASP.Controllers
 
             if (ModelState.IsValid)
             {
-                var p = _context.Kund.Find(vm.Customer.KundId);
+                var person = _context.Kund.Find(vm.Customer.KundId);
 
-                _context.Entry(p).CurrentValues.SetValues(vm.Customer);
+                _context.Entry(person).CurrentValues.SetValues(vm.Customer);
 
                 // Save new username
                 var user = await _userManager.GetUserAsync(User);
@@ -205,7 +204,14 @@ namespace PizzeriaASP.Controllers
             return View();
         }
 
-        public ActionResult KeepPassword(RegisterViewModel vm)
+        //public ActionResult KeepPasswordTrue(RegisterViewModel vm)
+        //{
+        //    vm.KeepCurrentPassword = true;
+
+        //    return PartialView("_KeepPassword", vm);
+        //}
+
+        public ActionResult KeepPasswordFalse(RegisterViewModel vm)
         {
             vm.KeepCurrentPassword = false;
 

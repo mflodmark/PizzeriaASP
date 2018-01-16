@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic.CompilerServices;
 using Newtonsoft.Json;
@@ -20,6 +21,7 @@ namespace PizzeriaASP.Controllers
         //private readonly IProductRepository _repository;
         //private readonly Bestallning _cart;
         private readonly TomasosContext _context;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         //public CartController(IProductRepository repo, Bestallning cartService)
         //{
@@ -27,8 +29,9 @@ namespace PizzeriaASP.Controllers
         //    _cart = cartService;
         //}
 
-        public CartController(TomasosContext context)
+        public CartController(TomasosContext context, SignInManager<ApplicationUser> signInManager)
         {
+            _signInManager = signInManager;
             _context = context;
         }
 

@@ -18,15 +18,15 @@
 
         <label asp-for="KeepCurrentPassword"></label>
 
-        <a asp-controller="Account" asp-action="KeepPassword" class="btn btn-warning"
+        <a asp-controller="Account" asp-action="KeepPasswordFalse" class="btn btn-warning"
                 data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#pw">
             <i class="icon-edit">Edit password</i>
         </a>
         
         @Html.Partial("_KeepPassword", Model)
-        @{ var m = @Html.Partial("_KeepPassword", Model);}
+        @*@{ var m = @Html.Partial("_KeepPassword", Model);}*@
 
-        <input type="hidden" asp-for="Customer.Losenord" value="m" />
+        @*<input type="hidden" asp-for="Customer.Losenord" value="m" />*@
 
 
         <button class="btn btn-success" type="submit">

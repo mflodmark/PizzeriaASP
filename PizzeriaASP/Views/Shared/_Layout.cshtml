@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PizzeriaASP
+@using PizzeriaASP.ViewModels
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -52,7 +53,16 @@
                     <li is-active-route asp-controller="Product" asp-action="List">
                         <a asp-controller="Product" asp-action="List">Products</a>
                     </li>
-                    @if (SignInManager.IsSignedIn(User))
+                    
+                    @{
+                        var userMgm = await UserManager.GetUserAsync(User);
+
+                        bool admin;
+
+                        admin = SignInManager.IsSignedIn(User) && SignInManager.UserManager.IsInRoleAsync(userMgm, "Admin").Result;
+                    }
+
+                    @if (admin)
                     {
                         <li class="dropdown" is-active-route asp-controller="Admin" asp-action="Index">
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
