@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
 using SQLitePCL;
@@ -31,14 +32,19 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult List(string category, int productPage = 1)
         {
+            var ingredients = _context.Produkt.ToList();
+
+            var products = _context.Matratt
+                .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null)
+                .OrderBy(p => p.MatrattNamn)
+                .Skip((productPage - 1) * PageSize)
+                .Take(PageSize)
+                .Include(x => x.MatrattProdukt)
+                .ThenInclude(p => p.Produkt);
+            
             var model = new ProductsListViewModel
             {
-                Products = _context.Matratt
-                    .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null)
-                    .OrderBy(p => p.MatrattNamn)
-                    .Skip((productPage - 1) * PageSize)
-                    .Take(PageSize),
-
+                Products = products,
                 PagingInfo = new PagingInfo()
                 {
                     CurrentPage = productPage,
@@ -48,7 +54,7 @@ namespace PizzeriaASP.Controllers
                         _context.Matratt.Count(x =>
                             x.MatrattTypNavigation.Beskrivning == category)
                 },
-                CurrentCategory = category
+                CurrentCategory = category,
             };
 
             return View(model);

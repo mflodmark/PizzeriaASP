@@ -7,6 +7,7 @@
 <div class="div-min">
     <table class="table table-striped, table-bordered table-sm">
         <tr>
+            <th>Id</th>
             <th>Typ</th>
             <th>Name</th>
             <th>Besrivning</th>
@@ -15,24 +16,25 @@
         </tr>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>@item.ProductType</td>
-            <td>@item.Product.MatrattNamn</td>
-            <td>@item.Product.Beskrivning</td>
-            <td class="text-right">@item.Product.Pris.ToString("c")</td>
-            <td class="text-center">
-                <form asp-action="DeleteProduct" method="post">
-                    <a asp-action="EditProduct" class="btn btn-sm btn-warning"
-                       asp-route-productId="@item.Product.MatrattId">
-                        <i class="icon-edit icon-large"></i> Edit
-                    </a>
-                    <input type="hidden" name="productId" value="@item.Product.MatrattId" />
-                    <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="icon-trash icon-large"></i> Delete
-                    </button>
-                </form>
-            </td>
-        </tr>
+            <tr>
+                <td>@item.Product.MatrattId</td>
+                <td>@item.ProductType</td>
+                <td>@item.Product.MatrattNamn</td>
+                <td>@item.Product.Beskrivning</td>
+                <td class="text-right">@item.Product.Pris.ToString("c")</td>
+                <td class="text-center">
+                    <form asp-action="DeleteProduct" method="post">
+                        <a asp-action="EditProduct" class="btn btn-sm btn-warning"
+                           asp-route-productId="@item.Product.MatrattId">
+                            <i class="icon-edit icon-large"></i> Edit
+                        </a>
+                        <input type="hidden" name="productId" value="@item.Product.MatrattId"/>
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            <i class="icon-trash icon-large"></i> Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
         }
     </table>
     <div class="text-center">

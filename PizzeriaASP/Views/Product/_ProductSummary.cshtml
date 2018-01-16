@@ -4,10 +4,18 @@
 
 <div>
     <h3>@Model.MatrattNamn</h3>
-    @Model.Beskrivning
+    <p>@Model.Beskrivning</p>
+
+    <ul>
+        @foreach (var item in Model.MatrattProdukt)
+        {
+            <li>@item.Produkt.ProduktNamn</li>
+        }
+    </ul>
+
     <h4>@Model.Pris.ToString("c")</h4>
     <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.MatrattId" method="post">
         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-        <input type="submit" class="btn btn-primary" value="Add to cart"/>
+        <input type="submit" class="btn btn-primary" value="Add to cart" />
     </form>
 </div>
