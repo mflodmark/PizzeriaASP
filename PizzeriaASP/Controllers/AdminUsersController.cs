@@ -52,7 +52,7 @@ namespace PizzeriaASP.Controllers
 
             var role = userRoles.Count == 0 ? "Not set" : userRoles[0];
 
-            var roles = _context.Roles.Distinct().OrderBy(x => x.Name).Select(p => new SelectListItem()
+            var roles = _context.Roles.Distinct().Select(p => new SelectListItem()
             {
                 Value = p.Id,
                 Text = p.Name

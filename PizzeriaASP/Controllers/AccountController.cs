@@ -17,19 +17,17 @@ namespace PizzeriaASP.Controllers
     public class AccountController : Controller
     {
         private readonly TomasosContext _context;
-
         private readonly ApplicationDbContext _appDbContext;
-
         private readonly UserManager<ApplicationUser> _userManager;
-
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IPasswordHasher<ApplicationUser> passwordHasher;
 
         //Dependency Injection via konstruktorn
-        public AccountController(TomasosContext context,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, ApplicationDbContext appDbContext
-       )
+        public AccountController(TomasosContext context, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager, ApplicationDbContext appDbContext,
+            IPasswordHasher<ApplicationUser> passwordHash)
         {
+            passwordHasher = passwordHash;
             _context = context;
             _appDbContext = appDbContext;
             _userManager = userManager;
@@ -192,21 +190,11 @@ namespace PizzeriaASP.Controllers
                 // Save new password
                 if (vm.KeepCurrentPassword == false)
                 {
-                    //var store = new UserStore<ApplicationUser>(_appDbContext);
-                    //var manager = new UserManager<ApplicationUser>(store);
+                    // Get password
+                    user.PasswordHash = passwordHasher.HashPassword(user, vm.Customer.Losenord);
 
-                    //var newPasswordHash = manager.PasswordHasher.HashPassword(user, vm.Customer.Losenord);
-                    //await store.SetPasswordHashAsync(user, newPasswordHash);
-                    //await manager.UpdateAsync(user);
-
-                    //var result = await _userManager.CreateAsync(user, vm.Customer.Losenord);
-
-                    //if (result.Succeeded)
-                    //{
-                    //    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                    //    return RedirectToAction("LoggedInIndex", "Home");
-                    //}
+                    // Update password
+                    await _userManager.UpdateAsync(user);
                 }
                 
                 _context.SaveChanges();

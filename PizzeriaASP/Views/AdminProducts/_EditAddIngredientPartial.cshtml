@@ -1,0 +1,22 @@
+﻿@model List<PizzeriaASP.Models.Produkt>
+    
+<table id="table-ingredients" class="table table-striped, table-bordered table-sm">
+    <tr>
+        <th>Ingredient</th>
+        <th class="text-center">Actions</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ProduktNamn</td>
+            <td class="text-center">
+                <button type="submit" formaction="RemoveIngredient" class="btn btn-danger btn-sm">
+                    @*<input type="hidden" asp-for="SelectedIngredientId" />*@
+                    <i class="icon-trash icon-large "></i> Delete
+                </button>
+            </td>
+        </tr>
+    }
+</table>
+
+

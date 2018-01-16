@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit Product";
 }
 
-<div class="div-min">
+<div class="div-min-flex">
     <form asp-action="" method="post">
 
         @Html.Partial("_EditAddProductLayout",Model)
@@ -20,7 +20,8 @@
                     <tr>
                         <td>@item.ProduktNamn</td>
                         <td class="text-center">
-                            <button type="submit" formaction="RemoveIngredient" class="btn btn-danger btn-sm">
+                            <button type="submit" formaction="RemoveIngredient" class="btn btn-danger btn-sm"
+                                    >
                                 <input type="hidden" asp-for="SelectedIngredientId" />
                                 <i class="icon-trash icon-large "></i> Delete
                             </button>

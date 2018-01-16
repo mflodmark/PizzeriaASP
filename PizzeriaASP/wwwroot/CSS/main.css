@@ -1,9 +1,30 @@
-﻿.div-min {
+﻿
+.div-min-flex {
     width: 70%;
     margin: 0 auto;
     display: flex;
-    /*display: block;*/
     padding: 10px;
+}
+
+.div-min-block {
+    width: 70%;
+    margin: 0 auto;
+    display: block;
+    padding: 10px;
+}
+
+.div-ingredients-add {
+    float: left;
+    width: 30%;
+    display: block;
+    margin-right: 10px;
+}
+
+#div-ingredients {
+    float: left;
+    display: block;
+    width: 30%;
+    margin-right: 10px;
 }
 
 .div-half {
@@ -19,11 +40,11 @@ td, th {
     padding: 5px;
 }
 
-#table-ingredients {
+/*#table-ingredients {
     float: left;
     width: 70%;
     margin-right: 10px;
-}
+}*/
 
 #save-edit-product {
     clear: left;
@@ -33,8 +54,8 @@ input, select {
     margin: 4px;
 }
 
-.div-min button, .div-min a, .validation {
-    margin: 10px 5px 10px 5px;
+.div-min-flex button, .div-min-flex a, .validation, .div-min-block button, .div-min-block a {
+    margin: 6px 4px 6px 4px;
 }
 
 label {
@@ -42,4 +63,8 @@ label {
     float: left;
     margin: 2px;
     width: 100px;
+}
+
+.div-clear-left {
+    clear: left;
 }

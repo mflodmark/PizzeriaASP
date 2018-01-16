@@ -4,8 +4,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
 
@@ -59,13 +62,32 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult EditProduct(int productId)
         {
+            var product = _context.Matratt
+                .Where(p => p.MatrattId == productId)
+                .Include(p => p.MatrattProdukt)
+                .ThenInclude(p => p.Produkt)
+                .FirstOrDefault();
+
             var model = new AdminEditViewModel()
             {
-                Product = _context.Matratt.FirstOrDefault(p => p.MatrattId == productId),
+                Product = product,
                 ProductTypes = GetProductTypes(),
                 OptionalIngredientsList = GetIngredients(),
                 IngredientList = GetIngredients(productId)
             };
+
+            //Add current ingredients to session
+            //var i = new List<Produkt>();
+
+            //foreach (var item in product.MatrattProdukt)
+            //{
+            //    i.Add(item.Produkt);
+            //}
+
+            //HttpContext.Session.Clear();
+
+            //GetIngredientList();
+            //SetIngredientList(i);
 
             return View(model);
         }
@@ -81,7 +103,6 @@ namespace PizzeriaASP.Controllers
                 _context.Entry(p).CurrentValues.SetValues(product);
    
                 _context.SaveChanges();
-
                 _context.Dispose();
 
                 return RedirectToAction("Index");
@@ -112,7 +133,6 @@ namespace PizzeriaASP.Controllers
                 }
 
                 _context.SaveChanges();
-
                 _context.Dispose();
 
                 return RedirectToAction("Index");
@@ -129,24 +149,41 @@ namespace PizzeriaASP.Controllers
             IngredientList = new List<Produkt>()
         });
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AddIngredient(AdminEditViewModel vm)
         {
-            var ingredients = vm.IngredientList;
-            var ingredient = _context.Produkt.Find(vm.SelectedIngredientId);
+            var model = GetIngredientList();
 
-            ingredients.Add(ingredient);
+            var ingredient = _context.Produkt.Single(p => p.ProduktId == vm.SelectedIngredientId);
 
-            return View("EditProduct", new AdminEditViewModel()
+            model.Add(ingredient);
+
+            SetIngredientList(model);
+
+            return PartialView("_EditAddIngredientPartial", model);
+        }
+
+        private List<Produkt> GetIngredientList()
+        {
+            List<Produkt> prodList;
+            if (HttpContext.Session.GetString("IngredientList") == null)
             {
-                Product = vm.Product,
-                ProductTypes = GetProductTypes(),
-                OptionalIngredientsList = GetIngredients(),
-                IngredientList = ingredients
-            });
+                prodList = new List<Produkt>();
+            }
+            else
+            {
+                var serializedValue = HttpContext.Session.GetString("IngredientList");
+                prodList = JsonConvert.DeserializeObject<List<Produkt>>(serializedValue);
+            }
 
+            return prodList;
+        }
+
+        private void SetIngredientList(List<Produkt> newList)
+        {
+            var temp = JsonConvert.SerializeObject(newList);
+            HttpContext.Session.SetString("IngredientList", temp);
         }
 
         [HttpPost]
@@ -187,7 +224,10 @@ namespace PizzeriaASP.Controllers
 
         private List<Produkt> GetIngredients(int id)
         {
-            var i = _context.MatrattProdukt.Where(x => x.MatrattId == id).Select(y => y.Produkt).ToList();
+            var i = _context.MatrattProdukt
+                .Where(x => x.MatrattId == id)
+                .Select(y => y.Produkt)
+                .ToList();
 
             return i;
         }

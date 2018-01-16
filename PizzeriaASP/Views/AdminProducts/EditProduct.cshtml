@@ -4,41 +4,35 @@
     ViewData["Title"] = "Edit Product";
 }
 
-<div class="div-min">
-    <form asp-action="" method="post">
+<div class="div-min-flex">
+    <div class="div-min-flex">
+        <form asp-controller="AdminProducts" asp-action="" method="post">
 
-        @Html.Partial("_EditAddProductLayout", Model)
+            @Html.Partial("_EditAddProductLayout", Model)
 
-        <div class="div-min">
-            <table id="table-ingredients" class="table table-striped, table-bordered table-sm">
-                <tr>
-                    <th>Ingredient</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-                @foreach (var item in Model.IngredientList)
-                {
-                    <tr>
-                        <td>@item.ProduktNamn</td>
-                        <td class="text-center">
-                            <button type="submit" formaction="RemoveIngredient" class="btn btn-danger btn-sm">
-                                <input type="hidden" asp-for="SelectedIngredientId" />
-                                <i class="icon-trash icon-large "></i> Delete
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </table>
-            <select asp-for="SelectedIngredientId" asp-items="@Model.OptionalIngredientsList">
-                <option disabled selected value="">Select Ingredient</option>
-            </select>
-            <button type="submit" formaction="AddIngredient" class="btn btn-primary">Add Ingredient</button>
-            <div class="text-center">
-
-            </div><br />
             <div id="save-edit-product" class="text-center">
                 <button class="btn btn-primary" type="submit" formaction="Edit">Save</button>
                 <a asp-action="Index" class="btn btn-secondary">Cancel</a>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
+    
+    <div id="div-ingredients" class="div-min-block">
+        @*@Html.Partial("_EditAddIngredientPartial", Model.IngredientList)*@
+    </div>
+
+    <div class="div-ingredients-add">
+        <form asp-controller="AdminProducts" asp-action="AddIngredient"
+              data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
+            <select asp-for="SelectedIngredientId" asp-items="@Model.OptionalIngredientsList">
+                <option disabled selected value="">Select Ingredient</option>
+            </select>
+            <input type="submit" class="btn btn-primary" value="Add Ingredient"/>
+        </form>
+    </div>
 </div>
+
+
+
+
+
