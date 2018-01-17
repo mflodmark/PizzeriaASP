@@ -17,23 +17,16 @@ namespace PizzeriaASP.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminProductsController : Controller
     {
-        private readonly TomasosContext _context;
+        private readonly IProductRepository _repository;
 
-        //private readonly IProductRepository repository;
-
-        //public AdminController(IProductRepository repo)
-        //{
-        //    repository = repo;
-        //}
-
-        public AdminProductsController(TomasosContext context)
+        public AdminProductsController(IProductRepository repo)
         {
-            _context = context;
+            _repository = repo;
         }
 
         public IActionResult Index()
         {
-            var model = _context.Matratt.Select(p => new AdminIndexViewModel()
+            var model = _repository.Products.Select(p => new AdminIndexViewModel()
             {
                 Product = p,
                 ProductType = p.MatrattTypNavigation.Beskrivning
@@ -48,11 +41,7 @@ namespace PizzeriaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var product = _context.Matratt.Find(productId);
-
-                _context.Remove(product);
-
-                _context.SaveChanges();
+                _repository.DeleteProduct(productId);
 
                 return RedirectToAction("Index");
             }
@@ -62,7 +51,7 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult EditProduct(int productId)
         {
-            var product = _context.Matratt
+            var product = _repository.Products
                 .Where(p => p.MatrattId == productId)
                 .Include(p => p.MatrattProdukt)
                 .ThenInclude(p => p.Produkt)
@@ -71,9 +60,9 @@ namespace PizzeriaASP.Controllers
             var model = new AdminEditViewModel()
             {
                 Product = product,
-                ProductTypes = GetProductTypes(),
-                OptionalIngredientsList = GetIngredients(),
-                IngredientList = GetIngredients(productId)
+                ProductTypes = _repository.GetProductTypes(),
+                OptionalIngredientsList = _repository.GetIngredients(),
+                IngredientList = _repository.GetIngredients(productId)
             };
 
             //Add current ingredients to session
@@ -98,17 +87,11 @@ namespace PizzeriaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var p = _context.Matratt.Find(product.MatrattId);
-
-                _context.Entry(p).CurrentValues.SetValues(product);
-   
-                _context.SaveChanges();
-                _context.Dispose();
-
+                _repository.SaveProduct(product);
+                
                 return RedirectToAction("Index");
             }
 
-            // Indata will resist in view if not modelstat.clear is used
             return View();
         }
 
@@ -118,22 +101,7 @@ namespace PizzeriaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var p = _context.Matratt.Find(product.MatrattId);
-
-                if (p == null)
-                {
-                    // New
-                    _context.Add(new Matratt()
-                    {
-                        Beskrivning = product.Beskrivning,
-                        MatrattTyp = product.MatrattTyp,
-                        Pris = product.Pris,
-                        MatrattNamn = product.MatrattNamn
-                    });
-                }
-
-                _context.SaveChanges();
-                _context.Dispose();
+                _repository.SaveProduct(product);
 
                 return RedirectToAction("Index");
             }
@@ -144,8 +112,8 @@ namespace PizzeriaASP.Controllers
         public IActionResult AddProduct() => View(new AdminEditViewModel()
         {
             Product = new Matratt(),
-            ProductTypes = GetProductTypes(),
-            OptionalIngredientsList = GetIngredients(),
+            ProductTypes = _repository.GetProductTypes(),
+            OptionalIngredientsList = _repository.GetIngredients(),
             IngredientList = new List<Produkt>()
         });
 
@@ -155,9 +123,7 @@ namespace PizzeriaASP.Controllers
         {
             var model = GetIngredientList();
 
-            var ingredient = _context.Produkt.Single(p => p.ProduktId == vm.SelectedIngredientId);
-
-            model.Add(ingredient);
+            model.Add(_repository.GetSingleIngredient(vm.SelectedIngredientId));
 
             SetIngredientList(model);
 
@@ -191,45 +157,20 @@ namespace PizzeriaASP.Controllers
         public IActionResult RemoveIngredient(AdminEditViewModel vm)
         {
             var ingredients = vm.IngredientList;
-            var ingredient = _context.Produkt.Find(vm.SelectedIngredientId);
 
-            ingredients.Remove(ingredient);
+            ingredients.Remove(_repository.GetSingleIngredient(vm.SelectedIngredientId));
 
             return View("EditProduct", new AdminEditViewModel()
             {
                 Product = vm.Product,
-                ProductTypes = GetProductTypes(),
-                OptionalIngredientsList = GetIngredients(),
+                ProductTypes = _repository.GetProductTypes(),
+                OptionalIngredientsList = _repository.GetIngredients(),
                 IngredientList = ingredients
             });
         }
 
-        private List<SelectListItem> GetProductTypes()
-        {
-            return _context.MatrattTyp.Select(p => new SelectListItem()
-            {
-                Value = p.MatrattTyp1.ToString(),
-                Text = p.Beskrivning
-            }).OrderBy(o => o.Text).ToList();
-        }
 
-        private List<SelectListItem> GetIngredients()
-        {
-            return _context.Produkt.Select(p => new SelectListItem()
-            {
-                Value = p.ProduktId.ToString(),
-                Text = p.ProduktNamn
-            }).OrderBy(o => o.Text).ToList();
-        }
 
-        private List<Produkt> GetIngredients(int id)
-        {
-            var i = _context.MatrattProdukt
-                .Where(x => x.MatrattId == id)
-                .Select(y => y.Produkt)
-                .ToList();
 
-            return i;
-        }
     }
 }

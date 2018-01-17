@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PizzeriaASP.Models
 {
@@ -9,10 +11,29 @@ namespace PizzeriaASP.Models
         IQueryable<Matratt> Products { get; }
 
         IQueryable<MatrattTyp> Categories { get; }
-    
-        void RemoveProduct(Matratt product);
 
+        IQueryable<Produkt> Ingredients { get; }
+
+        IQueryable<MatrattProdukt> ProductIngridientList { get; }
+
+
+        Matratt GetSingleProduct(int id);
+
+        Produkt GetSingleIngredient(int id);
+
+        void DeleteProduct(int id);
+
+        void DeleteIngredient(int id);
+        
         void SaveProduct(Matratt product);
+
+        void SaveIngredient(Produkt ingredient);
+        
+        List<Produkt> GetIngredients(int id);
+
+        List<SelectListItem> GetProductTypes();
+
+        List<SelectListItem> GetIngredients();
 
 
     }
