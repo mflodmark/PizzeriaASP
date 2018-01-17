@@ -8,9 +8,12 @@ namespace PizzeriaASP.Models
     {
         IQueryable<Matratt> Products { get; }
 
+        IQueryable<MatrattTyp> Categories { get; }
+    
+        void RemoveProduct(Matratt product);
+
         void SaveProduct(Matratt product);
 
-        IQueryable<MatrattTyp> Categories { get; }
 
     }
 }

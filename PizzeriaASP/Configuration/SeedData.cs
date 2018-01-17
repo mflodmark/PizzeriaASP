@@ -83,16 +83,16 @@ namespace PizzeriaASP
                 var mozzarella = 2;
                 var mushroom = 3;
                 var tomato = 4;
-                var file = 5;
+                //var file = 5;
                 var onion = 6;
                 var tuna = 7;
                 var pinapple = 8;
-                var banana = 9;
-                var curry = 10;
+                //var banana = 9;
+                //var curry = 10;
                 var cheese = 11;
                 var feferoni = 12;
                 var kebabMeat = 13;
-                var kebabSauce = 14;
+                //var kebabSauce = 14;
                 var garlicSauce = 15;
 
 

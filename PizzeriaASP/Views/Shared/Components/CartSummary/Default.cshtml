@@ -2,7 +2,7 @@
 @model PizzeriaASP.ViewModels.CartIndexViewModel
 
 
-<div class="">
+<div id="cart-navbar">
     @if (Model.Cart.BestallningMatratt.Any())
     {
         <small class="navbar-text">
@@ -14,7 +14,7 @@
     <a class="btn btn-sm btn-secondary navbar-btn"
        asp-controller="Cart" asp-action="Index"
        asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
-        <i class="icon-large icon-shopping-cart"></i>
+        <i class="icon-large icon-shopping-cart"> Cart</i>
     </a>
 </div>
 
