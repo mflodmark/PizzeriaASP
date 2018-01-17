@@ -76,3 +76,7 @@ label {
 .div-clear-left {
     clear: left;
 }
+
+input {
+    width: 200px;
+}

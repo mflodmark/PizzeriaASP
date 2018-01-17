@@ -9,12 +9,20 @@
 <div class="div-min-flex">
 
     <form asp-controller="Account" asp-action="Register" method="post">
+        <label asp-for="Customer.AnvandarNamn"></label>
+        <input type="text" asp-for="Customer.AnvandarNamn" /><br />
+        
+        @if (@Model != null && @Model.UniqueUsername == false)
+        {
+            <p class="text-danger">Username must be unique</p>
+        }
+
         @Html.Partial("_UserRegistration", Model)
 
         <label asp-for="Customer.Losenord"></label>
-        <input type="password" asp-for="Customer.Losenord" /><br />
+        <input type="password" asp-for="Customer.Losenord"/><br/>
 
-        <input id="submit" class="btn btn-primary" type="submit" value="Register" />
+        <input id="submit" class="btn btn-primary" type="submit" value="Register"/>
         <div asp-validation-summary="All" class="text-danger"></div>
     </form>
 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -239,6 +240,75 @@ namespace PizzeriaASP.Controllers
             }
 
             return pw;
+        }
+
+        [AllowAnonymous]
+        public IActionResult GoogleLogin(string returnUrl)
+        {
+            string redirectUrl = Url.Action("GoogleResponse", "Account", new {ReturnUrl = returnUrl});
+
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+
+            return new ChallengeResult("Google", properties);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleResponse(string returnUrl = "/")
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(
+                info.LoginProvider, info.ProviderKey, false);
+
+            if (result.Succeeded)
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                var user = new ApplicationUser()
+                {
+                    Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
+                    UserName = info.Principal.FindFirst(ClaimTypes.Email).Value
+                };
+
+                var identResult = await _userManager.CreateAsync(user);
+
+                if (identResult.Succeeded)
+                {
+                    identResult = await _userManager.AddLoginAsync(user, info);
+
+                    // Add user to customer table as well
+                    var customer = new Kund()
+                    {
+                        Email = user.Email,
+                        AnvandarNamn = user.Email,
+                        Gatuadress = "N/A",
+                        Postnr = "N/A",
+                        Postort = "N/A",
+                        Telefon = "N/A",
+                        Losenord = "Google",
+                        Namn = user.Email
+                    };
+
+                    _context.Kund.Add(customer);
+                    _context.SaveChanges();
+
+                    if (identResult.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, false);
+
+                        return Redirect(returnUrl);
+                    }
+                }
+
+                return AccessDenied();
+            }
         }
     }
 }

@@ -58,6 +58,14 @@ namespace PizzeriaASP
 
             // Reggisters the services used to access session data
             services.AddSession();
+
+            // Add Google sign-in
+            services.AddAuthentication().AddGoogle(opts =>
+            {
+                opts.ClientId = "884616106260-8gh90apq8rglan0jksqt09v0gj9mofgm.apps.googleusercontent.com";
+                opts.ClientSecret = "52VxjtQcMxEneKUI-xL3m5md";
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

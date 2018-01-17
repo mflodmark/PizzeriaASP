@@ -1,4 +1,5 @@
-﻿@model PizzeriaASP.ViewModels.LogInViewModel
+﻿@using PizzeriaASP.Infrastructure
+@model PizzeriaASP.ViewModels.LogInViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -29,7 +30,10 @@
 
         <br />
         <div>
-            <input id="submit" class="btn btn-primary" type="submit" value="Log In" />
+            <button id="submit" class="btn btn-primary" type="submit">Log In</button>
+            <a class="btn btn-info" asp-action="GoogleLogin" asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
+                <i class="icon-google-plus-sign"></i> Google Sign-in
+            </a>
             <a asp-action="Register">Register</a>
         </div>
     </form>

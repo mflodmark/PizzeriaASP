@@ -1,15 +1,6 @@
 ﻿@model PizzeriaASP.ViewModels.RegisterViewModel
 
 
-<label asp-for="Customer.AnvandarNamn"></label>
-<input type="text" asp-for="Customer.AnvandarNamn" /><br />
-
-
-@if (@Model != null && @Model.UniqueUsername == false)
-{
-    <p class="text-danger">Username must be unique</p>
-}
-
 <label asp-for="Customer.Email"></label>
 <input type="email" asp-for="Customer.Email" /><br />
 

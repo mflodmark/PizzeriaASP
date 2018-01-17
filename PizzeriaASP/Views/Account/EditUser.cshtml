@@ -12,17 +12,20 @@
 
 <div class="div-min-flex">
     <form asp-controller="Account" asp-action="EditUser" method="post">
+        <label asp-for="Customer.AnvandarNamn"></label>
+        <input disabled type="text" asp-for="Customer.AnvandarNamn" /><br />
+
         @Html.Partial("_UserRegistration", Model)
 
-        <input type="hidden" asp-for="Customer.KundId" />
+        <input type="hidden" asp-for="Customer.KundId"/>
 
         <label asp-for="KeepCurrentPassword"></label>
 
         <a asp-controller="Account" asp-action="KeepPasswordFalse" class="btn btn-warning"
-                data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#pw">
+           data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#pw">
             <i class="icon-edit">Edit password</i>
         </a>
-        
+
         @Html.Partial("_KeepPassword", Model)
         @*@{ var m = @Html.Partial("_KeepPassword", Model);}*@
 
