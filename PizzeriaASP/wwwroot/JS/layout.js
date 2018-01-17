@@ -26,5 +26,9 @@
 window.onscroll = () => {
     var nav = document.querySelector('#navbar');
     //if (this.scrollY <= 10) nav.className = ''; else nav.className = 'scroll';
-    if (this.scrollY > 10) nav.classList.add("scroll");
+    if (this.scrollY > 10) {
+        nav.classList.add("scroll");
+        $("#navbar a").css("color", "#404040");
+    }
+        
 };

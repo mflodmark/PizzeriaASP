@@ -267,7 +267,9 @@ namespace PizzeriaASP.Controllers
 
             if (result.Succeeded)
             {
-                return Redirect(returnUrl);
+                //return Redirect(returnUrl);
+                return RedirectToAction("Index", "Home");
+
             }
             else
             {

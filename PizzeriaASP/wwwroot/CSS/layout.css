@@ -96,9 +96,17 @@ body {
 
 nav.scroll {
     background-color: white;
-    opacity: 0.9;
 }
 
 nav.scroll a {
     color: #404040;
 }
+
+.dropdown-menu, .dropdown:hover {
+    background-color: #ebe1c3;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+

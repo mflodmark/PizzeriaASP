@@ -1,4 +1,43 @@
 ﻿
+h2, h3 {
+    font-family: 'Just Another Hand', cursive;
+}
+
+.my-container {
+    position: relative;
+    width: 100%;
+    height: 70px;
+}
+
+.block {
+    background: #CCC;
+    filter: alpha(opacity=60);
+    /* IE */
+    -moz-opacity: 0.6;
+    /* Mozilla */
+    opacity: 0.6;
+    /* CSS3 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.block {
+    background-color: white;
+    opacity: 0.6;
+
+}
+
 .div-min-flex {
     width: 70%;
     margin: 0 auto;
