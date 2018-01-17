@@ -94,7 +94,7 @@ namespace PizzeriaASP.Controllers
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
             var unique = _context.Kund.SingleOrDefault(x => 
-                x.AnvandarNamn == register.Customer.AnvandarNamn);
+                x.AnvandarNamn.ToLower() == register.Customer.AnvandarNamn.ToLower());
 
             // Check unique username
             if (unique != null)
