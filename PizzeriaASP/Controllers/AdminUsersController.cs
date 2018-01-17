@@ -15,10 +15,13 @@ namespace PizzeriaASP.Controllers
     public class AdminUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly TomasosContext _tomasosContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AdminUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public AdminUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+            TomasosContext tomasosContext)
         {
+            _tomasosContext = tomasosContext;
             _context = context;
             _userManager = userManager;
         }
@@ -94,6 +97,57 @@ namespace PizzeriaASP.Controllers
                 return RedirectToAction("Index");
             }
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(string username)
+        {
+            var user = _context.Users.Single(x => x.UserName == username);
+
+            //var user = await _userManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+
+                if (result.Succeeded)
+                {
+                    // Delete from customer as well
+                    var customer = _tomasosContext.Kund.Single(x => x.AnvandarNamn == username);
+
+                    var orders = _tomasosContext.Bestallning.Where(x => x.KundId == customer.KundId);
+
+                    foreach (var order in orders)
+                    {
+                        var orderItems =
+                            _tomasosContext.BestallningMatratt
+                            .Where(x => x.BestallningId == order.BestallningId);
+
+                        // Delete order items
+                        foreach (var orderItem in orderItems)
+                        {
+                            _tomasosContext.BestallningMatratt.Remove(orderItem);
+                        }
+
+                        _tomasosContext.SaveChanges();
+
+                        // Delete orders
+                        _tomasosContext.Bestallning.Remove(order);
+
+                        _tomasosContext.SaveChanges();
+
+                    }
+
+                    // Delete customer
+                    _tomasosContext.Kund.Remove(customer);
+
+                    _tomasosContext.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Index");
+
         }
 
     }

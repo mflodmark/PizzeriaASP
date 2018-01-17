@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using Newtonsoft.Json;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
@@ -210,7 +211,7 @@ namespace PizzeriaASP.Controllers
 
         //    return PartialView("_KeepPassword", vm);
         //}
-
+         
         public ActionResult KeepPasswordFalse(RegisterViewModel vm)
         {
             vm.KeepCurrentPassword = false;

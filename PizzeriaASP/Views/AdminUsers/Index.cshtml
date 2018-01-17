@@ -1,15 +1,15 @@
 ﻿@model List<PizzeriaASP.ViewModels.AdminUsersIndexViewModel>
 
 <div class="div-min-flex">
-        <table class="table-bordered table-striped table-hover">
-            <thead>
+    <table class="table-bordered table-striped table-hover table-responsive">
+        <thead>
             <tr>
                 <th>Username</th>
                 <th>Current role</th>
-                <th>Option</th>
+                <th>Options</th>
             </tr>
-            </thead>
-            <tbody>
+        </thead>
+        <tbody>
             @foreach (var item in @Model)
             {
 
@@ -17,17 +17,20 @@
                     <td>@item.User.UserName</td>
                     <td>@item.Role</td>
                     <td>
-                        
-                        <a asp-controller="AdminUsers" asp-action="EditRole" asp-route-user="@item.User.UserName"
-                           class="btn btn-sm btn-warning">
-                            <i class="icon-edit"></i> Edit Role
-                        </a>
+                        <form asp-controller="AdminUsers" asp-action="DeleteUser" asp-route-username="@item.User.UserName">
+                            <a asp-controller="AdminUsers" asp-action="EditRole" asp-route-user="@item.User.UserName"
+                               class="btn btn-sm btn-warning">
+                                <i class="icon-edit"></i> Edit Role
+                            </a>
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="icon-delete"></i> Delete User
+                            </button>
+                        </form>
                     </td>
                 </tr>
             }
-            </tbody>
-        </table>
-
+        </tbody>
+    </table>
 </div>
 
 

@@ -4,12 +4,15 @@
     margin: 0 auto;
     display: flex;
     padding: 10px;
+    overflow: auto;
+    max-height: 500px;
 }
 
 table, form {
     background-color: white;
     opacity: 0.9;
 }
+
 
 .div-min-block {
     width: 70%;
