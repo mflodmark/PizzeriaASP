@@ -32,7 +32,7 @@
     <link href="~/CSS/layout.css" rel="stylesheet" type="text/css" />
     <link href="~/CSS/main.css" rel="stylesheet" type="text/css" />
     <link href="~/CSS/logIn.css" rel="stylesheet" type="text/css" />
-    
+
     <!-- Javascript files -->
     <script src="~/JS/layout.js" defer></script>
 
@@ -50,7 +50,7 @@
 
 <body>
     <header>
-        <nav class="navbar  navbar-fixed-top" id="navbar">
+        <nav class="navbar navbar-fixed-top" id="navbar">
             <div class="container-fluid">
                 <div class="navbar-header col-sm-4">
                     <div class="collapse navbar-collapse" id="myNavbar">
@@ -108,7 +108,10 @@
                     </button>
                 </div>
                 <div class="col-sm-4">
+
                     <ul class="nav navbar-nav navbar-right">
+                        <li>@await Component.InvokeAsync("CartSummary")</li>
+
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="dropdown">
@@ -140,30 +143,27 @@
                             </li>
                         }
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@await Component.InvokeAsync("CartSummary")</li>
-                    </ul>
                 </div>
             </div>
         </nav>
 
     </header>
-<div id="main">
-    @RenderBody()
-</div>
-<footer>
-    <div id="div-contact">
-        <div class="border"><h6>CONTACT</h6></div>
+    <div id="main">
+        @RenderBody()
     </div>
-    <div id="div-footer-center">
-        <div class="border"><h6>TOMASOS PIZZA</h6></div>
-    </div>
-    <div id="div-learn-more">
-        <div class="border"><h6>LEARN MORE</h6></div>
-    </div>
-    <div id="div-footer">
-        <p>&copy; 2018 Tomasos. All rights reserved</p>
-    </div>
-</footer>
+    <footer>
+        <div id="div-contact">
+            <div class="border"><h6>CONTACT</h6></div>
+        </div>
+        <div id="div-footer-center">
+            <div class="border"><h6>TOMASOS PIZZA</h6></div>
+        </div>
+        <div id="div-learn-more">
+            <div class="border"><h6>LEARN MORE</h6></div>
+        </div>
+        <div id="div-footer">
+            <p>&copy; 2018 Tomasos. All rights reserved</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -1,0 +1,30 @@
+﻿@model PizzeriaASP.ViewModels.AdminEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+
+<div class="div-min-flex">
+    <div class="col-sm-6">
+        <form asp-controller="AdminProducts" asp-action="" method="post">
+
+            @Html.Partial("_EditAddProductLayout", Model)
+
+            <div id="save-edit-product" class="text-center">
+                <button class="btn btn-primary" type="submit" asp-action="EditOrAddProduct">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+    
+    <div id="div-ingredients" class="div-min-block col-sm-6">
+        @Html.Partial("_EditAddIngredientPartial", Model)
+    </div>
+
+
+</div>
+
+
+
+
+

@@ -51,6 +51,8 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult EditProduct(int productId)
         {
+            HttpContext.Session.Clear();
+
             var product = _repository.Products
                 .Where(p => p.MatrattId == productId)
                 .Include(p => p.MatrattProdukt)
@@ -61,33 +63,25 @@ namespace PizzeriaASP.Controllers
             {
                 Product = product,
                 ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetIngredients(),
-                IngredientList = _repository.GetIngredients(productId)
+                OptionalIngredientsList = _repository.GetOptionalIngredients(productId),
+                IngredientList = _repository.GetCurrentIngredients(productId)
             };
 
-            //Add current ingredients to session
-            //var i = new List<Produkt>();
-
-            //foreach (var item in product.MatrattProdukt)
-            //{
-            //    i.Add(item.Produkt);
-            //}
-
-            //HttpContext.Session.Clear();
-
-            //GetIngredientList();
-            //SetIngredientList(i);
-
-            return View(model);
+            return View("EditOrAddProduct", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditProduct(Matratt product)
+        public IActionResult EditOrAddProduct(Matratt product)
         {
+
             if (ModelState.IsValid)
             {
                 _repository.SaveProduct(product);
+
+                var ingredientList = GetIngredientList(product.MatrattId);
+                
+                _repository.SaveIngredientList(product.MatrattId, ingredientList);
                 
                 return RedirectToAction("Index");
             }
@@ -95,47 +89,67 @@ namespace PizzeriaASP.Controllers
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddProduct(Matratt product)
+        public IActionResult AddProduct()
         {
-            if (ModelState.IsValid)
+            HttpContext.Session.Clear();
+
+            var model = new AdminEditViewModel()
             {
-                _repository.SaveProduct(product);
+                Product = new Matratt(),
+                ProductTypes = _repository.GetProductTypes(),
+                OptionalIngredientsList = _repository.GetAllIngredients(),
+                IngredientList = new List<Produkt>()
+            };
 
-                return RedirectToAction("Index");
-            }
+            return View("EditOrAddProduct", model);
+        } 
 
-            return View();
-        }
-
-        public IActionResult AddProduct() => View(new AdminEditViewModel()
-        {
-            Product = new Matratt(),
-            ProductTypes = _repository.GetProductTypes(),
-            OptionalIngredientsList = _repository.GetIngredients(),
-            IngredientList = new List<Produkt>()
-        });
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult AddIngredient(AdminEditViewModel vm)
         {
-            var model = GetIngredientList();
+            var ingredients = GetIngredientList(vm.SelectedProductId);
 
-            model.Add(_repository.GetSingleIngredient(vm.SelectedIngredientId));
+            ingredients.Add(_repository.GetSingleIngredient(vm.SelectedIngredientId));
 
-            SetIngredientList(model);
+            SetIngredientList(ingredients);
+
+            var model = new AdminEditViewModel()
+            {
+                Product = _repository.GetSingleProduct(vm.SelectedProductId),
+                ProductTypes = _repository.GetProductTypes(),
+                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId),
+                IngredientList = ingredients
+            };
+
+            return PartialView("_EditAddIngredientPartial", model);
+        }
+        
+        public IActionResult RemoveIngredient(AdminEditViewModel vm)
+        {
+            var ingredients = GetIngredientList(vm.SelectedProductId);
+
+            var i = _repository.GetSingleIngredient(vm.SelectedIngredientId);
+
+            ingredients.Remove(i);
+
+            SetIngredientList(ingredients);
+
+            var model = new AdminEditViewModel()
+            {
+                Product = _repository.GetSingleProduct(vm.SelectedProductId),
+                ProductTypes = _repository.GetProductTypes(),
+                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId),
+                IngredientList = ingredients
+            };
 
             return PartialView("_EditAddIngredientPartial", model);
         }
 
-        private List<Produkt> GetIngredientList()
+        private List<Produkt> GetIngredientList(int productId)
         {
             List<Produkt> prodList;
             if (HttpContext.Session.GetString("IngredientList") == null)
             {
-                prodList = new List<Produkt>();
+                prodList = _repository.GetCurrentIngredients(productId);
             }
             else
             {
@@ -151,25 +165,6 @@ namespace PizzeriaASP.Controllers
             var temp = JsonConvert.SerializeObject(newList);
             HttpContext.Session.SetString("IngredientList", temp);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult RemoveIngredient(AdminEditViewModel vm)
-        {
-            var ingredients = vm.IngredientList;
-
-            ingredients.Remove(_repository.GetSingleIngredient(vm.SelectedIngredientId));
-
-            return View("EditProduct", new AdminEditViewModel()
-            {
-                Product = vm.Product,
-                ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetIngredients(),
-                IngredientList = ingredients
-            });
-        }
-
-
 
 
     }

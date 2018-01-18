@@ -27,13 +27,18 @@ namespace PizzeriaASP.Models
         
         void SaveProduct(Matratt product);
 
+        void SaveIngredientList(int id, List<Produkt> productList);
+        
         void SaveIngredient(Produkt ingredient);
         
-        List<Produkt> GetIngredients(int id);
+        List<Produkt> GetCurrentIngredients(int id);
 
         List<SelectListItem> GetProductTypes();
 
-        List<SelectListItem> GetIngredients();
+        List<Produkt> GetOptionalIngredients(int id);
+
+        List<Produkt> GetAllIngredients();
+
 
 
     }

@@ -45,7 +45,10 @@ h2, h3 {
     padding: 10px;
     overflow: auto;
     max-height: 500px;
+    background-color: white;
+    opacity: 0.9;
 }
+
 
 table, form {
     background-color: white;
@@ -58,29 +61,35 @@ table, form {
     margin: 0 auto;
     display: block;
     padding: 10px;
+    background-color: white;
+    opacity: 0.9;
 }
 
-.div-ingredients-add {
+/*.div-ingredients-add {
     float: left;
     width: 30%;
     display: block;
     margin-right: 10px;
-}
+}*/
 
 #div-ingredients {
     float: left;
     display: block;
-    width: 30%;
+    /*width: 30%;*/
     margin-right: 10px;
 }
 
 .div-half {
-    width: 50%;
+    /*width: 50%;*/
     float: left;
 }
 
 table, form {
     margin: auto;
+}
+
+.form-group {
+    padding: 10px;
 }
 
 td, th {

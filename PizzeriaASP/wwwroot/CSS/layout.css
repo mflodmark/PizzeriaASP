@@ -45,24 +45,21 @@
     display: block;
     letter-spacing: 1px;
     padding-bottom: 10px;
-}
-
-.nav a, .nav a:visited, .nav a:active, .nav .icon-cart span {
-    color: white;
+    color: #404040;
 }
 
 
-.header {
-    background-color: transparent;
-    border-bottom: solid 1px #ded6c7;
+#navbar {
+    border-bottom: solid 1px #bdc3c7;
     position: fixed;
-    z-index: 1000;
     width: 100%;
-    opacity: 0.8;
-    transition: background-color 0.4s ease-in-out;
+    background-color: #ecf0f1;
 }
 
-body {
+
+#main {
+    margin-top: 84px;
+    min-height: 600px;
     background-image: url('../images/pizza.jpg');
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -70,39 +67,18 @@ body {
     background-attachment: fixed;
 }
 
-#main {
-    margin-top: 150px;
-    min-height: 600px;
-}
-
 #logo a{
     font-size: 52px;
 }
 
-#cart-navbar {
-    font-size: 16px;
-    background-color: #ebe1c3;
-    border-radius: 8px;
-}
-
-#cart-navbar a {
-    color: #404040;
-}
 
 #navbar a:hover {
     color: #e67e22;
     background-color: transparent;
 }
 
-nav.scroll {
-    background-color: white;
-}
 
-nav.scroll a {
-    color: #404040;
-}
-
-.dropdown-menu, .dropdown:hover {
+.dropdown-menu, .dropdown:hover, .nav a:hover {
     background-color: #ebe1c3;
 }
 

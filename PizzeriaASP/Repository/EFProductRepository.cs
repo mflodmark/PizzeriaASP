@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PizzeriaASP.Models;
 
@@ -19,11 +21,12 @@ namespace PizzeriaASP
         public IQueryable<MatrattTyp> Categories => _context.MatrattTyp;
 
         public IQueryable<Produkt> Ingredients => _context.Produkt;
-        public IQueryable<MatrattProdukt> ProductIngridientList { get; }
+
+        public IQueryable<MatrattProdukt> ProductIngridientList => _context.MatrattProdukt;
 
         public Matratt GetSingleProduct(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Matratt.Single(p => p.MatrattId == id);
         }
 
         public Produkt GetSingleIngredient(int id)
@@ -38,7 +41,6 @@ namespace PizzeriaASP
             _context.Remove(product);
 
             _context.SaveChanges();
-            _context.Dispose();
         }
 
         public void DeleteIngredient(int id)
@@ -63,15 +65,33 @@ namespace PizzeriaASP
                 }
             }
             _context.SaveChanges();
-            _context.Dispose();
         }
+
+        public void SaveIngredientList(int id, List<Produkt> productList)
+        {
+            foreach (var item in productList)
+            {
+                if (_context.MatrattProdukt.SingleOrDefault(p => 
+                p.ProduktId == item.ProduktId && p.MatrattId == id) == null)
+                {
+                    _context.MatrattProdukt.Add(new MatrattProdukt()
+                    {
+                        MatrattId = id,
+                        ProduktId = item.ProduktId
+                    });
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
 
         public void SaveIngredient(Produkt ingredient)
         {
             throw new System.NotImplementedException();
         }
 
-        public List<Produkt> GetIngredients(int id)
+        public List<Produkt> GetCurrentIngredients(int id)
         {
             var i = _context.MatrattProdukt
                 .Where(x => x.MatrattId == id)
@@ -90,13 +110,21 @@ namespace PizzeriaASP
             }).OrderBy(o => o.Text).ToList();
         }
 
-        public List<SelectListItem> GetIngredients()
+        public List<Produkt> GetOptionalIngredients(int id)
         {
-            return _context.Produkt.Select(p => new SelectListItem()
-            {
-                Value = p.ProduktId.ToString(),
-                Text = p.ProduktNamn
-            }).OrderBy(o => o.Text).ToList();
+            var currentList = GetCurrentIngredients(id);
+
+            var optionalList = _context.Produkt.OrderBy(o => o.ProduktNamn);
+
+            var list = optionalList.Where(x => x.ProduktId != 
+                currentList.SingleOrDefault(y => y.ProduktId == x.ProduktId).ProduktId).ToList();
+
+            return list;
+        }
+
+        public List<Produkt> GetAllIngredients()
+        {
+            return _context.Produkt.OrderBy(x => x.ProduktNamn).ToList();
         }
     }
 

@@ -12,9 +12,12 @@ namespace PizzeriaASP.ViewModels
 
         public List<Produkt> IngredientList { get; set; }
 
-        public List<SelectListItem> OptionalIngredientsList { get; set; }
+        public List<Produkt> OptionalIngredientsList { get; set; }
 
         public int SelectedIngredientId { get; set; }
+
+        public int SelectedProductId { get; set; }
+
 
     }
 }
