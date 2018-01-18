@@ -30,6 +30,7 @@ namespace PizzeriaASP
         {
             // Dependency Injection
             services.AddTransient<IProductRepository, EFProductRepository>();
+            services.AddTransient<IIngredientRepository, EFIngredientRepository>();
 
             services.AddMvc();
 

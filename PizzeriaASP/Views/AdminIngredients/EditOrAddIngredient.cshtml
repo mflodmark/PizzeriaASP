@@ -1,1 +1,18 @@
 ﻿
+@model PizzeriaASP.Models.Produkt
+
+
+@Html.Partial("_H2Layout", "Edit/Add Ingredient")
+
+<div class="div-min-flex">
+    <form asp-controller="AdminIngredients" asp-action="EditOrAddIngredient" method="post">
+        <input type="hidden" asp-for="ProduktId" value="@Model.ProduktId" />
+
+        <label asp-for="ProduktNamn"></label>
+        <input asp-for="ProduktNamn" />
+
+        <button type="submit">
+            <i class="icon-save"></i> Save
+        </button>
+    </form>
+</div>

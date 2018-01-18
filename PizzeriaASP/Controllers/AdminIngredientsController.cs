@@ -9,28 +9,37 @@ namespace PizzeriaASP.Controllers
 {
     public class AdminIngredientsController : Controller
     {
-        private readonly IProductRepository _repository;
+        private readonly IIngredientRepository _repository;
 
-        public AdminIngredientsController(IProductRepository repo)
+        public AdminIngredientsController(IIngredientRepository repo)
         {
             _repository = repo;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var model = _repository.Ingredients;
+
+            return View(model);
         }
 
         public IActionResult AddIngredient(Produkt ingredient)
         {
-            _repository
-
-            return View("EditOrAddIngredient", model);
+            return View("EditOrAddIngredient", ingredient);
         }
 
-        public IActionResult EditOrAddIngredient()
+        public IActionResult DeleteIngredient(int id)
         {
-            return View();
+            _repository.DeleteIngredient(id);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult EditOrAddIngredient(Produkt ingredient)
+        {
+            _repository.SaveIngredient(ingredient);
+
+            return RedirectToAction("Index");
 
         }
     }
