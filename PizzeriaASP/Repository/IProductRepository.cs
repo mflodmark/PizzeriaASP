@@ -22,15 +22,11 @@ namespace PizzeriaASP.Models
         Produkt GetSingleIngredient(int id);
 
         void DeleteProduct(int id);
-
-        void DeleteIngredient(int id);
-        
+       
         void SaveProduct(Matratt product);
 
         void SaveIngredientList(int id, List<Produkt> productList);
-        
-        void SaveIngredient(Produkt ingredient);
-        
+                
         List<Produkt> GetCurrentIngredients(int id);
 
         List<SelectListItem> GetProductTypes();

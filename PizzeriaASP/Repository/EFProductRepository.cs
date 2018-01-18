@@ -43,11 +43,6 @@ namespace PizzeriaASP
             _context.SaveChanges();
         }
 
-        public void DeleteIngredient(int id)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void SaveProduct(Matratt product)
         {
             if(product.MatrattId == 0)
@@ -85,11 +80,6 @@ namespace PizzeriaASP
             _context.SaveChanges();
         }
 
-
-        public void SaveIngredient(Produkt ingredient)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public List<Produkt> GetCurrentIngredients(int id)
         {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PizzeriaASP.Models;
 
 namespace PizzeriaASP.ViewModels
 {
@@ -13,4 +14,5 @@ namespace PizzeriaASP.ViewModels
         public string Role { get; set; }
 
     }
+
 }
