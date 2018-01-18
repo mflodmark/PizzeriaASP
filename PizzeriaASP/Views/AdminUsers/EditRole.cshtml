@@ -1,13 +1,16 @@
 ﻿@model PizzeriaASP.ViewModels.AdminUsersEditRoleViewModel
 
+
+@Html.Partial("_H2Layout", "Edit Role")
+
 <div class="div-min-flex">
     <form asp-controller="AdminUsers" asp-action="EditRole" method="post">
         <label asp-for="User.UserName"></label>
-        <input type="hidden" asp-for="User.UserName"/>
+        <input type="hidden" asp-for="User.UserName" />
         <input disabled asp-for="User.UserName" /><br />
 
         <label asp-for="Role"></label>
-        <input type="hidden"  asp-for="Role"/>
+        <input type="hidden" asp-for="Role" />
         <input disabled asp-for="Role" /><br />
 
         <label asp-for="SelectedRole"></label>

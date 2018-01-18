@@ -4,42 +4,44 @@
     ViewData["Title"] = "Index";
 }
 
+@Html.Partial("_H2Layout", "Your Cart")
+
+
 <div id="cart-div">
-    <h2>Your cart</h2>
     <table class="table table-bordered table-striped">
         <thead>
-        <tr>
-            <th>Quantity</th>
-            <th>Item</th>
-            <th class="text-right">Price</th>
-            <th class="text-right">Subtotal</th>
-        </tr>
+            <tr>
+                <th>Quantity</th>
+                <th>Item</th>
+                <th class="text-right">Price</th>
+                <th class="text-right">Subtotal</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var line in Model.Cart.BestallningMatratt)
-        {
-            <tr>
-                <td class="text-center">@line.Antal</td>
-                <td class="text-left">@line.Matratt.MatrattNamn</td>
-                <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
-                <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
-                <td>
-                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
-                        <input type="hidden" name="productId" value="@line.Matratt.MatrattId" />
-                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            <i class="icon-trash icon-large"></i> Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
-        }
+            @foreach (var line in Model.Cart.BestallningMatratt)
+            {
+                <tr>
+                    <td class="text-center">@line.Antal</td>
+                    <td class="text-left">@line.Matratt.MatrattNamn</td>
+                    <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
+                    <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
+                    <td>
+                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                            <input type="hidden" name="productId" value="@line.Matratt.MatrattId" />
+                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="icon-trash icon-large"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
         </tbody>
         <tfoot>
-        <tr>
-            <td colspan="3" class="text-right">Total:</td>
-            <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
-        </tr>
+            <tr>
+                <td colspan="3" class="text-right">Total:</td>
+                <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+            </tr>
         </tfoot>
     </table>
 </div>

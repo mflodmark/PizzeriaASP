@@ -267,7 +267,6 @@ namespace PizzeriaASP.Controllers
 
             if (result.Succeeded)
             {
-                //return Redirect(returnUrl);
                 return RedirectToAction("Index", "Home");
 
             }
@@ -300,6 +299,10 @@ namespace PizzeriaASP.Controllers
 
                     _context.Kund.Add(customer);
                     _context.SaveChanges();
+
+                    // Add default role 
+                    var role = "RegularUser";
+                    await _userManager.AddToRoleAsync(user, role);
 
                     if (identResult.Succeeded)
                     {

@@ -4,6 +4,9 @@
     ViewData["Title"] = "Edit Product";
 }
 
+@Html.Partial("_H2Layout", "Edit/Add Product")
+
+
 <div class="div-min-flex">
     <div class="col-sm-6">
         <form asp-controller="AdminProducts" asp-action="" method="post">
@@ -17,7 +20,7 @@
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>
     </div>
-    
+
     <div id="div-ingredients" class="div-min-block col-sm-6">
         @Html.Partial("_EditAddIngredientPartial", Model)
     </div>

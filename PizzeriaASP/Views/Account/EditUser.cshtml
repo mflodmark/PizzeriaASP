@@ -8,7 +8,7 @@
     <script src="~/JS/AccountEditUser.js" type="text/javascript" defer></script>
 </head>
 
-<h2 class="text-center">Edit user</h2>
+@Html.Partial("_H2Layout", "Edit User")
 
 <div class="div-min-flex">
     <form asp-controller="Account" asp-action="EditUser" method="post">
@@ -17,7 +17,7 @@
 
         @Html.Partial("_UserRegistration", Model)
 
-        <input type="hidden" asp-for="Customer.KundId"/>
+        <input type="hidden" asp-for="Customer.KundId" />
 
         <label asp-for="KeepCurrentPassword"></label>
 
