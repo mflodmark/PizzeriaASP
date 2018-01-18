@@ -14,22 +14,23 @@ namespace PizzeriaASP.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminUsersController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IIdentityRepository _identityRepo;
+
         private readonly TomasosContext _tomasosContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AdminUsersController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
+        public AdminUsersController(IIdentityRepository identityRepo, UserManager<ApplicationUser> userManager,
             TomasosContext tomasosContext)
         {
             _tomasosContext = tomasosContext;
-            _context = context;
+            _identityRepo = identityRepo;
             _userManager = userManager;
         }
 
         public IActionResult Index()
         {
             var model = new List<AdminUsersIndexViewModel>();
-            var users = _context.Users.OrderBy(u => u.UserName);
+            var users = _identityRepo.Users.OrderBy(u => u.UserName);
 
             foreach (var item in users)
             {
@@ -49,13 +50,13 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult EditRole(string user)
         {
-            var getUser = _context.Users.Single(x => x.UserName == user);
+            var getUser = _identityRepo.GetSingleUser(user);
 
             var userRoles = _userManager.GetRolesAsync(getUser).Result;
 
             var role = userRoles.Count == 0 ? "Not set" : userRoles[0];
 
-            var roles = _context.Roles.Distinct().Select(p => new SelectListItem()
+            var roles = _identityRepo.Roles.Select(p => new SelectListItem()
             {
                 Value = p.Id,
                 Text = p.Name
@@ -77,19 +78,18 @@ namespace PizzeriaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _context.Users.Single(x => x.UserName == vm.User.UserName);
+                var user = _identityRepo.GetSingleUser(vm.User.UserName);
 
                 // Get roles
                 var roles = await _userManager.GetRolesAsync(user);
-
-
+                
                 // Remove roles
                 foreach (var item in roles)
                 {
                     await _userManager.RemoveFromRoleAsync(user, item);
                 }
 
-                var role = _context.Roles.Find(vm.SelectedRole);
+                var role = _identityRepo.GetSingleRole(vm.SelectedRole);
 
                 // Set new role
                 await _userManager.AddToRoleAsync(user, role.Name);
@@ -103,9 +103,7 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteUser(string username)
         {
-            var user = _context.Users.Single(x => x.UserName == username);
-
-            //var user = await _userManager.FindByIdAsync(id);
+            var user = _identityRepo.GetSingleUser(username);
 
             if (user != null)
             {
