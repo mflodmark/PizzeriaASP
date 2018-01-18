@@ -11,8 +11,10 @@
         <label asp-for="ProduktNamn"></label>
         <input asp-for="ProduktNamn" />
 
-        <button type="submit">
+        <button type="submit" class="btn btn-success">
             <i class="icon-save"></i> Save
         </button>
+        
+        <div asp-validation-summary="All" class="text-danger"></div>
     </form>
 </div>

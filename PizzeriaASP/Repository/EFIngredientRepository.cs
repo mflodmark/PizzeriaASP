@@ -36,7 +36,7 @@ namespace PizzeriaASP
             else
             {
                 // Edit existing product
-                var p = _context.Matratt.FirstOrDefault(x => x.MatrattId == ingredient.ProduktId);
+                var p = _context.Produkt.FirstOrDefault(x => x.ProduktId == ingredient.ProduktId);
 
                 if (p != null)
                 {

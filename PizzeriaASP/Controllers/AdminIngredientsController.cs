@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal;
 using PizzeriaASP.Models;
 
 namespace PizzeriaASP.Controllers
@@ -35,12 +36,25 @@ namespace PizzeriaASP.Controllers
             return RedirectToAction("Index");
         }
 
+        public IActionResult EditIngredient(int id)
+        {
+            var model = _repository.GetSingleIngredient(id);
+
+            return View("EditOrAddIngredient", model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditOrAddIngredient(Produkt ingredient)
         {
-            _repository.SaveIngredient(ingredient);
+            if (ModelState.IsValid)
+            {
+                _repository.SaveIngredient(ingredient);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
 
+            return View();
         }
     }
 }

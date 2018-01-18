@@ -10,5 +10,6 @@ namespace PizzeriaASP.Models
 
         void SaveIngredient(Produkt ingredient);
 
+        Produkt GetSingleIngredient(int id);
     }
 }

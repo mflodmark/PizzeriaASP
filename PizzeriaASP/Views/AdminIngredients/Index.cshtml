@@ -21,7 +21,7 @@
                 <td>@item.ProduktNamn</td>
                 <td class="text-center">
                     <form asp-controller="AdminIngredients" asp-action="DeleteIngredient" asp-route-id="@item.ProduktId" method="post">
-                        <a asp-action="EditOrAddIngredient" asp-route-id="@item.ProduktId" class="btn btn-sm btn-warning">
+                        <a asp-controller="AdminIngredients" asp-action="EditIngredient" asp-route-id="@item.ProduktId" class="btn btn-sm btn-warning">
                             <i class="icon-edit"></i> Edit
                         </a>
                         <button type="submit" class="btn btn-danger btn-sm">
