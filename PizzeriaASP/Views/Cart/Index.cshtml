@@ -7,53 +7,55 @@
 @Html.Partial("_H2Layout", "Your Cart")
 
 
-<div id="cart-div">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Quantity</th>
-                <th>Item</th>
-                <th class="text-right">Price</th>
-                <th class="text-right">Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var line in Model.Cart.BestallningMatratt)
-            {
+<div class="div-min-flex">
+    <div id="cart-div" class="col-sm-12">
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <td class="text-center">@line.Antal</td>
-                    <td class="text-left">@line.Matratt.MatrattNamn</td>
-                    <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
-                    <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
-                    <td>
-                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
-                            <input type="hidden" name="productId" value="@line.Matratt.MatrattId" />
-                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="icon-trash icon-large"></i> Delete
-                            </button>
-                        </form>
-                    </td>
+                    <th>Quantity</th>
+                    <th>Item</th>
+                    <th class="text-right">Price</th>
+                    <th class="text-right">Subtotal</th>
                 </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" class="text-right">Total:</td>
-                <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.Cart.BestallningMatratt)
+                {
+                    <tr>
+                        <td class="text-center">@line.Antal</td>
+                        <td class="text-left">@line.Matratt.MatrattNamn</td>
+                        <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
+                        <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
+                        <td>
+                            <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="productId" value="@line.Matratt.MatrattId" />
+                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="icon-trash icon-large"></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" class="text-right">Total:</td>
+                    <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 
-<div class="text-center">
-    <a class="btn btn-primary" href="@Model.ReturnUrl">Continue shopping</a>
-    <form asp-controller="Order" asp-action="CheckOut"
-          method="post">
-        <button type="submit" class="btn btn-success">
-            <i class="icon-shopping-cart icon-large"></i> Place order
-        </button>
-    </form>
+    <div class="text-center" class="col-sm-12">
+        <a class="btn btn-primary" asp-controller="Product" asp-action="List">Continue shopping</a>
+        <form asp-controller="Order" asp-action="CheckOut"
+              method="post">
+            <button type="submit" class="btn btn-success">
+                <i class="icon-shopping-cart icon-large"></i> Place order
+            </button>
+        </form>
+    </div>
 </div>
 
 

@@ -2,7 +2,7 @@
 @using PizzeriaASP.Infrastructure
 @model PizzeriaASP.Models.Matratt
 
-<div>
+<div class="div-single-product col-sm-5">
     <h3>@Model.MatrattNamn</h3>
     <p>@Model.Beskrivning</p>
 
@@ -15,7 +15,9 @@
 
     <h4>@Model.Pris.ToString("c")</h4>
     <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.MatrattId" method="post">
-        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-        <input type="submit" class="btn btn-primary" value="Add to cart" />
+        @*<input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />*@
+        <button type="submit" class="btn btn-primary">
+            <i class="icon-shopping-cart"></i> Add To Cart
+        </button>
     </form>
 </div>

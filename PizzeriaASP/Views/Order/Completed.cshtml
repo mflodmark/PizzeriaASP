@@ -3,21 +3,22 @@
     
 @Html.Partial("_H2Layout", "Success!")
 
-<div class="text-center">
-    <h2>Hey @Model.Kund.Namn! Your order is sent for processing!</h2>
+<div class="div-min-block">
+    <div class="text-center">
+        <h2>Hey @Model.Kund.Namn! Your order is sent for processing!</h2>
 
-    <h3>@Model.BestallningDatum.ToString("yyyy-MM-dd HH:mm")</h3>
+        <h3>@Model.BestallningDatum.ToString("yyyy-MM-dd HH:mm")</h3>
 
-    <h3>Orderlist:</h3>
-    <ul>
-        @foreach (var item in Model.BestallningMatratt)
-        {
-            <li>@item.Antal @item.Matratt.MatrattNamn</li>
-        }
-    </ul>
+        <h3>Orderlist:</h3>
+        <ul>
+            @foreach (var item in Model.BestallningMatratt)
+            {
+                <li>@item.Antal @item.Matratt.MatrattNamn</li>
+            }
+        </ul>
 
 
-    <h4>Totalbelopp: @Model.Totalbelopp.ToString("c")</h4>
+        <h4>Totalbelopp: @Model.Totalbelopp.ToString("c")</h4>
+    </div>
 </div>
-
 

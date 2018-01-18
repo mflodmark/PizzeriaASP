@@ -54,11 +54,6 @@ h2, h3 {
 }
 
 
-table, form {
-    background-color: white;
-    opacity: 0.9;
-}
-
 
 .div-min-block {
     width: 70%;
@@ -92,11 +87,6 @@ td, th {
     padding: 5px;
 }
 
-/*#table-ingredients {
-    float: left;
-    width: 70%;
-    margin-right: 10px;
-}*/
 
 #save-edit-product {
     clear: left;
@@ -124,4 +114,45 @@ label {
 input {
     width: 200px;
     
+}
+
+#div-products {
+    background-color: white;
+    opacity: 0.9;
+}
+
+.div-single-product {
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    background-color: #f39c12;
+    height: 200px;
+}
+
+.div-single-product button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.div-single-product ul {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+}
+
+.div-single-product li {
+    float: left;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #404040;
+    border-radius: 2px;
+}
+
+.div-single-product li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
 }

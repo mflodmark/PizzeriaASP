@@ -77,7 +77,7 @@ namespace PizzeriaASP.Controllers
 
             SetCart(prodList);
 
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToAction("List","Product");
         }
 
         private List<BestallningMatratt> GetCart()
