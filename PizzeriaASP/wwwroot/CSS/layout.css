@@ -1,4 +1,9 @@
 ﻿
+.change-opacity {
+    opacity: 1.0;
+    transition: 0.3s all;
+}
+
 #div-contact, #div-learn-more {
     background-color: #ecf0f1;
     height: 150px;
