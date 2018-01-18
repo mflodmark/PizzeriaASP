@@ -35,7 +35,7 @@ namespace PizzeriaASP.Models
 
         List<SelectListItem> GetProductTypes();
 
-        List<Produkt> GetOptionalIngredients(int id);
+        List<Produkt> GetOptionalIngredients(int id, List<Produkt> producList);
 
         List<Produkt> GetAllIngredients();
 

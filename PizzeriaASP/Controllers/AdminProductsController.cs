@@ -63,7 +63,7 @@ namespace PizzeriaASP.Controllers
             {
                 Product = product,
                 ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetOptionalIngredients(productId),
+                OptionalIngredientsList = _repository.GetOptionalIngredients(productId, GetIngredientList(productId)),
                 IngredientList = _repository.GetCurrentIngredients(productId)
             };
 
@@ -116,7 +116,7 @@ namespace PizzeriaASP.Controllers
             {
                 Product = _repository.GetSingleProduct(vm.SelectedProductId),
                 ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId),
+                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId , ingredients),
                 IngredientList = ingredients
             };
 
@@ -129,7 +129,7 @@ namespace PizzeriaASP.Controllers
 
             var i = _repository.GetSingleIngredient(vm.SelectedIngredientId);
 
-            ingredients.Remove(i);
+            var b = ingredients.Remove(i);
 
             SetIngredientList(ingredients);
 
@@ -137,7 +137,7 @@ namespace PizzeriaASP.Controllers
             {
                 Product = _repository.GetSingleProduct(vm.SelectedProductId),
                 ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId),
+                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId, ingredients),
                 IngredientList = ingredients
             };
 

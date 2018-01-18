@@ -41,6 +41,7 @@ namespace PizzeriaASP.Controllers
             {
                 _context.BestallningMatratt.Remove(item);
             }
+
             _context.SaveChanges();
 
             _context.Remove(order);

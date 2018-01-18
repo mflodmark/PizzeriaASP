@@ -110,9 +110,9 @@ namespace PizzeriaASP
             }).OrderBy(o => o.Text).ToList();
         }
 
-        public List<Produkt> GetOptionalIngredients(int id)
+        public List<Produkt> GetOptionalIngredients(int id, List<Produkt> productList)
         {
-            var currentList = GetCurrentIngredients(id);
+            var currentList = productList;
 
             var optionalList = _context.Produkt.OrderBy(o => o.ProduktNamn);
 
