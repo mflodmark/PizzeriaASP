@@ -18,19 +18,19 @@ namespace PizzeriaASP.Controllers
     [Authorize]
     public class AccountController : Controller
     {
-        private readonly TomasosContext _context;
-        private readonly ApplicationDbContext _appDbContext;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IIdentityRepository _identityRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IPasswordHasher<ApplicationUser> passwordHasher;
 
-        public AccountController(TomasosContext context, UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, ApplicationDbContext appDbContext,
+        public AccountController(ICustomerRepository context, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager, IIdentityRepository appDbContext,
             IPasswordHasher<ApplicationUser> passwordHash)
         {
             passwordHasher = passwordHash;
-            _context = context;
-            _appDbContext = appDbContext;
+            _customerRepository = context;
+            _identityRepository = appDbContext;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -66,7 +66,7 @@ namespace PizzeriaASP.Controllers
 
         }
 
-        //Logga av och visa startsidan
+        //Logga ut och visa startsidan
         public async Task<IActionResult> LogOff()
         {
             await _signInManager.SignOutAsync();
@@ -93,14 +93,15 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
-            var unique = _context.Kund.SingleOrDefault(x => 
-                x.AnvandarNamn.ToLower() == register.Customer.AnvandarNamn.ToLower());
+            //var unique = _context.Kund.SingleOrDefault(x => 
+            //    x.AnvandarNamn.ToLower() == register.Customer.AnvandarNamn.ToLower());
+
+            var unique = _customerRepository.GetSingleCustomer(register.Customer.AnvandarNamn);
 
             // Check unique username
             if (unique != null)
             {
                 register.UniqueUsername = false;
-                _context.Dispose();
 
                 return View(register);
             }
@@ -127,25 +128,18 @@ namespace PizzeriaASP.Controllers
                 {
                     await _signInManager.SignInAsync(userIdentity, isPersistent: false);
 
-                    _context.Kund.Add(register.Customer);
-
-                    _context.SaveChanges();
-                    _context.Dispose();
+                    _customerRepository.SaveCustomer(register.Customer);
 
                     return RedirectToAction("LoggedInIndex", "Home", register.Customer.KundId);
                 }
-
-                _context.Dispose();
-                return View(register);
             }
 
-            _context.Dispose();
             return View(register);
         }
 
         public IActionResult EditUser(string username)
         {
-            var customer = _context.Kund.Single(x => x.AnvandarNamn == username);
+            var customer = _customerRepository.GetSingleCustomer(username);
 
             var model = new RegisterViewModel()
             {
@@ -153,11 +147,7 @@ namespace PizzeriaASP.Controllers
                 UniqueUsername = true,
                 KeepCurrentPassword = GetPw()
             };
-
-            //Set(true);
-
-           
-
+          
             return View(model);
         }
 
@@ -165,23 +155,19 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditUser(RegisterViewModel vm)
         {
-            var unique = _context.Kund.SingleOrDefault(x =>
-                x.AnvandarNamn == vm.Customer.AnvandarNamn);
+            var unique = _customerRepository.GetSingleCustomer(vm.Customer.AnvandarNamn);
 
             // Must check current username as well
             if (unique != null && unique.AnvandarNamn != _userManager.GetUserName(User))
             {
                 vm.UniqueUsername = false;
-                _context.Dispose();
 
                 return View(vm);
             }
 
             if (ModelState.IsValid)
             {
-                var person = _context.Kund.Find(vm.Customer.KundId);
-
-                _context.Entry(person).CurrentValues.SetValues(vm.Customer);
+                _customerRepository.SaveCustomer(vm.Customer);
 
                 // Save new username
                 var user = await _userManager.GetUserAsync(User);
@@ -198,9 +184,6 @@ namespace PizzeriaASP.Controllers
                     await _userManager.UpdateAsync(user);
                 }
                 
-                _context.SaveChanges();
-                _context.Dispose();
-
                 return RedirectToAction("Index", "Home");
             }
             return View();
@@ -297,8 +280,7 @@ namespace PizzeriaASP.Controllers
                         Namn = user.Email
                     };
 
-                    _context.Kund.Add(customer);
-                    _context.SaveChanges();
+                    _customerRepository.SaveCustomer(customer);
 
                     // Add default role 
                     var role = "RegularUser";

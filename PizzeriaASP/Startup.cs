@@ -32,6 +32,7 @@ namespace PizzeriaASP
             services.AddTransient<IProductRepository, EFProductRepository>();
             services.AddTransient<IIngredientRepository, EFIngredientRepository>();
             services.AddTransient<IIdentityRepository, EFIdentityRepository>();
+            services.AddTransient<ICustomerRepository, EFCustomerRepository>();
 
             services.AddMvc();
 
@@ -46,7 +47,7 @@ namespace PizzeriaASP
 
             services.AddIdentity<ApplicationUser, IdentityRole>(opts =>
                 {
-                    opts.User.RequireUniqueEmail = true;
+                    //opts.User.RequireUniqueEmail = true;
                 })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
