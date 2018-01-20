@@ -14,27 +14,18 @@ namespace PizzeriaASP.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        //private readonly IProductRepository _repository;
+        private readonly IProductRepository _productRepository;
 
         public int PageSize = 4;
-        private readonly TomasosContext _context;
 
-        //public ProductController(IProductRepository repo)
-        //{
-        //    _repository = repo;
-        //}
-
-
-        public ProductController(TomasosContext context)
+        public ProductController(IProductRepository context)
         {
-            _context = context;
+            _productRepository = context;
         }
 
         public IActionResult List(string category, int productPage = 1)
         {
-            var ingredients = _context.Produkt.ToList();
-
-            var products = _context.Matratt
+            var products = _productRepository.Products
                 .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null)
                 .OrderBy(p => p.MatrattNamn)
                 .Skip((productPage - 1) * PageSize)
@@ -50,8 +41,8 @@ namespace PizzeriaASP.Controllers
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
                     TotalItems = category == null ?
-                        _context.Matratt.Count() :
-                        _context.Matratt.Count(x =>
+                        _productRepository.Products.Count() :
+                        _productRepository.Products.Count(x =>
                             x.MatrattTypNavigation.Beskrivning == category)
                 },
                 CurrentCategory = category,
