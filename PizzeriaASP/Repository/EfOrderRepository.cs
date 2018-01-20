@@ -20,6 +20,8 @@ namespace PizzeriaASP
             .ThenInclude(p => p.Matratt)
             .Include(p => p.Kund);
 
+        public IQueryable<BestallningMatratt> OrderItems => _context.BestallningMatratt;
+
         public void SaveOrder(Bestallning order, List<BestallningMatratt> orderList)
         {
             if (order.BestallningId == 0)

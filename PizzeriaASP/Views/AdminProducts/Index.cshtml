@@ -31,7 +31,7 @@
                            asp-route-productId="@item.Product.MatrattId">
                             <i class="icon-edit icon-large"></i> Edit
                         </a>
-                        @if (!item.ProductExistsInOrders)
+                        @if (!item.Product.MatrattProdukt.Any())
                         {
                             <input type="hidden" name="productId" value="@item.Product.MatrattId"/>
                             <button type="submit" class="btn btn-danger btn-sm">

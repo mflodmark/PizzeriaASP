@@ -17,20 +17,19 @@ namespace PizzeriaASP.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminProductsController : Controller
     {
-        private readonly IProductRepository _repository;
+        private readonly IProductRepository _productRepository;
 
         public AdminProductsController(IProductRepository repo)
         {
-            _repository = repo;
+            _productRepository = repo;
         }
 
         public IActionResult Index()
         {
-            var model = _repository.Products.Select(p => new AdminIndexViewModel()
+            var model = _productRepository.Products.Select(p => new AdminIndexViewModel()
             {
                 Product = p,
                 ProductType = p.MatrattTypNavigation.Beskrivning,
-                ProductExistsInOrders = p.BestallningMatratt.Any(x => x.MatrattId == p.MatrattId)
             }).ToList();
 
             return View(model);
@@ -42,7 +41,7 @@ namespace PizzeriaASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                _repository.DeleteProduct(productId);
+                _productRepository.DeleteProduct(productId);
 
                 return RedirectToAction("Index");
             }
@@ -54,7 +53,7 @@ namespace PizzeriaASP.Controllers
         {
             HttpContext.Session.Clear();
 
-            var product = _repository.Products
+            var product = _productRepository.Products
                 .Where(p => p.MatrattId == productId)
                 .Include(p => p.MatrattProdukt)
                 .ThenInclude(p => p.Produkt)
@@ -63,9 +62,9 @@ namespace PizzeriaASP.Controllers
             var model = new AdminEditViewModel()
             {
                 Product = product,
-                ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetOptionalIngredients(productId, GetIngredientList(productId)),
-                IngredientList = _repository.GetCurrentIngredients(productId)
+                ProductTypes = _productRepository.GetProductTypes(),
+                OptionalIngredientsList = _productRepository.GetOptionalIngredients(productId, GetIngredientList(productId)),
+                IngredientList = _productRepository.GetCurrentIngredients(productId)
             };
 
             return View("EditOrAddProduct", model);
@@ -78,11 +77,11 @@ namespace PizzeriaASP.Controllers
 
             if (ModelState.IsValid)
             {
-                _repository.SaveProduct(product);
+                _productRepository.SaveProduct(product);
 
                 var ingredientList = GetIngredientList(product.MatrattId);
                 
-                _repository.SaveIngredientList(product.MatrattId, ingredientList);
+                _productRepository.SaveIngredientList(product.MatrattId, ingredientList);
                 
                 return RedirectToAction("Index");
             }
@@ -97,8 +96,8 @@ namespace PizzeriaASP.Controllers
             var model = new AdminEditViewModel()
             {
                 Product = new Matratt(),
-                ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetAllIngredients(),
+                ProductTypes = _productRepository.GetProductTypes(),
+                OptionalIngredientsList = _productRepository.GetAllIngredients(),
                 IngredientList = new List<Produkt>()
             };
 
@@ -109,15 +108,15 @@ namespace PizzeriaASP.Controllers
         {
             var ingredients = GetIngredientList(vm.SelectedProductId);
 
-            ingredients.Add(_repository.GetSingleIngredient(vm.SelectedIngredientId));
+            ingredients.Add(_productRepository.GetSingleIngredient(vm.SelectedIngredientId));
 
             SetIngredientList(ingredients);
 
             var model = new AdminEditViewModel()
             {
-                Product = _repository.GetSingleProduct(vm.SelectedProductId),
-                ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId , ingredients),
+                Product = _productRepository.GetSingleProduct(vm.SelectedProductId),
+                ProductTypes = _productRepository.GetProductTypes(),
+                OptionalIngredientsList = _productRepository.GetOptionalIngredients(vm.SelectedProductId , ingredients),
                 IngredientList = ingredients
             };
 
@@ -128,7 +127,7 @@ namespace PizzeriaASP.Controllers
         {
             var ingredients = GetIngredientList(vm.SelectedProductId);
 
-            var i = _repository.GetSingleIngredient(vm.SelectedIngredientId);
+            var i = _productRepository.GetSingleIngredient(vm.SelectedIngredientId);
 
             var b = ingredients.Remove(i);
 
@@ -136,9 +135,9 @@ namespace PizzeriaASP.Controllers
 
             var model = new AdminEditViewModel()
             {
-                Product = _repository.GetSingleProduct(vm.SelectedProductId),
-                ProductTypes = _repository.GetProductTypes(),
-                OptionalIngredientsList = _repository.GetOptionalIngredients(vm.SelectedProductId, ingredients),
+                Product = _productRepository.GetSingleProduct(vm.SelectedProductId),
+                ProductTypes = _productRepository.GetProductTypes(),
+                OptionalIngredientsList = _productRepository.GetOptionalIngredients(vm.SelectedProductId, ingredients),
                 IngredientList = ingredients
             };
 
@@ -150,7 +149,7 @@ namespace PizzeriaASP.Controllers
             List<Produkt> prodList;
             if (HttpContext.Session.GetString("IngredientList") == null)
             {
-                prodList = _repository.GetCurrentIngredients(productId);
+                prodList = _productRepository.GetCurrentIngredients(productId);
             }
             else
             {
