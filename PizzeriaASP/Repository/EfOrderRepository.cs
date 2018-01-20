@@ -40,6 +40,16 @@ namespace PizzeriaASP
             _context.SaveChanges();
         }
 
+        public void UpdateDeliveryStatus(int id, bool status)
+        {
+            var order = GetSingleOrder(id);
+
+            order.Levererad = status;
+
+            _context.SaveChanges();
+        }
+
+
         public void DeleteOrder(int id)
         {
             var order = GetSingleOrder(id);

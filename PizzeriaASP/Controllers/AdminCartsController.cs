@@ -14,18 +14,18 @@ namespace PizzeriaASP.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminCartsController : Controller
     {
-        private readonly TomasosContext _context;
+        private readonly IOrderRepository _orderRepository;
 
-        public AdminCartsController(TomasosContext context)
+        public AdminCartsController(IOrderRepository context)
         {
-            _context = context;
+            _orderRepository = context;
         }
 
         public IActionResult Index()
         {
             var model = new AdminCartViewModel()
             {
-                Orders = _context.Bestallning.Include(x => x.Kund).ToList()
+                Orders = _orderRepository.Orders.ToList()
             };
 
             return View(model);
@@ -35,18 +35,7 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCart(int id)
         {
-            var order = _context.Bestallning.Single(x => x.BestallningId == id);
-
-            foreach (var item in order.BestallningMatratt)
-            {
-                _context.BestallningMatratt.Remove(item);
-            }
-
-            _context.SaveChanges();
-
-            _context.Remove(order);
-
-            _context.SaveChanges();
+            _orderRepository.DeleteOrder(id);
 
             return RedirectToAction("Index");
         }
@@ -55,11 +44,7 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult UpdateCart(int id)
         {
-            var order = _context.Bestallning.Single(x => x.BestallningId == id);
-
-            order.Levererad = true;
-
-            _context.SaveChanges();
+            _orderRepository.UpdateDeliveryStatus(id, true);
 
             return RedirectToAction("Index");
         }

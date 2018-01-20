@@ -19,18 +19,15 @@ namespace PizzeriaASP.Controllers
     public class AccountController : Controller
     {
         private readonly ICustomerRepository _customerRepository;
-        private readonly IIdentityRepository _identityRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IPasswordHasher<ApplicationUser> passwordHasher;
 
         public AccountController(ICustomerRepository context, UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager, IIdentityRepository appDbContext,
-            IPasswordHasher<ApplicationUser> passwordHash)
+            SignInManager<ApplicationUser> signInManager, IPasswordHasher<ApplicationUser> passwordHash)
         {
             passwordHasher = passwordHash;
             _customerRepository = context;
-            _identityRepository = appDbContext;
             _userManager = userManager;
             _signInManager = signInManager;
         }

@@ -9,6 +9,8 @@ namespace PizzeriaASP.Models
 
         void SaveOrder(Bestallning order);
 
+        void UpdateDeliveryStatus(int id, bool status);
+        
         void DeleteOrder(int id);
 
         Bestallning GetSingleOrder(int id);
