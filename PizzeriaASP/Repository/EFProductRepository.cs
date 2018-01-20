@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using PizzeriaASP.Models;
 
 namespace PizzeriaASP
@@ -16,7 +17,12 @@ namespace PizzeriaASP
             _context = context;
         }
 
-        public IQueryable<Matratt> Products => _context.Matratt;
+        public IQueryable<Matratt> Products =>
+            _context.Matratt
+            .Include(p => p.BestallningMatratt)
+            .ThenInclude(p => p.Matratt)
+            .Include(p=>p.MatrattProdukt)
+            .ThenInclude(p=>p.Matratt);
 
         public IQueryable<MatrattTyp> Categories => _context.MatrattTyp;
 
@@ -36,7 +42,14 @@ namespace PizzeriaASP
 
         public void DeleteProduct(int id)
         {
-            var product = _context.Matratt.Find(id);
+            var product = Products.SingleOrDefault(x=> x.MatrattId == id);
+
+            foreach (var ingredient in product.MatrattProdukt)
+            {
+                _context.MatrattProdukt.Remove(ingredient);
+            }
+
+            _context.SaveChanges();
 
             _context.Remove(product);
 
@@ -107,7 +120,7 @@ namespace PizzeriaASP
             var optionalList = _context.Produkt.OrderBy(o => o.ProduktNamn);
 
             var list = optionalList.Where(x => x.ProduktId != 
-                currentList.SingleOrDefault(y => y.ProduktId == x.ProduktId).ProduktId).ToList();
+                currentList.FirstOrDefault(y => y.ProduktId == x.ProduktId).ProduktId).ToList();
 
             return list;
         }

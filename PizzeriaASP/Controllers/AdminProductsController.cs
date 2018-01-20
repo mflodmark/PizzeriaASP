@@ -29,7 +29,8 @@ namespace PizzeriaASP.Controllers
             var model = _repository.Products.Select(p => new AdminIndexViewModel()
             {
                 Product = p,
-                ProductType = p.MatrattTypNavigation.Beskrivning
+                ProductType = p.MatrattTypNavigation.Beskrivning,
+                ProductExistsInOrders = p.BestallningMatratt.Any(x => x.MatrattId == p.MatrattId)
             }).ToList();
 
             return View(model);

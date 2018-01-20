@@ -51,10 +51,9 @@ namespace PizzeriaASP.Controllers
                     KundId = customer.KundId,
                     Levererad = false,
                     Totalbelopp = cart.Sum(e => e.Matratt.Pris * e.Antal),
-                    BestallningMatratt = cart
                 };
 
-                _orderRepository.SaveOrder(newOrder);
+                _orderRepository.SaveOrder(newOrder, cart);
 
                 // Add points to Premium users
                 var userMgm = await _userManager.GetUserAsync(User);
@@ -72,15 +71,14 @@ namespace PizzeriaASP.Controllers
 
                 // Add values to pass to order confirmation
                 newOrder.Kund = customer;
+                newOrder.BestallningMatratt = cart;
 
                 HttpContext.Session.Clear();
 
-                return RedirectToAction("Completed", newOrder);               
+                return View("Completed", newOrder);               
             }
-            else
-            {
-                return RedirectToAction("Index","Cart");
-            }
+
+            return RedirectToAction("Index","Cart");
         }
 
         public ViewResult Completed(Bestallning order)

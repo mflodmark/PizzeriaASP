@@ -20,7 +20,7 @@ namespace PizzeriaASP
             .ThenInclude(p => p.Matratt)
             .Include(p => p.Kund);
 
-        public void SaveOrder(Bestallning order)
+        public void SaveOrder(Bestallning order, List<BestallningMatratt> orderList)
         {
             if (order.BestallningId == 0)
             {
@@ -40,9 +40,14 @@ namespace PizzeriaASP
 
             _context.SaveChanges();
 
-            foreach (var c in order.BestallningMatratt)
+            foreach (var c in orderList)
             {
-                _context.BestallningMatratt.Add(c);
+                _context.BestallningMatratt.Add(new BestallningMatratt()
+                {
+                    Antal=c.Antal,
+                    BestallningId = order.BestallningId,
+                    MatrattId = c.MatrattId
+                });
             }
 
             _context.SaveChanges();

@@ -7,7 +7,7 @@ namespace PizzeriaASP.Models
     {
         IQueryable<Bestallning> Orders { get; }
 
-        void SaveOrder(Bestallning order);
+        void SaveOrder(Bestallning order, List<BestallningMatratt> orderList);
 
         void UpdateDeliveryStatus(int id, bool status);
         

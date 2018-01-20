@@ -9,5 +9,7 @@ namespace PizzeriaASP.ViewModels
         public Matratt Product { get; set; }
 
         public string ProductType { get; set; }
+
+        public bool ProductExistsInOrders { get; set; }
     }
 }
