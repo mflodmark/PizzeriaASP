@@ -37,6 +37,14 @@ namespace PizzeriaASP
                     _context.Entry(p).CurrentValues.SetValues(order);
                 }
             }
+
+            _context.SaveChanges();
+
+            foreach (var c in order.BestallningMatratt)
+            {
+                _context.BestallningMatratt.Add(c);
+            }
+
             _context.SaveChanges();
         }
 

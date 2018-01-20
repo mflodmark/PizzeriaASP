@@ -15,17 +15,15 @@ namespace PizzeriaASP.Controllers
 
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private readonly SignInManager<ApplicationUser> _signInManager;
-
         //Dependency Injection via konstruktorn
         public HomeController(TomasosContext context,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager
+            UserManager<ApplicationUser> userManager
+            
         )
         {
             _context = context;
             _userManager = userManager;
-            _signInManager = signInManager;
+           
         }
 
         [AllowAnonymous]
@@ -41,7 +39,6 @@ namespace PizzeriaASP.Controllers
             var model = _context.Kund.SingleOrDefault(x => 
                 x.AnvandarNamn == _userManager.GetUserName(User));
 
-            _context.Dispose();
 
             return View("Index", model);
         }

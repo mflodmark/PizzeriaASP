@@ -8,35 +8,23 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
+using StackExchange.Redis;
 
 namespace PizzeriaASP.Controllers
 {
     public class OrderController : Controller
     {
-
-        //private IOrderRepository repository;
-        //private Bestallning cart;
-
-        //public OrderController(IOrderRepository repo, Bestallning cartService)
-        //{
-        //    repository = repo;
-        //    cart = cartService;
-        //}
-
-        private readonly TomasosContext _context;
-        private readonly ApplicationDbContext _contextUserMgm;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IOrderRepository _orderRepository;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
         //Dependency Injection via konstruktorn
-        public OrderController(TomasosContext context,
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            ApplicationDbContext contextUserMgm
-        )
+        public OrderController(ICustomerRepository context, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,IOrderRepository orderRepository)
         {
-            _contextUserMgm = contextUserMgm;
-            _context = context;
+            _orderRepository = orderRepository;
+            _customerRepository = context;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -55,53 +43,39 @@ namespace PizzeriaASP.Controllers
             // Behövs denna?
             if (ModelState.IsValid)
             {
-                var customer = _context.Kund.Single(x => x.AnvandarNamn == _userManager.GetUserName(User));
+                var customer = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
 
-                var order = new Bestallning
+                var newOrder = new Bestallning
                 {
                     BestallningDatum = DateTime.Now,
                     KundId = customer.KundId,
                     Levererad = false,
-                    Totalbelopp = cart.Sum(e => e.Matratt.Pris * e.Antal)
+                    Totalbelopp = cart.Sum(e => e.Matratt.Pris * e.Antal),
+                    BestallningMatratt = cart
                 };
 
-                _context.Bestallning.Add(order);
-
-                // Save order
-                _context.SaveChanges();
-
-                foreach (var c in cart)
-                {
-                    _context.BestallningMatratt.Add(new BestallningMatratt()
-                    {
-                        BestallningId = order.BestallningId,
-                        MatrattId = c.MatrattId,
-                        Antal = c.Antal
-                    });
-                }
+                _orderRepository.SaveOrder(newOrder);
 
                 // Add points to Premium users
                 var userMgm = await _userManager.GetUserAsync(User);
 
                 if (_signInManager.UserManager.IsInRoleAsync(userMgm, "PremiumUser").Result)
                 {
-                    var user = _context.Kund.Single(x => x.AnvandarNamn == _userManager.GetUserName(User));
+                    var user = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
+
                     user.Poang += cart.Sum(x => x.Antal) * 10;
+
+                    _customerRepository.SaveCustomer(user);
+
                 }
                 
-                // Save orderlist
-                _context.SaveChanges();
-
-                _context.Dispose();
 
                 // Add values to pass to order confirmation
-                order.Kund = customer;
-                order.BestallningMatratt = cart;
+                newOrder.Kund = customer;
 
                 HttpContext.Session.Clear();
 
-                return View("Completed", order);
-                //return RedirectToAction("Completed", order);
+                return RedirectToAction("Completed", newOrder);               
             }
             else
             {
