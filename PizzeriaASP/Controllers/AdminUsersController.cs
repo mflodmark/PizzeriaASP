@@ -15,14 +15,15 @@ namespace PizzeriaASP.Controllers
     public class AdminUsersController : Controller
     {
         private readonly IIdentityRepository _identityRepo;
+        private readonly ICustomerRepository _customerRepository;
 
-        private readonly TomasosContext _tomasosContext;
+        //private readonly TomasosContext _tomasosContext;
         private readonly UserManager<ApplicationUser> _userManager;
 
         public AdminUsersController(IIdentityRepository identityRepo, UserManager<ApplicationUser> userManager,
-            TomasosContext tomasosContext)
+            ICustomerRepository customerRepository)
         {
-            _tomasosContext = tomasosContext;
+            _customerRepository = customerRepository;
             _identityRepo = identityRepo;
             _userManager = userManager;
         }
@@ -111,36 +112,8 @@ namespace PizzeriaASP.Controllers
 
                 if (result.Succeeded)
                 {
-                    // Delete from customer as well
-                    var customer = _tomasosContext.Kund.Single(x => x.AnvandarNamn == username);
+                    _customerRepository.DeleteCustomer(username);
 
-                    var orders = _tomasosContext.Bestallning.Where(x => x.KundId == customer.KundId);
-
-                    foreach (var order in orders)
-                    {
-                        var orderItems =
-                            _tomasosContext.BestallningMatratt
-                            .Where(x => x.BestallningId == order.BestallningId);
-
-                        // Delete order items
-                        foreach (var orderItem in orderItems)
-                        {
-                            _tomasosContext.BestallningMatratt.Remove(orderItem);
-                        }
-
-                        _tomasosContext.SaveChanges();
-
-                        // Delete orders
-                        _tomasosContext.Bestallning.Remove(order);
-
-                        _tomasosContext.SaveChanges();
-
-                    }
-
-                    // Delete customer
-                    _tomasosContext.Kund.Remove(customer);
-
-                    _tomasosContext.SaveChanges();
                 }
             }
 

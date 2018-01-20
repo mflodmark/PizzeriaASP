@@ -106,6 +106,7 @@
                 </div>
                 <div id="logo" class="nav navbar-nav col-sm-4 text-center navbar-header">
                     <a asp-controller="Home" asp-action="Index">Tomasos pizzeria</a>
+
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -116,7 +117,6 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li>@await Component.InvokeAsync("CartSummary")</li>
-
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="dropdown">
