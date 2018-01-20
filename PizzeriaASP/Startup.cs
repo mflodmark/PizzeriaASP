@@ -33,6 +33,7 @@ namespace PizzeriaASP
             services.AddTransient<IIngredientRepository, EFIngredientRepository>();
             services.AddTransient<IIdentityRepository, EFIdentityRepository>();
             services.AddTransient<ICustomerRepository, EFCustomerRepository>();
+            services.AddTransient<IOrderRepository, EFOrderRepository>();
 
             services.AddMvc();
 

@@ -26,12 +26,12 @@ namespace PizzeriaASP
 
         public Matratt GetSingleProduct(int id)
         {
-            return _context.Matratt.Single(p => p.MatrattId == id);
+            return _context.Matratt.SingleOrDefault(p => p.MatrattId == id);
         }
 
         public Produkt GetSingleIngredient(int id)
         {
-            return _context.Produkt.Single(p => p.ProduktId == id);
+            return _context.Produkt.SingleOrDefault(p => p.ProduktId == id);
         }
 
         public void DeleteProduct(int id)

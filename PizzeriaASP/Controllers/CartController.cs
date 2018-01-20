@@ -18,21 +18,11 @@ namespace PizzeriaASP.Controllers
     [Authorize]
     public class CartController : Controller
     {
-        //private readonly IProductRepository _repository;
-        //private readonly Bestallning _cart;
-        private readonly TomasosContext _context;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IProductRepository _productRepository;
 
-        //public CartController(IProductRepository repo, Bestallning cartService)
-        //{
-        //    _repository = repo;
-        //    _cart = cartService;
-        //}
-
-        public CartController(TomasosContext context, SignInManager<ApplicationUser> signInManager)
+        public CartController(IProductRepository context)
         {
-            _signInManager = signInManager;
-            _context = context;
+            _productRepository = context;
         }
 
         public ViewResult Index(string returnUrl)
@@ -54,9 +44,8 @@ namespace PizzeriaASP.Controllers
         [AutoValidateAntiforgeryToken]
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
-            var product = _context.Matratt
-                .FirstOrDefault(p => p.MatrattId == productId);
-
+            var product = _productRepository.GetSingleProduct(productId);
+                
             var prodList = GetCart();
 
             // Check if product exist in cart => add qty 1
@@ -107,7 +96,7 @@ namespace PizzeriaASP.Controllers
         [AutoValidateAntiforgeryToken]
         public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
         {
-            var product = _context.Matratt.FirstOrDefault(p => p.MatrattId == productId);
+            var product = _productRepository.GetSingleProduct(productId);
 
             if (product != null)
             {
@@ -116,7 +105,6 @@ namespace PizzeriaASP.Controllers
                 cart.RemoveAll(p => p.Matratt.MatrattId == product.MatrattId);
 
                 SetCart(cart);
-                //_cart.RemoveLine(product);
             }
 
             return RedirectToAction("Index", new { returnUrl });
