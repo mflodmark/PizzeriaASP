@@ -14,6 +14,8 @@
     <form asp-controller="Account" asp-action="EditUser" method="post">
         <label asp-for="Customer.AnvandarNamn"></label>
         <input disabled type="text" asp-for="Customer.AnvandarNamn" /><br />
+        
+        <input type="hidden" asp-for="Customer.Poang" value="@Model.Customer.Poang"/>
 
         @Html.Partial("_UserRegistration", Model)
 

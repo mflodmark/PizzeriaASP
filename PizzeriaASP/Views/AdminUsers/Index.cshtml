@@ -25,9 +25,13 @@
                                class="btn btn-sm btn-warning">
                                 <i class="icon-edit"></i> Edit Role
                             </a>
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="icon-delete"></i> Delete User
-                            </button>
+                            @if (item.User.UserName != "Admin")
+                            {
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="icon-delete"></i> Delete User
+                                </button>
+                            }
+
                         </form>
                     </td>
                 </tr>

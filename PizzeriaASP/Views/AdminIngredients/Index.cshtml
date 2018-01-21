@@ -24,9 +24,12 @@
                         <a asp-controller="AdminIngredients" asp-action="EditIngredient" asp-route-id="@item.ProduktId" class="btn btn-sm btn-warning">
                             <i class="icon-edit"></i> Edit
                         </a>
-                        <button type="submit" class="btn btn-danger btn-sm">
-                            <i class="icon-trash"></i> Delete
-                        </button>
+                        @if (!item.MatrattProdukt.Any())
+                        {
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="icon-trash"></i> Delete
+                            </button>
+                        }
                     </form>
                 </td>
             </tr>

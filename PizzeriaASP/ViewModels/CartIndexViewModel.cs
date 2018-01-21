@@ -12,6 +12,8 @@ namespace PizzeriaASP.ViewModels
 
         public int CartTotalValue { get; set; }
 
+        public int CartRebate { get; set; }
+
         public string ReturnUrl { get; set; }
     }
 }

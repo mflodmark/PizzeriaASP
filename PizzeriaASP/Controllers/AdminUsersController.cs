@@ -63,6 +63,11 @@ namespace PizzeriaASP.Controllers
                 Text = p.Name
             }).OrderBy(o => o.Text).ToList();
 
+            // Remove admin role from selectable list
+            var adminRole = roles.Single(x => x.Text == "Admin");
+
+            roles.Remove(adminRole);
+
             var model = new AdminUsersEditRoleViewModel()
             {
                 Roles = roles,

@@ -30,10 +30,14 @@
                                     class="btn btn-sm btn-danger">
                                 <i class="icon-trash"></i> Delete
                             </button>
-                            <button asp-action="UpdateCart" asp-route-id="@item.BestallningId"
-                                    class="btn btn-success">
-                                <i class="icon-edit"></i> Set as delivered
-                            </button>
+                            @if (!item.Levererad)
+                            {
+                                <button asp-action="UpdateCart" asp-route-id="@item.BestallningId"
+                                        class="btn btn-success">
+                                    <i class="icon-ok"></i> Set as delivered
+                                </button>
+                            }
+
                         </form>
                     </td>
                 </tr>

@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using PizzeriaASP.Models;
 
 namespace PizzeriaASP
@@ -13,7 +14,9 @@ namespace PizzeriaASP
             _context = context;
         }
 
-        public IQueryable<Produkt> Ingredients => _context.Produkt;
+        public IQueryable<Produkt> Ingredients => _context.Produkt
+            .Include(x=>x.MatrattProdukt)
+            .ThenInclude(x=>x.Produkt);
 
         public Produkt GetSingleIngredient(int id)
         {

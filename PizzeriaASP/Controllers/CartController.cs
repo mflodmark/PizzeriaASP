@@ -78,8 +78,6 @@ namespace PizzeriaASP.Controllers
             };
 
             return PartialView("_CartSumPartial", model);
-
-            //return RedirectToAction("List","Product");
         }
 
         private List<BestallningMatratt> GetCart()
