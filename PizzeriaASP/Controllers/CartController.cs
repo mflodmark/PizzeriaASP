@@ -42,7 +42,7 @@ namespace PizzeriaASP.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public RedirectToActionResult AddToCart(int productId, string returnUrl)
+        public PartialViewResult AddToCart(int productId, string returnUrl)
         {
             var product = _productRepository.GetSingleProduct(productId);
                 
@@ -66,7 +66,20 @@ namespace PizzeriaASP.Controllers
 
             SetCart(prodList);
 
-            return RedirectToAction("List","Product");
+            var cart = new Bestallning()
+            {
+                BestallningMatratt = prodList
+            };
+
+            var model = new CartIndexViewModel()
+            {
+                Cart = cart,
+                CartTotalValue = cart.BestallningMatratt.Sum(e => e.Matratt.Pris * e.Antal)
+            };
+
+            return PartialView("_CartSumPartial", model);
+
+            //return RedirectToAction("List","Product");
         }
 
         private List<BestallningMatratt> GetCart()

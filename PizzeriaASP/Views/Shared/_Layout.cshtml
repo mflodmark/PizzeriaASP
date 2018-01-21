@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PizzeriaASP
+@using PizzeriaASP.ViewModels
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -113,10 +114,14 @@
                         <span class="icon-bar"></span>
                     </button>
                 </div>
-                <div class="col-sm-4">
 
+                <div class="col-sm-4">
+                    <ul id="cart-navbar" class="nav navbar-nav navbar-right">
+                        @{ var model = new CartIndexViewModel(); }
+                        @Html.Partial("_CartSumPartial",  model)
+                    </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@await Component.InvokeAsync("CartSummary")</li>
+
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="dropdown">

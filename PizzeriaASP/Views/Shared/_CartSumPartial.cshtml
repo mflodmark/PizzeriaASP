@@ -1,0 +1,35 @@
+﻿
+@using PizzeriaASP.Infrastructure
+@model PizzeriaASP.ViewModels.CartIndexViewModel
+
+
+@if (@Model.Cart == null)
+{
+
+    @await Component.InvokeAsync("CartSummary")
+}
+else
+{
+    <li>
+        @if (Model.Cart.BestallningMatratt.Any())
+        {
+            <small class="navbar-text">
+                <b>Your cart:</b>
+                @Model.Cart.BestallningMatratt.Sum(x => x.Antal) item(s)
+                @Model.CartTotalValue.ToString("c")
+            </small>
+        }
+    </li>
+    <li>
+        <a asp-controller="Cart" asp-action="Index">
+            <i class="icon-large icon-shopping-cart"></i>
+        </a>
+    </li>
+}
+
+
+
+
+
+
+

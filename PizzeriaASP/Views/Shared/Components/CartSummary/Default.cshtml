@@ -1,23 +1,10 @@
 ﻿@using PizzeriaASP.Infrastructure
 @model PizzeriaASP.ViewModels.CartIndexViewModel
+    
+    
+
+@Html.Partial("_CartSumPartial", Model)
 
 
-<div id="cart-navbar">
-    @if (Model.Cart.BestallningMatratt.Any())
-    {
-        <small class="navbar-text">
-            <b>Your cart:</b>
-            @Model.Cart.BestallningMatratt.Sum(x => x.Antal) item(s)
-            @Model.CartTotalValue.ToString("c")
-        </small>
-    }
-    <a class="btn btn-sm btn-secondary navbar-btn"
-       asp-controller="Cart" asp-action="Index"
-       asp-route-returnUrl="@ViewContext.HttpContext.Request.PathAndQuery()">
-        <i class="icon-large icon-shopping-cart"></i>
-        @*<span class="glyphicons glyphicons-pizza"></span>*@
-    </a>
 
-
-</div>
 
