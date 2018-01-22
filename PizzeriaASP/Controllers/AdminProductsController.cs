@@ -129,7 +129,17 @@ namespace PizzeriaASP.Controllers
 
             var i = _productRepository.GetSingleIngredient(vm.SelectedIngredientId);
 
-            var b = ingredients.Remove(i);
+            for (int j = 0; j < ingredients.Count; j++)
+            {
+                if (ingredients[j].ProduktId == i.ProduktId)
+                {
+                    ingredients.RemoveAt(j);
+                    break;
+                }
+                
+            }
+
+            //var b = ingredients.Remove(i);
 
             SetIngredientList(ingredients);
 
