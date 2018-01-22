@@ -11,20 +11,6 @@ namespace PizzeriaASP.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly TomasosContext _context;
-
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        //Dependency Injection via konstruktorn
-        public HomeController(TomasosContext context,
-            UserManager<ApplicationUser> userManager
-            
-        )
-        {
-            _context = context;
-            _userManager = userManager;
-           
-        }
 
         [AllowAnonymous]
         public IActionResult Index()
@@ -32,15 +18,5 @@ namespace PizzeriaASP.Controllers
             return View();
         }
 
-        [Authorize]
-        public IActionResult LoggedInIndex()
-        {
-
-            var model = _context.Kund.SingleOrDefault(x => 
-                x.AnvandarNamn == _userManager.GetUserName(User));
-
-
-            return View("Index", model);
-        }
     }
 }

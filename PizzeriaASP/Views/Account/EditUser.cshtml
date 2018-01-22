@@ -10,23 +10,40 @@
 
 @Html.Partial("_H2Layout", "Edit User")
 
+<div id="edit-user"></div>
+
 <div class="div-min-flex">
-    <form asp-controller="Account" asp-action="EditUser" method="post">
+    <form asp-controller="Account" asp-action="EditUser" method="post"
+          data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#edit-user">
         <label asp-for="Customer.AnvandarNamn"></label>
-        <input disabled type="text" asp-for="Customer.AnvandarNamn" /><br />
-        
-        <input type="hidden" asp-for="Customer.Poang" value="@Model.Customer.Poang"/>
+        @if (Model.Customer.AnvandarNamn.EndsWith("@gmail.com"))
+        {
+            <input disabled type="text" asp-for="Customer.AnvandarNamn" />
+            <br />
+            <input type="hidden" asp-for="Customer.AnvandarNamn" value="@Model.Customer.AnvandarNamn"/>
+        }
+        else
+        {
+            <input type="text" asp-for="Customer.AnvandarNamn" />
+            <br />
+        }
+
+        <input type="hidden" asp-for="Customer.Poang" value="@Model.Customer.Poang" />
 
         @Html.Partial("_UserRegistration", Model)
 
         <input type="hidden" asp-for="Customer.KundId" />
 
-        <label asp-for="KeepCurrentPassword"></label>
+        @if (!Model.Customer.AnvandarNamn.EndsWith("@gmail.com"))
+        {
+            <label asp-for="KeepCurrentPassword"></label>
 
-        <a asp-controller="Account" asp-action="KeepPasswordFalse" class="btn btn-warning"
-           data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#pw">
-            <i class="icon-edit">Edit password</i>
-        </a>
+            <a asp-controller="Account" asp-action="KeepPasswordFalse" class="btn btn-warning"
+               data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#pw">
+                <i class="icon-edit">Edit password</i>
+            </a>
+        }
+
 
         @Html.Partial("_KeepPassword", Model)
         @*@{ var m = @Html.Partial("_KeepPassword", Model);}*@

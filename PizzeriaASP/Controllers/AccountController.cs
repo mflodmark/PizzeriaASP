@@ -90,13 +90,10 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
-            //var unique = _context.Kund.SingleOrDefault(x => 
-            //    x.AnvandarNamn.ToLower() == register.Customer.AnvandarNamn.ToLower());
-
             var unique = _customerRepository.GetSingleCustomer(register.Customer.AnvandarNamn);
 
             // Check unique username
-            if (unique != null)
+            if (unique != null && register.Customer.KundId == 0)
             {
                 register.UniqueUsername = false;
 
@@ -180,8 +177,8 @@ namespace PizzeriaASP.Controllers
                     // Update password
                     await _userManager.UpdateAsync(user);
                 }
-                
-                return RedirectToAction("Index", "Home");
+
+                return PartialView("_AlertSuccessPartial", "Saved user update.");
             }
             return View();
         }

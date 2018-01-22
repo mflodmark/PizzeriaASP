@@ -69,7 +69,7 @@ namespace PizzeriaASP
 
         public Kund GetSingleCustomer(string username)
         {
-            return Customers.Single(p => p.AnvandarNamn == username);
+            return Customers.SingleOrDefault(p => p.AnvandarNamn == username);
         }
 
         public List<Kund> GetOrdersForCustomer(int id)
