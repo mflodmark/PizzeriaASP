@@ -16,7 +16,11 @@
                         <form asp-controller="AdminProducts" asp-action="RemoveIngredient"
                               data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
                             <input type="hidden" asp-for="SelectedIngredientId" value="@item.ProduktId" />
-                            <input type="hidden" asp-for="SelectedProductId" value="@Model.Product.MatrattId" />
+                            @if (Model.Product != null)
+                            {
+                                <input type="hidden" asp-for="SelectedProductId" value="@Model.Product.MatrattId" />
+
+                            }
                             <button type="submit" class="btn btn-danger btn-sm">
                                 <i class="icon-trash "></i> Delete
                             </button>
@@ -42,7 +46,7 @@
                     <form asp-controller="AdminProducts" asp-action="AddIngredient"
                           data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
                         <input type="hidden" asp-for="SelectedIngredientId" value="@item.ProduktId" />
-                        @if (Model.IngredientList != null)
+                        @if (Model.Product != null)
                         {
                             <input type="hidden" asp-for="SelectedProductId" value="@Model.Product.MatrattId" />
                         }

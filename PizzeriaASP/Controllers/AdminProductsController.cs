@@ -103,7 +103,7 @@ namespace PizzeriaASP.Controllers
                 Product = new Matratt(),
                 ProductTypes = _productRepository.GetProductTypes(),
                 OptionalIngredientsList = _productRepository.GetAllIngredients(),
-                IngredientList = null
+                IngredientList = GetIngredientList(0)
             };
 
             return View("EditOrAddProduct", model);

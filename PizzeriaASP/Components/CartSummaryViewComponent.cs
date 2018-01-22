@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace PizzeriaASP.Components
