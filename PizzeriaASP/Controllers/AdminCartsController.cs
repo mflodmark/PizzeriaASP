@@ -23,10 +23,7 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult Index()
         {
-            var model = new AdminCartViewModel()
-            {
-                Orders = _orderRepository.Orders.ToList()
-            };
+            var model = GetCarts();
 
             return View(model);
         }
@@ -37,16 +34,28 @@ namespace PizzeriaASP.Controllers
         {
             _orderRepository.DeleteOrder(id);
 
-            return RedirectToAction("Index");
+            var model = GetCarts();
+
+            return PartialView("_AdminCartPartial", model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult UpdateCart(int id)
         {
             _orderRepository.UpdateDeliveryStatus(id, true);
 
-            return RedirectToAction("Index");
+            var model = GetCarts();
+
+            return PartialView("_AdminCartPartial", model);
+        }
+
+        private AdminCartViewModel GetCarts()
+        {
+            var model = new AdminCartViewModel()
+            {
+                Orders = _orderRepository.Orders.ToList()
+            };
+
+            return model;
         }
     }
 }
