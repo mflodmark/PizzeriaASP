@@ -1,21 +1,22 @@
 ﻿@model PizzeriaASP.ViewModels.AdminEditViewModel
-
 @*<div id="div-ingredients" class="div-half">*@
-    <div class="col-sm-6">
-        <table id="table-ingredients" class="table table-striped, table-bordered table-sm">
-            <tr>
-                <th>Current Ingredients</th>
-                <th class="text-center">Action</th>
-            </tr>
-            @foreach (var item in Model.IngredientList)
+<div class="col-sm-6">
+    <table id="table-ingredients" class="table table-striped, table-bordered table-sm">
+        <tr>
+            <th>Current Ingredients</th>
+            <th class="text-center">Action</th>
+        </tr>
+        @if (Model.IngredientList != null)
+        {
+            foreach (var item in Model.IngredientList)
             {
                 <tr>
                     <td>@item.ProduktNamn</td>
                     <td class="text-center">
                         <form asp-controller="AdminProducts" asp-action="RemoveIngredient"
-                                data-ajax="true" data-ajax-method="get" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
-                            <input type="hidden" asp-for="SelectedIngredientId" value ="@item.ProduktId"/>
-                            <input type="hidden" asp-for="SelectedProductId" value="@Model.Product.MatrattId"/>
+                              data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
+                            <input type="hidden" asp-for="SelectedIngredientId" value="@item.ProduktId" />
+                            <input type="hidden" asp-for="SelectedProductId" value="@Model.Product.MatrattId" />
                             <button type="submit" class="btn btn-danger btn-sm">
                                 <i class="icon-trash "></i> Delete
                             </button>
@@ -23,33 +24,37 @@
                     </td>
                 </tr>
             }
-        </table>
+        }
+    </table>
 
-    </div>
-    <div class="col-sm-6">
-        <table class="table table-striped, table-bordered table-sm">
+</div>
+<div class="col-sm-6">
+    <table class="table table-striped, table-bordered table-sm">
+        <tr>
+            <th>Optional Ingredients</th>
+            <th class="text-center">Action</th>
+        </tr>
+        @foreach (var item in Model.OptionalIngredientsList)
+        {
             <tr>
-                <th>Optional Ingredients</th>
-                <th class="text-center">Action</th>
-            </tr>
-            @foreach (var item in Model.OptionalIngredientsList)
-            {
-                <tr>
-                    <td>@item.ProduktNamn</td>
-                    <td class="text-center">
-                        <form asp-controller="AdminProducts" asp-action="AddIngredient"
-                              data-ajax="true" data-ajax-method="get" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
-                            <input type="hidden" asp-for="SelectedIngredientId" value="@item.ProduktId" />
+                <td>@item.ProduktNamn</td>
+                <td class="text-center">
+                    <form asp-controller="AdminProducts" asp-action="AddIngredient"
+                          data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#div-ingredients">
+                        <input type="hidden" asp-for="SelectedIngredientId" value="@item.ProduktId" />
+                        @if (Model.IngredientList != null)
+                        {
                             <input type="hidden" asp-for="SelectedProductId" value="@Model.Product.MatrattId" />
-                            <button type="submit" class="btn btn-success btn-sm">
-                                <i class="icon-save "></i> Add
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+                        }
+                        <button type="submit" class="btn btn-success btn-sm">
+                            <i class="icon-save "></i> Add
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
 
 @*</div>*@
 

@@ -14,6 +14,7 @@
             <th>Typ</th>
             <th>Name</th>
             <th>Besrivning</th>
+            <th>in Orders</th>
             <th class="text-right">Price</th>
             <th class="text-center">Actions</th>
         </tr>
@@ -24,6 +25,7 @@
                 <td>@item.ProductType</td>
                 <td>@item.Product.MatrattNamn</td>
                 <td>@item.Product.Beskrivning</td>
+                <td>@item.Product.BestallningMatratt.Count</td>
                 <td class="text-right">@item.Product.Pris.ToString("c")</td>
                 <td class="text-center">
                     <form asp-action="DeleteProduct" method="post">
@@ -31,7 +33,7 @@
                            asp-route-productId="@item.Product.MatrattId">
                             <i class="icon-edit icon-large"></i> Edit
                         </a>
-                        @if (!item.Product.MatrattProdukt.Any())
+                        @if (!item.Product.BestallningMatratt.Any())
                         {
                             <input type="hidden" name="productId" value="@item.Product.MatrattId"/>
                             <button type="submit" class="btn btn-danger btn-sm">

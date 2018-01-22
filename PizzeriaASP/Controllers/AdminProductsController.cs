@@ -26,11 +26,16 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult Index()
         {
-            var model = _productRepository.Products.Select(p => new AdminIndexViewModel()
-            {
-                Product = p,
-                ProductType = p.MatrattTypNavigation.Beskrivning,
-            }).ToList();
+            var model = _productRepository.Products
+                .Include(p=>p.MatrattTypNavigation)
+                .Select(p => new AdminIndexViewModel()
+                {
+                    Product = p,
+                    ProductType = p.MatrattTypNavigation.Beskrivning,
+                })
+                .OrderBy(x=>x.Product.MatrattTypNavigation.Beskrivning)
+                .ThenBy(p=>p.Product.MatrattNamn)
+                .ToList();
 
             return View(model);
         } 
@@ -98,13 +103,13 @@ namespace PizzeriaASP.Controllers
                 Product = new Matratt(),
                 ProductTypes = _productRepository.GetProductTypes(),
                 OptionalIngredientsList = _productRepository.GetAllIngredients(),
-                IngredientList = new List<Produkt>()
+                IngredientList = null
             };
 
             return View("EditOrAddProduct", model);
         } 
 
-        public IActionResult AddIngredient(AdminEditViewModel vm)
+        public PartialViewResult AddIngredient(AdminEditViewModel vm)
         {
             var ingredients = GetIngredientList(vm.SelectedProductId);
 
@@ -123,12 +128,13 @@ namespace PizzeriaASP.Controllers
             return PartialView("_EditAddIngredientPartial", model);
         }
         
-        public IActionResult RemoveIngredient(AdminEditViewModel vm)
+        public PartialViewResult RemoveIngredient(AdminEditViewModel vm)
         {
             var ingredients = GetIngredientList(vm.SelectedProductId);
 
             var i = _productRepository.GetSingleIngredient(vm.SelectedIngredientId);
 
+            // Check for value in list - Remove doesn't work..
             for (int j = 0; j < ingredients.Count; j++)
             {
                 if (ingredients[j].ProduktId == i.ProduktId)
@@ -138,8 +144,6 @@ namespace PizzeriaASP.Controllers
                 }
                 
             }
-
-            //var b = ingredients.Remove(i);
 
             SetIngredientList(ingredients);
 

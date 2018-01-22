@@ -12,6 +12,7 @@
         <tr>
             <th>Id</th>
             <th>Name</th>
+            <th>in Products</th>
             <th class="text-center">Actions</th>
         </tr>
         @foreach (var item in Model)
@@ -19,6 +20,7 @@
             <tr>
                 <td>@item.ProduktId</td>
                 <td>@item.ProduktNamn</td>
+                <td>@item.MatrattProdukt.Count</td>
                 <td class="text-center">
                     <form asp-controller="AdminIngredients" asp-action="DeleteIngredient" asp-route-id="@item.ProduktId" method="post">
                         <a asp-controller="AdminIngredients" asp-action="EditIngredient" asp-route-id="@item.ProduktId" class="btn btn-sm btn-warning">
