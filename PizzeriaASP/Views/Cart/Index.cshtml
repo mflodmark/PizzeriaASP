@@ -33,10 +33,7 @@
                             <th>Item</th>
                             <th class="text-right">Price</th>
                             <th class="text-right">Subtotal</th>
-                            @if (@Model.CartRebate > 0)
-                            {
-                                <th>Including rebate</th>
-                            }
+                            <th>Including rebate</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -47,10 +44,8 @@
                                 <td class="text-left">@line.Matratt.MatrattNamn</td>
                                 <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
                                 <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
-                                @if (@Model.CartRebate > 0)
-                                {
-                                    <td class="text-right">@((line.Antal * line.Matratt.Pris * 0.8).ToString("c"))</td>
-                                }
+                                <td class="text-right">@((line.Antal * line.Matratt.Pris * 0.8).ToString("c"))</td>
+
                                 <td>
                                     <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
                                         <input type="hidden" name="productId" value="@line.MatrattId" />
@@ -64,21 +59,20 @@
                         }
                     </tbody>
                     <tfoot>
-                        @if (@Model.CartRebate > 0)
-                        {
-                            <tr>
-                                @{ var procent = Model.CartRebate * 100; }
 
-                                <td colspan="4" class="text-right text-danger">Rebate(@procent%):</td>
-                                <td class="text-right text-danger">
-                                    @{
-                                        var value = Convert.ToInt32(@Model.CartTotalValue /
-                                                                    ((1 - @Model.CartRebate)) - @Model.CartTotalValue);
-                                    }
-                                    -@value.ToString("c")
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            @{ var procent = Model.CartRebate * 100; }
+
+                            <td colspan="4" class="text-right text-danger">Rebate(@procent%):</td>
+                            <td class="text-right text-danger">
+                                @{
+                                    var value = Convert.ToInt32(@Model.CartTotalValue /
+                                                                ((1 - @Model.CartRebate)) - @Model.CartTotalValue);
+                                }
+                                -@value.ToString("c")
+                            </td>
+                        </tr>
+
                         @if (@Model.Points >= 100)
                         {
                             <tr>
@@ -87,14 +81,8 @@
                             </tr>
                         }
                         <tr>
-                            @if (@Model.CartRebate > 0)
-                            {
-                                <td colspan="4" class="text-right">Total:</td>
-                            }
-                            else
-                            {
-                                <td colspan="3" class="text-right">Total:</td>
-                            }
+
+                            <td colspan="4" class="text-right">Total:</td>
                             <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
                         </tr>
 

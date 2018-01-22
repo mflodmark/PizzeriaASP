@@ -60,7 +60,14 @@ namespace PizzeriaASP.Controllers
                 {
                     var user = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
 
+                    // Add points for each product bought
                     user.Poang += cart.BestallningMatratt.Sum(x => x.Antal) * 10;
+
+                    // Clear points that have been used
+                    if (user.Poang >= 100)
+                    {
+                        user.Poang -= 100;
+                    }
 
                     _customerRepository.SaveCustomer(user);
 
