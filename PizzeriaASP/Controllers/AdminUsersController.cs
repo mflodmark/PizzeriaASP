@@ -30,21 +30,7 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult Index()
         {
-            var model = new List<AdminUsersIndexViewModel>();
-            var users = _identityRepo.Users.OrderBy(u => u.UserName);
-
-            foreach (var item in users)
-            {
-                var userRoles = _userManager.GetRolesAsync(item).Result;
-
-                var role = userRoles.Count == 0 ? "Not set" : userRoles[0];
-
-                model.Add(new AdminUsersIndexViewModel()
-                {
-                    User = item,
-                    Role = role,
-                });
-            }
+            var model = GetIndexData();
 
             return View(model);
         }
@@ -107,7 +93,7 @@ namespace PizzeriaASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUser(string username)
+        public async Task<PartialViewResult> DeleteUser(string username)
         {
             var user = _identityRepo.GetSingleUser(username);
 
@@ -122,9 +108,31 @@ namespace PizzeriaASP.Controllers
                 }
             }
 
-            return RedirectToAction("Index");
+            var model = GetIndexData();
+
+            return PartialView("_DeleteUserPartial", model);
 
         }
 
+        private List<AdminUsersIndexViewModel> GetIndexData()
+        {
+            var model = new List<AdminUsersIndexViewModel>();
+            var users = _identityRepo.Users.OrderBy(u => u.UserName);
+
+            foreach (var item in users)
+            {
+                var userRoles = _userManager.GetRolesAsync(item).Result;
+
+                var role = userRoles.Count == 0 ? "Not set" : userRoles[0];
+
+                model.Add(new AdminUsersIndexViewModel()
+                {
+                    User = item,
+                    Role = role,
+                });
+            }
+
+            return model;
+        }
     }
 }

@@ -1,0 +1,37 @@
+﻿@model List<PizzeriaASP.ViewModels.AdminUsersIndexViewModel>
+
+<table class="table-bordered table-striped table-hover table-responsive">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Current role</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+
+            <tr>
+                <td>@item.User.UserName</td>
+                <td>@item.Role</td>
+                <td>
+                    <form asp-controller="AdminUsers" asp-action="DeleteUser" asp-route-username="@item.User.UserName"
+                          data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#delete-user">
+                        <a asp-controller="AdminUsers" asp-action="EditRole" asp-route-user="@item.User.UserName"
+                           class="btn btn-sm btn-warning">
+                            <i class="icon-edit"></i> Edit Role
+                        </a>
+                        @if (item.User.UserName != "Admin")
+                        {
+                            <button type="submit" class="btn btn-sm btn-danger">
+                                <i class="icon-delete"></i> Delete User
+                            </button>
+                        }
+
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
