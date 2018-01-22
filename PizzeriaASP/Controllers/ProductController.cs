@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PizzeriaASP.Models;
 using PizzeriaASP.ViewModels;
 using SQLitePCL;
@@ -39,7 +41,10 @@ namespace PizzeriaASP.Controllers
                 .Take(PageSize)
                 .Include(x => x.MatrattProdukt)
                 .ThenInclude(p => p.Produkt);
-            
+
+            var customer = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
+
+
             var model = new ProductsListViewModel
             {
                 Products = products,
@@ -53,10 +58,27 @@ namespace PizzeriaASP.Controllers
                             x.MatrattTypNavigation.Beskrivning == category)
                 },
                 CurrentCategory = category,
-                Customer = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User))
+                Customer = customer,
+                OrderItems = GetCart().BestallningMatratt.Count
         };
 
             return View(model);
+        }
+
+        private Bestallning GetCart()
+        {
+            Bestallning order;
+            if (HttpContext.Session.GetString("Varukorg") == null)
+            {
+                order = new Bestallning();
+            }
+            else
+            {
+                var serializedValue = HttpContext.Session.GetString("Varukorg");
+                order = JsonConvert.DeserializeObject<Bestallning>(serializedValue);
+            }
+
+            return order;
         }
     }
 }

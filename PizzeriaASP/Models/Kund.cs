@@ -48,5 +48,6 @@ namespace PizzeriaASP.Models
         public ICollection<Bestallning> Bestallning { get; set; }
 
         public int Poang { get; set; }
+
     }
 }

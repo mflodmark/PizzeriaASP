@@ -1,34 +1,38 @@
 ﻿
 @using Microsoft.AspNetCore.Identity
 @using PizzeriaASP
-@model PizzeriaASP.Models.Matratt
+@model PizzeriaASP.ViewModels.ProductViewModel
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
 <div class="div-single-product col-sm-5">
-    <h3>@Model.MatrattNamn</h3>
-    <p>@Model.Beskrivning</p>
+    <h3>@Model.Product.MatrattNamn</h3>
+    <p>@Model.Product.Beskrivning</p>
 
     <ul>
-        @foreach (var item in Model.MatrattProdukt)
+        @foreach (var item in Model.Product.MatrattProdukt)
         {
             <li>@item.Produkt.ProduktNamn</li>
         }
     </ul>
 
-    @if (!UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "PremiumUser").Result)
+    @if (UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "PremiumUser").Result
+      && Model.OrderItems >= 3)
     {
-        <h4>@Model.Pris.ToString("c")</h4>
+        // Get user & role
+        var user = UserManager.GetUserAsync(User);
+
+        var userRoles = UserManager.GetRolesAsync(user.Result).Result;
+
+        var price = Convert.ToInt32(Model.Product.Pris * (1 - Model.Product.GetRebate(userRoles[0]))).ToString("C");
+        <h4>(@Model.Product.Pris) @price</h4>
     }
     else
     {
-        { 
-            var price = Convert.ToInt32(Model.Pris * 0.8).ToString("C");
-            <h4>(@Model.Pris) @price</h4>
-        }
-
+        <h4>@Model.Product.Pris.ToString("c")</h4>
     }
-    <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.MatrattId" method="post"
+    <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.Product.MatrattId" method="post"
           data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cart-navbar">
         <button type="submit" class="btn btn-primary">
             <i class="icon-shopping-cart"></i> Add To Cart

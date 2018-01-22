@@ -9,6 +9,7 @@ namespace PizzeriaASP
     {
         private readonly ApplicationDbContext _context;
 
+
         public EFIdentityRepository(ApplicationDbContext context)
         {
             _context = context;
@@ -29,5 +30,7 @@ namespace PizzeriaASP
         {
             return _context.Roles.Find(role);
         }
+
+
     }
 }

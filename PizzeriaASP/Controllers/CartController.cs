@@ -42,14 +42,27 @@ namespace PizzeriaASP.Controllers
 
             var points = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User)).Poang;
 
+            if (cart.BestallningMatratt.Any())
+            {
+                return View(new CartIndexViewModel()
+                {
+                    Cart = cart,
+                    ReturnUrl = returnUrl,
+                    CartTotalValue = cart.ComputeTotalValue(GetUserRole(), points, cart.BestallningMatratt.Sum(p=>p.Antal)),
+                    CartRebate = cart.GetRebate(GetUserRole()),
+                    Points = points
+                });
+            }
+
             return View(new CartIndexViewModel()
             {
                 Cart = cart,
                 ReturnUrl = returnUrl,
-                CartTotalValue = cart.ComputeTotalValue(GetUserRole(), points),
-                CartRebate = cart.GetRebate(GetUserRole()),
+                CartTotalValue = 0,
+                CartRebate = 0,
                 Points = points
             });
+
         }
 
         [HttpPost]
@@ -82,8 +95,7 @@ namespace PizzeriaASP.Controllers
 
             var points = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User)).Poang;
 
-
-            order.Totalbelopp = order.ComputeTotalValue(GetUserRole(), points);
+            order.Totalbelopp = order.ComputeTotalValue(GetUserRole(), points, order.BestallningMatratt.Sum(p => p.Antal));
 
             SetCart(order);
             
@@ -132,7 +144,7 @@ namespace PizzeriaASP.Controllers
                 // Check for points and compute total value
                 var points = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User)).Poang;
 
-                cart.Totalbelopp = cart.ComputeTotalValue(GetUserRole(), points);
+                cart.Totalbelopp = cart.ComputeTotalValue(GetUserRole(), points, cart.BestallningMatratt.Sum(p => p.Antal));
                 
                 // Get orderList
                 var list = cart.BestallningMatratt.ToList();

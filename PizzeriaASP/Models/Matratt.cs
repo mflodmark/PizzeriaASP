@@ -32,5 +32,14 @@ namespace PizzeriaASP.Models
         public MatrattTyp MatrattTypNavigation { get; set; }
         public ICollection<BestallningMatratt> BestallningMatratt { get; set; }
         public ICollection<MatrattProdukt> MatrattProdukt { get; set; }
+
+        public double GetRebate(string role)
+        {
+            if (role.ToLower().Contains("premium"))
+            {
+                return 0.2;
+            }
+            return 0;
+        }
     }
 }

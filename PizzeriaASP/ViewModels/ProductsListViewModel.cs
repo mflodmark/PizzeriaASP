@@ -15,5 +15,7 @@ namespace PizzeriaASP.ViewModels
 
         public Kund Customer { get; set; }
 
+        public int OrderItems { get; set; }
+
     }
 }
