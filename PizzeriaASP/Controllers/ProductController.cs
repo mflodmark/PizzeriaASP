@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaASP.Models;
@@ -15,12 +16,18 @@ namespace PizzeriaASP.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+
 
         public int PageSize = 4;
 
-        public ProductController(IProductRepository context)
+        public ProductController(IProductRepository context, ICustomerRepository customerRepository,
+        UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _productRepository = context;
+            _customerRepository = customerRepository;
         }
 
         public IActionResult List(string category, int productPage = 1)
@@ -46,7 +53,8 @@ namespace PizzeriaASP.Controllers
                             x.MatrattTypNavigation.Beskrivning == category)
                 },
                 CurrentCategory = category,
-            };
+                Customer = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User))
+        };
 
             return View(model);
         }

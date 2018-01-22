@@ -1,4 +1,8 @@
-﻿@model PizzeriaASP.ViewModels.CartIndexViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@using PizzeriaASP
+@model PizzeriaASP.ViewModels.CartIndexViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "Index";
@@ -7,44 +11,138 @@
 @Html.Partial("_H2Layout", "Your Cart")
 
 
+@{
+    var userMgm = await UserManager.GetUserAsync(User);
+
+    bool premium;
+
+    premium = SignInManager.IsSignedIn(User) && SignInManager.UserManager.IsInRoleAsync(userMgm, "PremiumUser").Result;
+}
+
+
+
 <div class="div-min-flex">
-    <div id="cart-div" class="col-sm-12">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Quantity</th>
-                    <th>Item</th>
-                    <th class="text-right">Price</th>
-                    <th class="text-right">Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var line in Model.Cart.BestallningMatratt)
-                {
-                    <tr>
-                        <td class="text-center">@line.Antal</td>
-                        <td class="text-left">@line.Matratt.MatrattNamn</td>
-                        <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
-                        <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
-                        <td>
-                            <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
-                                <input type="hidden" name="productId" value="@line.Matratt.MatrattId" />
-                                <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="icon-trash icon-large"></i> Delete
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" class="text-right">Total:</td>
-                    <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
-                </tr>
-            </tfoot>
-        </table>
+    <div class="row">
+        <div id="cart-div" class="col-sm-12">
+            @if (premium)
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Item</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Subtotal</th>
+                            @if (@Model.CartRebate > 0)
+                            {
+                                <th>Including rebate</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var line in Model.Cart.BestallningMatratt)
+                        {
+                            <tr>
+                                <td class="text-center">@line.Antal</td>
+                                <td class="text-left">@line.Matratt.MatrattNamn</td>
+                                <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
+                                <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
+                                @if (@Model.CartRebate > 0)
+                                {
+                                    <td class="text-right">@((line.Antal * line.Matratt.Pris * 0.8).ToString("c"))</td>
+                                }
+                                <td>
+                                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                        <input type="hidden" name="productId" value="@line.MatrattId" />
+                                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="icon-trash icon-large"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        @if (@Model.CartRebate > 0)
+                        {
+                            <tr>
+                                @{ var procent = Model.CartRebate * 100; }
+
+                                <td colspan="4" class="text-right text-danger">Rebate(@procent%):</td>
+                                <td class="text-right text-danger">
+                                    @{
+                                        var value = Convert.ToInt32(@Model.CartTotalValue /
+                                                                    ((1 - @Model.CartRebate)) - @Model.CartTotalValue);
+                                    }
+                                    -@value.ToString("c")
+                                </td>
+                            </tr>
+                        }
+                        @if (@Model.Points >= 100)
+                        {
+                            <tr>
+                                <td colspan="4" class="text-right text-danger">Cheapest product for free</td>
+                                <td class="text-danger">-@Model.Cart.BestallningMatratt.Min(p => p.Matratt.Pris).ToString("c")</td>
+                            </tr>
+                        }
+                        <tr>
+                            @if (@Model.CartRebate > 0)
+                            {
+                                <td colspan="4" class="text-right">Total:</td>
+                            }
+                            else
+                            {
+                                <td colspan="3" class="text-right">Total:</td>
+                            }
+                            <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Quantity</th>
+                            <th>Item</th>
+                            <th class="text-right">Price</th>
+                            <th class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var line in Model.Cart.BestallningMatratt)
+                        {
+                            <tr>
+                                <td class="text-center">@line.Antal</td>
+                                <td class="text-left">@line.Matratt.MatrattNamn</td>
+                                <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
+                                <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
+                                <td>
+                                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                        <input type="hidden" name="productId" value="@line.MatrattId" />
+                                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="icon-trash icon-large"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-right">Total:</td>
+                            <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+                        </tr>
+
+                    </tfoot>
+                </table>
+            }
+
+        </div>
     </div>
 
     <div class="text-center col-sm-12">
@@ -54,6 +152,7 @@
             <button type="submit" class="btn btn-success">
                 <i class="icon-shopping-cart icon-large"></i> Place order
             </button>
+            <div asp-validation-summary="All"></div>
         </form>
     </div>
 </div>

@@ -13,5 +13,7 @@ namespace PizzeriaASP.ViewModels
 
         public string CurrentCategory { get; set; }
 
+        public Kund Customer { get; set; }
+
     }
 }

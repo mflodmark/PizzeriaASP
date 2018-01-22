@@ -35,7 +35,7 @@ namespace PizzeriaASP.Controllers
         {
             var cart = GetCart();
 
-            if (!cart.Any())
+            if (!cart.BestallningMatratt.Any())
             {
                 ModelState.AddModelError("", "Sorry, your cart is empty!");
             }
@@ -45,15 +45,13 @@ namespace PizzeriaASP.Controllers
             {
                 var customer = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
 
-                var newOrder = new Bestallning
-                {
-                    BestallningDatum = DateTime.Now,
-                    KundId = customer.KundId,
-                    Levererad = false,
-                    Totalbelopp = cart.Sum(e => e.Matratt.Pris * e.Antal),
-                };
+                cart.BestallningDatum = DateTime.Now;
+                cart.KundId = customer.KundId;
+                cart.Levererad = false;
 
-                _orderRepository.SaveOrder(newOrder, cart);
+                var orderList = cart.BestallningMatratt.ToList();
+                
+                _orderRepository.SaveOrder(cart, orderList);
 
                 // Add points to Premium users
                 var userMgm = await _userManager.GetUserAsync(User);
@@ -62,7 +60,7 @@ namespace PizzeriaASP.Controllers
                 {
                     var user = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
 
-                    user.Poang += cart.Sum(x => x.Antal) * 10;
+                    user.Poang += cart.BestallningMatratt.Sum(x => x.Antal) * 10;
 
                     _customerRepository.SaveCustomer(user);
 
@@ -70,12 +68,13 @@ namespace PizzeriaASP.Controllers
                 
 
                 // Add values to pass to order confirmation
-                newOrder.Kund = customer;
-                newOrder.BestallningMatratt = cart;
+                cart.Kund = customer;
+                cart.BestallningMatratt = orderList;
+                
 
                 HttpContext.Session.Clear();
 
-                return View("Completed", newOrder);               
+                return View("Completed", cart);               
             }
 
             return RedirectToAction("Index","Cart");
@@ -86,20 +85,20 @@ namespace PizzeriaASP.Controllers
             return View(order);
         }
 
-        private List<BestallningMatratt> GetCart()
+        private Bestallning GetCart()
         {
-            List<BestallningMatratt> prodList;
+            Bestallning order;
             if (HttpContext.Session.GetString("Varukorg") == null)
             {
-                prodList = new List<BestallningMatratt>();
+                order = new Bestallning();
             }
             else
             {
                 var serializedValue = HttpContext.Session.GetString("Varukorg");
-                prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serializedValue);
+                order = JsonConvert.DeserializeObject<Bestallning>(serializedValue);
             }
 
-            return prodList;
+            return order;
         }
 
     }

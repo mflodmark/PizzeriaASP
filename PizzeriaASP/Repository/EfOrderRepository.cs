@@ -24,6 +24,8 @@ namespace PizzeriaASP
 
         public void SaveOrder(Bestallning order, List<BestallningMatratt> orderList)
         {
+            order.BestallningMatratt = null;
+
             if (order.BestallningId == 0)
             {
                 // Add new product

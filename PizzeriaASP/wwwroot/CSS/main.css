@@ -133,6 +133,12 @@ input {
     right: 0;
 }
 
+.div-single-product h4 {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 .div-single-product ul {
     list-style-type: none;
     margin: 0;

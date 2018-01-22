@@ -1,6 +1,9 @@
 ﻿
-@using PizzeriaASP.Infrastructure
+@using Microsoft.AspNetCore.Identity
+@using PizzeriaASP
 @model PizzeriaASP.Models.Matratt
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 <div class="div-single-product col-sm-5">
     <h3>@Model.MatrattNamn</h3>
@@ -13,9 +16,20 @@
         }
     </ul>
 
-    <h4>@Model.Pris.ToString("c")</h4>
+    @if (!UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "PremiumUser").Result)
+    {
+        <h4>@Model.Pris.ToString("c")</h4>
+    }
+    else
+    {
+        { 
+            var price = Convert.ToInt32(Model.Pris * 0.8).ToString("C");
+            <h4>@Model.Pris => <span class="text-danger">@price</span></h4>
+        }
+
+    }
     <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.MatrattId" method="post"
-          data-ajax="true" data-ajax="POST" data-ajax-mode="replace" data-ajax-update="#cart-navbar">
+          data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cart-navbar">
         <button type="submit" class="btn btn-primary">
             <i class="icon-shopping-cart"></i> Add To Cart
         </button>

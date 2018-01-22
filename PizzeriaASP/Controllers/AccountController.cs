@@ -53,7 +53,7 @@ namespace PizzeriaASP.Controllers
                 if (result.Succeeded)
                 {
                     //Om inloggningen gick bra visas startsidan
-                    return RedirectToAction("LoggedInIndex", "Home");
+                    return RedirectToAction("List", "Product");
                 }
             }
 
@@ -127,7 +127,7 @@ namespace PizzeriaASP.Controllers
 
                     _customerRepository.SaveCustomer(register.Customer);
 
-                    return RedirectToAction("LoggedInIndex", "Home", register.Customer.KundId);
+                    return RedirectToAction("List", "Product");
                 }
             }
 

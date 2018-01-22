@@ -1,5 +1,9 @@
 ﻿
+@using Microsoft.AspNetCore.Identity
+@using PizzeriaASP
 @model PizzeriaASP.ViewModels.ProductsListViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "List";
@@ -7,23 +11,41 @@
 
 @Html.Partial("_H2Layout", "Products")
 
-<div id="div-products" class="row m-1 p-1">
-    <div id="categories" class="col-sm-3">
-        @await Component.InvokeAsync("FilteringMenu")
-    </div>
-    <div class="col-sm-9">
-        @foreach (var p in Model.Products)
-        {
-            @Html.Partial("_ProductSummary", p)
-        }
-        <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-             page-class="btn" page-class-normal="btn-secondary"
-             page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
-             class="btn-group m-1">
 
+@{
+    var userMgm = await UserManager.GetUserAsync(User);
+
+    bool premium;
+
+    premium = SignInManager.IsSignedIn(User) && SignInManager.UserManager.IsInRoleAsync(userMgm, "PremiumUser").Result;
+}
+
+@if (premium)
+{
+    <div class="alert alert-info alert-dismissable fade in text-center">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>BUY 1 PRODUCT GET 10 POINTS. 100p = 1 FREE PRODUCT!</strong> <br/>
+        @Model.Customer.Namn currently have @Model.Customer.Poang points. 
+    </div>
+}
+
+    <div id="div-products" class="row m-1 p-1">
+        <div id="categories" class="col-sm-2">
+            @await Component.InvokeAsync("FilteringMenu")
+        </div>
+        <div class="col-sm-10">
+            @foreach (var p in Model.Products)
+            {
+                @Html.Partial("_ProductSummary", p)
+            }
+            <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                 page-class="btn" page-class-normal="btn-secondary"
+                 page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
+                 class="btn-group m-1">
+
+            </div>
         </div>
     </div>
-</div>
 
 
 

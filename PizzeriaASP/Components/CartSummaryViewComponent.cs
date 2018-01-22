@@ -14,18 +14,16 @@ namespace PizzeriaASP.Components
 
         private Bestallning GetCart()
         {
-            List<BestallningMatratt> prodList;
+            Bestallning order;
             if (HttpContext.Session.GetString("Varukorg") == null)
             {
-                prodList = new List<BestallningMatratt>();
+                order = new Bestallning();
             }
             else
             {
                 var serializedValue = HttpContext.Session.GetString("Varukorg");
-                prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serializedValue);
+                order = JsonConvert.DeserializeObject<Bestallning>(serializedValue);
             }
-
-            var order = new Bestallning() {BestallningMatratt = prodList};
 
             return order;
         }

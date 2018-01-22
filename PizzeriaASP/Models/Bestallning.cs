@@ -29,5 +29,43 @@ namespace PizzeriaASP.Models
 
         public ICollection<BestallningMatratt> BestallningMatratt { get; set; }
 
+        public int ComputeTotalValue(string role, int points)
+        {
+            var totalValue = BestallningMatratt.Sum(e => e.Matratt.Pris * e.Antal);
+
+            if (role.ToLower().Contains("premium"))
+            {
+                var rebate = GetRebate(role);
+                var totalValueIncRebate = Convert.ToInt32(totalValue * (1 - rebate));
+
+                if (points >= 100)
+                {
+                    var cheapestPizzaForFree = BestallningMatratt.Min(p => p.Matratt.Pris);
+
+                    var totalValueIncPoints = totalValueIncRebate - cheapestPizzaForFree;
+
+                    if (totalValueIncPoints < 0)
+                    {
+                        return 0;
+                    }
+                    
+                    return totalValueIncPoints;
+                }
+
+                return totalValueIncRebate;
+            }
+
+            return totalValue;
+        }
+
+        public double GetRebate(string role)
+        {
+            if (role.ToLower().Contains("premium"))
+            {
+                return 0.2;
+            }
+            return 0;
+        }
+
     }
 }

@@ -19,24 +19,36 @@ namespace PizzeriaASP.Controllers
     public class CartController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly IIdentityRepository _identityRepo;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(IProductRepository context)
+
+        public CartController(IProductRepository context, UserManager<ApplicationUser> userManager,
+            IIdentityRepository identityRepo, ICustomerRepository customerRepository)
         {
+            _customerRepository = customerRepository;
+            _identityRepo = identityRepo;
             _productRepository = context;
+            _userManager = userManager;
         }
 
         public ViewResult Index(string returnUrl)
         {
             // Get session value
-            var prodList = GetCart();
+            var order = GetCart();
 
-            var cart = new Bestallning() {BestallningMatratt = prodList};
+            var cart = order;
+
+            var points = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User)).Poang;
 
             return View(new CartIndexViewModel()
             {
                 Cart = cart,
                 ReturnUrl = returnUrl,
-                CartTotalValue = prodList.Sum(e => e.Matratt.Pris * e.Antal)
+                CartTotalValue = cart.ComputeTotalValue(GetUserRole(), points),
+                CartRebate = cart.GetRebate(GetUserRole()),
+                Points = points
             });
         }
 
@@ -45,60 +57,64 @@ namespace PizzeriaASP.Controllers
         public PartialViewResult AddToCart(int productId, string returnUrl)
         {
             var product = _productRepository.GetSingleProduct(productId);
-                
-            var prodList = GetCart();
+
+            var order = GetCart();
 
             // Check if product exist in cart => add qty 1
-            if (prodList.Any(x => x.MatrattId == productId))
+            if (order.BestallningMatratt.Any(x => x.MatrattId == productId))
             {
-                prodList.Single(x => x.MatrattId == productId).Antal += 1;
+                order.BestallningMatratt.Single(x => x.MatrattId == productId).Antal += 1;
             }
             else
             {
                 var newProd = new BestallningMatratt()
                 {
                     Antal = 1,
-                    Matratt = product,
+                    Matratt = new Matratt()
+                    {
+                        MatrattNamn = product.MatrattNamn,
+                        Pris = product.Pris
+                    }, // Selfreference without this line
                     MatrattId = productId
                 };
-                prodList.Add(newProd);
+                order.BestallningMatratt.Add(newProd);
             }
 
-            SetCart(prodList);
+            var points = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User)).Poang;
 
-            var cart = new Bestallning()
-            {
-                BestallningMatratt = prodList
-            };
 
+            order.Totalbelopp = order.ComputeTotalValue(GetUserRole(), points);
+
+            SetCart(order);
+            
             var model = new CartIndexViewModel()
             {
-                Cart = cart,
-                CartTotalValue = cart.BestallningMatratt.Sum(e => e.Matratt.Pris * e.Antal)
+                Cart = order,
+                CartTotalValue = order.Totalbelopp
             };
 
             return PartialView("_CartSumPartial", model);
         }
 
-        private List<BestallningMatratt> GetCart()
+        private Bestallning GetCart()
         {
-            List<BestallningMatratt> prodList;
+            Bestallning order;
             if (HttpContext.Session.GetString("Varukorg") == null)
             {
-                prodList = new List<BestallningMatratt>();
+                order = new Bestallning();
             }
             else
             {
                 var serializedValue = HttpContext.Session.GetString("Varukorg");
-                prodList = JsonConvert.DeserializeObject<List<BestallningMatratt>>(serializedValue);
+                order = JsonConvert.DeserializeObject<Bestallning>(serializedValue);
             }
             
-            return prodList;
+            return order;
         }
 
-        private void SetCart(List<BestallningMatratt> newList)
+        private void SetCart(Bestallning newOrder)
         {
-            var temp = JsonConvert.SerializeObject(newList);
+            var temp = JsonConvert.SerializeObject(newOrder);
             HttpContext.Session.SetString("Varukorg", temp);
         }
 
@@ -113,12 +129,32 @@ namespace PizzeriaASP.Controllers
             {
                 var cart = GetCart();
 
-                cart.RemoveAll(p => p.Matratt.MatrattId == product.MatrattId);
+                // Check for points and compute total value
+                var points = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User)).Poang;
+
+                cart.Totalbelopp = cart.ComputeTotalValue(GetUserRole(), points);
+                
+                // Get orderList
+                var list = cart.BestallningMatratt.ToList();
+
+                list.RemoveAll(p => p.MatrattId == product.MatrattId);
+
+                cart.BestallningMatratt = list;
 
                 SetCart(cart);
             }
 
             return RedirectToAction("Index", new { returnUrl });
+        }
+
+        private string GetUserRole()
+        {
+            // Get user & role
+            var getUser = _identityRepo.GetSingleUser(_userManager.GetUserName(User));
+
+            var userRoles = _userManager.GetRolesAsync(getUser).Result;
+
+            return userRoles[0];
         }
 
     }
