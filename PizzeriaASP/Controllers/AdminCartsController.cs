@@ -52,7 +52,7 @@ namespace PizzeriaASP.Controllers
         {
             var model = new AdminCartViewModel()
             {
-                Orders = _orderRepository.Orders.ToList()
+                Orders = _orderRepository.Orders.OrderByDescending(p=>p.BestallningDatum).ToList()
             };
 
             return model;

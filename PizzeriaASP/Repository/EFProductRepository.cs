@@ -24,7 +24,10 @@ namespace PizzeriaASP
             .Include(p=>p.MatrattProdukt)
             .ThenInclude(p=>p.Matratt);
 
-        public IQueryable<MatrattTyp> Categories => _context.MatrattTyp;
+        public IQueryable<MatrattTyp> Categories => _context.MatrattTyp
+            .Distinct()
+            .OrderBy(x => x.Beskrivning);
+
 
         public IQueryable<Produkt> Ingredients => _context.Produkt;
 

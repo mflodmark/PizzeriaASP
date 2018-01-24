@@ -33,8 +33,7 @@ namespace PizzeriaASP.Controllers
                     Product = p,
                     ProductType = p.MatrattTypNavigation.Beskrivning,
                 })
-                .OrderBy(x=>x.Product.MatrattTypNavigation.Beskrivning)
-                .ThenBy(p=>p.Product.MatrattNamn)
+                .OrderBy(p=>p.Product.MatrattNamn)
                 .ToList();
 
             return View(model);

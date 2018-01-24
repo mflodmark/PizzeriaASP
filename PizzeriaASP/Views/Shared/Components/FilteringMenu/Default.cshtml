@@ -3,15 +3,15 @@
 
 <div class="btn btn-group-vertical">
     
-    <a class="btn @("Home" == @Model.CurrentCategory ? "btn-primary" : "btn-secondary")"
+    <a class="btn @("Home" == @Model.CurrentCategory ? "btn-secondary" : "btn-primary")"
        asp-controller="Product" asp-action="List" asp-route-category="">
-        Home
+        All
     </a>
 
 
     @foreach (string category in Model.Category)
     {
-        <a class="btn @(category == @Model.CurrentCategory ? "btn-primary" : "btn-secondary")"
+        <a class="btn @(category == @Model.CurrentCategory ? "btn-secondary" : "btn-primary")"
            asp-controller="Product" asp-action="List" asp-route-category="@category"
            asp-route-productPage="1">
             @category

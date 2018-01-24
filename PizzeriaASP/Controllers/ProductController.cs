@@ -59,8 +59,10 @@ namespace PizzeriaASP.Controllers
                 },
                 CurrentCategory = category,
                 Customer = customer,
-                OrderItems = GetCart().BestallningMatratt.Count
-        };
+                OrderItems = GetCart().BestallningMatratt.Count,
+                Categories = _productRepository.Categories
+
+            };
 
             return View(model);
         }

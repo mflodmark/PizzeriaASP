@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using PizzeriaASP
-@inject SignInManager<ApplicationUser> SignInManager 
+@inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 @model PizzeriaASP.Models.Kund
@@ -9,49 +9,70 @@
     ViewData["Title"] = "Index";
 }
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
+<head>
+    <link href="~/CSS/home.css" rel="stylesheet" type="text/css" />
+</head>
 
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-        <div class="item active">
-            <img src="~/Images/pizza2.jpg" alt="Pizza" style="width:100%; height: 700px;"/>
-            <div class="carousel-caption">
-                <h3><strong>#1</strong> pizzas on TripAdvisor</h3>
-                <p>Take a bite!</p>
-            </div>
-        </div>
+<div id="div-cover">
+    <div class="block"></div>
+    <div class="text">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                <li data-target="#myCarousel" data-slide-to="1"></li>
+                <li data-target="#myCarousel" data-slide-to="2"></li>
+            </ol>
 
-        <div class="item">
-            <img src="~/Images/pasta.jpg" alt="Pasta" style="width:100%;height: 700px;"/>
-            <div class="carousel-caption">
-                <h3><strong>Top choice</strong> pastas in Lonely Planet</h3>
-                <p>Grab in!</p>
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <a asp-controller="Product" asp-action="List" asp-route-category="Pizza">
+                        <img src="~/Images/pizza2.jpg" alt="Pizza"/>
+                    </a>
+                    <div class="carousel-caption">
+                        <h3><strong>#1</strong> pizzas on TripAdvisor
+                        </h3>
+                        <p>Take a bite!</p>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <a asp-controller="Product" asp-action="List" asp-route-category="Pasta">
+                        <img src="~/Images/pasta.jpg" alt="Pasta" />
+                    </a>
+                        <div class="carousel-caption">
+                            <h3>
+                                <strong>Top choice</strong> pastas in Lonely Planet
+                            </h3>
+                            <p>Grab in!</p>
+                        </div>
+</div>
+
+                <div class="item">
+                    <a asp-controller="Product" asp-action="List" asp-route-category="Sallad">
+                        <img src="~/Images/sallad.jpg" alt="Sallad" />
+                    </a>
+                        <div class="carousel-caption">
+                            <h3>
+                                <strong>Worldclass</strong> sallads
+                            </h3>
+                            <p>Superfresh!</p>
+                        </div>
+</div>
+
             </div>
+
+            <!-- Left and right controls -->
+            <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-    
-        <div class="item">
-            <img src="~/Images/sallad.jpg" alt="Sallad" style="width:100%;height: 700px;"/>
-            <div class="carousel-caption">
-                <h3><strong>Worldclass</strong> sallads</h3>
-                <p>Superfresh!</p>
-            </div>
-        </div>
-  
     </div>
-
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    
 </div>
