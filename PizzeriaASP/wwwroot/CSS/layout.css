@@ -39,7 +39,7 @@
     font-family: 'PT Serif', serif;
 }
 
-.nav a, .nav a:visited, .nav a:active, .nav .icon-cart span, #cart-navbar a {
+.nav a, .nav a:visited, .nav a:active, .nav .icon-cart span, #cart-navbar a, #logo {
     font-family: 'Just Another Hand', cursive;
     font-weight: bold;
     font-size: 26px;
@@ -57,11 +57,12 @@
     position: fixed;
     width: 100%;
     background-color: #ecf0f1;
+    margin: 0;
 }
 
 
 #main {
-    margin-top: 84px;
+    /*margin-top: 56px;*/
     min-height: 600px;
     background-image: url('../images/pizza.jpg');
     background-repeat: no-repeat;
@@ -74,8 +75,8 @@
     background-image: none;
 }
 
-#logo a{
-    font-size: 52px;
+#logo{
+    font-size: 40px;
 }
 
 
@@ -91,5 +92,10 @@
 
 .dropdown:hover .dropdown-menu {
     display: block;
+}
+
+body {
+    margin-top: 0;
+    padding: 0;
 }
 

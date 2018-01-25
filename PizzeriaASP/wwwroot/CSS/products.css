@@ -1,0 +1,75 @@
+﻿#div-products {
+    background-color: white;
+    opacity: 0.9;
+    margin: 0;
+    margin-top: 56px;
+}
+
+
+
+#categories .btn-secondary, #btn-group a, .btn-first .btn-secondary {
+    background-color: #3c40c6;
+    border-color: #3c40c6;
+    color: white;
+}
+
+#categories a:hover, #btn-group a:hover, #btn-group .btn-primary, #categories .btn-primary {
+    background-color: #ff5e57;
+    border-color: #ff5e57;
+}
+
+.div-single-product {
+    border-radius: 10px;
+    margin: 10px;
+    padding: 5px;
+    height: 200px;
+    border: solid 5px #575fcf;
+}
+
+.div-single-product button {
+    position: absolute;
+    top: 15px;
+    right: 30px;
+}
+
+.div-single-product h4 {
+    position: absolute;
+    bottom: 15px;
+    right: 35px;
+}
+
+.div-single-product ul {
+    list-style-type: none;
+    margin: 0;
+    overflow: hidden;
+}
+
+.div-single-product li {
+    float: left;
+    padding: 5px;
+    margin: 5px;
+    border: 1px solid #404040;
+    border-radius: 2px;
+}
+
+.div-single-product li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+.div-single-product button, .div-single-product button:visited {
+    background-color: #575fcf;
+    border-radius: 0 3px 0 10px;
+    border-color: #575fcf;
+}
+
+.div-single-product button:hover, .div-single-product button:active {
+    background-color: #ffa801;
+    border-color: #ffa801;
+}
+
+
+

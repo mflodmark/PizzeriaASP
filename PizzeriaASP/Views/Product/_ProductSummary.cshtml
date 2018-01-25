@@ -5,37 +5,39 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+    
+<div class="col-sm-5">
+    <div class="div-single-product">
+        <h3>@Model.Product.MatrattNamn</h3>
+        <p>@Model.Product.Beskrivning</p>
 
-<div class="div-single-product col-sm-5">
-    <h3>@Model.Product.MatrattNamn</h3>
-    <p>@Model.Product.Beskrivning</p>
+        <ul>
+            @foreach (var item in Model.Product.MatrattProdukt)
+            {
+                <li>@item.Produkt.ProduktNamn</li>
+            }
+        </ul>
 
-    <ul>
-        @foreach (var item in Model.Product.MatrattProdukt)
+        @if (UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "PremiumUser").Result
+            && Model.OrderItems >= 3)
         {
-            <li>@item.Produkt.ProduktNamn</li>
+            // Get user & role
+            var user = UserManager.GetUserAsync(User);
+
+            var userRoles = UserManager.GetRolesAsync(user.Result).Result;
+
+            var price = Convert.ToInt32(Model.Product.Pris * (1 - Model.Product.GetRebate(userRoles[0]))).ToString("C");
+            <h4>(@Model.Product.Pris) @price</h4>
         }
-    </ul>
-
-    @if (UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "PremiumUser").Result
-      && Model.OrderItems >= 3)
-    {
-        // Get user & role
-        var user = UserManager.GetUserAsync(User);
-
-        var userRoles = UserManager.GetRolesAsync(user.Result).Result;
-
-        var price = Convert.ToInt32(Model.Product.Pris * (1 - Model.Product.GetRebate(userRoles[0]))).ToString("C");
-        <h4>(@Model.Product.Pris) @price</h4>
-    }
-    else
-    {
-        <h4>@Model.Product.Pris.ToString("c")</h4>
-    }
-    <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.Product.MatrattId" method="post"
-          data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cart-navbar">
-        <button type="submit" class="btn btn-primary">
-            <i class="icon-shopping-cart"></i> Add To Cart
-        </button>
-    </form>
+        else
+        {
+            <h4>@Model.Product.Pris.ToString("c")</h4>
+        }
+        <form asp-controller="Cart" asp-action="AddToCart" asp-route-productId="@Model.Product.MatrattId" method="post"
+              data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#cart-navbar">
+            <button type="submit" class="btn btn-primary">
+                <i class="icon-shopping-cart"></i> Add To Cart
+            </button>
+        </form>
+    </div>
 </div>

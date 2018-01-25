@@ -1,12 +1,12 @@
 ﻿#myCarousel {
-    width: 50%;
-    margin: 50px auto;
-    max-height: 350px;
+    width: 70%;
+    margin: 56px auto;
+    max-height: 500px;
 }
 
 #myCarousel img{
     width: 100%;
-    max-height: 350px;
+    max-height: 500px;
     height: auto;
     border-radius: 5px;
 }
@@ -16,7 +16,7 @@
 }
 
 #div-cover {
-    margin-top: 80px;
+    margin-top: 56px;
     height: 680px;
     width: 100%;
 }

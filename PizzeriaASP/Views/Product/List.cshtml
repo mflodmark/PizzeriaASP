@@ -21,16 +21,21 @@
     premium = SignInManager.IsSignedIn(User) && SignInManager.UserManager.IsInRoleAsync(userMgm, "PremiumUser").Result;
 }
 
+<head>
+    <link href="~/CSS/products.css" rel="stylesheet" />
+</head>
+
+
 @if (premium)
 {
-    <div class="alert alert-info alert-dismissable fade in text-center">
+    <div class="alert alert-info alert-dismissable fade in text-center" id="info">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
         <strong>BUY 1 PRODUCT GET 10 POINTS. 100p = 1 FREE PRODUCT!</strong> <br/>
         @Model.Customer.Namn currently have @Model.Customer.Poang points. 
     </div>
 }
 
-    <div id="div-products" class="row m-1 p-1">
+    <div id="div-products" class="row">
         <div id="categories" class="col-sm-2">
             @await Component.InvokeAsync("FilteringMenu")
         </div>
@@ -46,7 +51,7 @@
             <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
                  page-class="btn" page-class-normal="btn-secondary"
                  page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
-                 class="btn-group m-1">
+                 class="btn-group m-1 col-sm-5" id="btn-group">
 
             </div>
         </div>
