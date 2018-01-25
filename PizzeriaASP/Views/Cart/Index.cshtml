@@ -24,70 +24,134 @@
 
 
     <div class="div-min-flex">
-        <div class="row">
-            <div id="cart-div" class="col-sm-12">
-                @if (premium)
+        <div class="col-sm-8">
+            <div id="cart-div">
+                @if (premium && Model.Cart.BestallningMatratt.Sum(p=>p.Antal) >= 3)
                 {
                     <table class="table table-bordered table-striped">
                         <thead>
-                        <tr>
-                            <th>Quantity</th>
-                            <th>Item</th>
-                            <th class="text-right">Price</th>
-                            <th class="text-right">Subtotal</th>
-                            <th>Including rebate</th>
-                        </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Item</th>
+                                <th class="text-right">Price</th>
+                                <th class="text-right">Rebate</th>
+                                <th class="text-right">Subtotal</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach (var line in Model.Cart.BestallningMatratt)
-                        {
-                            <tr>
-                                <td class="text-center">@line.Antal</td>
-                                <td class="text-left">@line.Matratt.MatrattNamn</td>
-                                <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
-                                <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
-                                <td class="text-right">@((line.Antal * line.Matratt.Pris * (1 - @Model.CartRebate)).ToString("c"))</td>
+                            @foreach (var line in Model.Cart.BestallningMatratt)
+                            {
+                                <tr>
+                                    <td class="text-center">@line.Antal</td>
+                                    <td class="text-left">@line.Matratt.MatrattNamn</td>
+                                    <td class="text-right">(@line.Matratt.Pris) @((line.Matratt.Pris * (1 - @Model.CartRebate)).ToString("c"))</td>
+                                    <td class="text-right">@(line.Matratt.Pris - @line.Matratt.Pris * (1 - @Model.CartRebate)) * @line.Antal = @(line.Antal * (@line.Matratt.Pris - @line.Matratt.Pris * (1 - @Model.CartRebate)))</td>
+                                    <td class="text-right">(@(line.Antal * line.Matratt.Pris)) @((line.Antal * line.Matratt.Pris * (1 - @Model.CartRebate)).ToString("c"))</td>
 
-                                <td>
-                                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
-                                        <input type="hidden" name="productId" value="@line.MatrattId"/>
-                                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl"/>
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            <i class="icon-trash icon-large"></i> Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
+                                    <td>
+                                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                            <input type="hidden" name="productId" value="@line.MatrattId" />
+                                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="icon-trash icon-large"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                         <tfoot>
+                            @if (@Model.Points + Model.Cart.BestallningMatratt.Sum(p => p.Antal) * 10 >= 100)
+                            {
+                                <tr>
+                                    @{ var procent = Model.CartRebate * 100; }
 
-                        <tr>
-                            @{ var procent = Model.CartRebate * 100; }
+                                    <td colspan="3" class="text-right text-danger">Rebate(@procent%):</td>
+                                    <td class="text-right text-danger">
+                                        @{
+                                            var value = Convert.ToInt32((@Model.Cart.BestallningMatratt.Sum(p => p.Matratt.Pris * p.Antal) -
+                                                                         @Model.Cart.ComputeRebateProduct("PremiumUser")) *
+                                                                        (@Model.CartRebate));
+                                        }
+                                        -@value.ToString("c")
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-right text-danger">Cheapest product for free</td>
+                                    <td class="text-right text-danger">-@Model.Cart.ComputeRebateProduct("PremiumUser").ToString("c")</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                
+                                <tr>
+                                    @{ var procent = Model.CartRebate * 100; }
 
-                            <td colspan="4" class="text-right text-danger">Rebate(@procent%):</td>
-                            <td class="text-right text-danger">
-                                @{
-                                    var value = Convert.ToInt32((@Model.Cart.BestallningMatratt.Sum(p=>p.Matratt.Pris * p.Antal)-
-                                        @Model.Cart.ComputeRebateProduct("PremiumUser"))* 
-                                        (@Model.CartRebate));
-                                }
-                                -@value.ToString("c")
-                            </td>
-                        </tr>
-
-                        @if (@Model.Points + Model.Cart.BestallningMatratt.Sum(p=>p.Antal) * 10 >= 100)
-                        {
+                                    <td colspan="3" class="text-right text-danger">Rebate(@procent%):</td>
+                                    <td class="text-right text-danger">
+                                        @{
+                                            var value = Convert.ToInt32((@Model.Cart.BestallningMatratt.Sum(p => p.Matratt.Pris * p.Antal)
+                                                                          *
+                                                                        (@Model.CartRebate)));
+                                        }
+                                        -@value.ToString("c")
+                                    </td>
+                                </tr>
+                            }
                             <tr>
-                                <td colspan="4" class="text-right text-danger">Cheapest product for free</td>
-                                <td class="text-danger">-@Model.Cart.ComputeRebateProduct("PremiumUser").ToString("c")</td>
-                            </tr>
-                        }
-                        <tr>
 
-                            <td colspan="4" class="text-right">Total:</td>
-                            <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
-                        </tr>
+                                <td colspan="3" class="text-right">Total:</td>
+                                <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
+                else if (premium)
+                {
+
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Item</th>
+                                <th class="text-right">Price</th>
+                                <th class="text-right">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var line in Model.Cart.BestallningMatratt)
+                            {
+                                <tr>
+                                    <td class="text-center">@line.Antal</td>
+                                    <td class="text-left">@line.Matratt.MatrattNamn</td>
+                                    <td class="text-right">@line.Matratt.Pris.ToString("c") 
+                                    <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
+
+                                    <td>
+                                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                            <input type="hidden" name="productId" value="@line.MatrattId" />
+                                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="icon-trash icon-large"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            @if (@Model.Points + Model.Cart.BestallningMatratt.Sum(p => p.Antal) * 10 >= 100)
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-right text-danger">Cheapest product for free</td>
+                                    <td class="text-danger">-@Model.Cart.ComputeRebateProduct("PremiumUser").ToString("c")</td>
+                                </tr>
+                            }
+                            <tr>
+
+                                <td colspan="3" class="text-right">Total:</td>
+                                <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+                            </tr>
                         </tfoot>
                     </table>
                 }
@@ -95,47 +159,47 @@
                 {
                     <table class="table table-bordered table-striped">
                         <thead>
-                        <tr>
-                            <th>Quantity</th>
-                            <th>Item</th>
-                            <th class="text-right">Price</th>
-                            <th class="text-right">Subtotal</th>
-                        </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <th>Item</th>
+                                <th class="text-right">Price</th>
+                                <th class="text-right">Subtotal</th>
+
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach (var line in Model.Cart.BestallningMatratt)
-                        {
-                            <tr>
-                                <td class="text-center">@line.Antal</td>
-                                <td class="text-left">@line.Matratt.MatrattNamn</td>
-                                <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
-                                <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
-                                <td>
-                                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
-                                        <input type="hidden" name="productId" value="@line.MatrattId"/>
-                                        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl"/>
-                                        <button type="submit" class="btn btn-sm btn-danger">
-                                            <i class="icon-trash icon-large"></i> Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        }
+                            @foreach (var line in Model.Cart.BestallningMatratt)
+                            {
+                                <tr>
+                                    <td class="text-center">@line.Antal</td>
+                                    <td class="text-left">@line.Matratt.MatrattNamn</td>
+                                    <td class="text-right">@line.Matratt.Pris.ToString("c")</td>
+                                    <td class="text-right">@((line.Antal * line.Matratt.Pris).ToString("c"))</td>
+                                    <td>
+                                        <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                            <input type="hidden" name="productId" value="@line.MatrattId" />
+                                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                                            <button type="submit" class="btn btn-sm btn-danger">
+                                                <i class="icon-trash icon-large"></i> Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                         <tfoot>
-                        <tr>
-                            <td colspan="3" class="text-right">Total:</td>
-                            <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
-                        </tr>
+                            <tr>
+                                <td colspan="3" class="text-right">Total:</td>
+                                <td class="text-right">@Model.CartTotalValue.ToString("c")</td>
+                            </tr>
 
                         </tfoot>
                     </table>
                 }
-
             </div>
         </div>
 
-        <div class="text-center col-sm-12">
+        <div class="text-center col-sm-4">
             <a class="btn btn-primary" asp-controller="Product" asp-action="List">Continue shopping</a>
             <form asp-controller="Order" asp-action="CheckOut"
                   method="post">
