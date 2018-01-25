@@ -8,7 +8,8 @@
 <div class="btn btn-group-vertical">
     
     <a class="btn @("" == @Model.CurrentCategory ? "btn-primary" : "btn-secondary")"
-       asp-controller="Product" asp-action="List" asp-route-category="">
+       asp-controller="Product" asp-action="List" asp-route-category="All"
+        data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#div-products"> 
         All
     </a>
 
@@ -17,7 +18,8 @@
     {
         <a class="btn @(category == @Model.CurrentCategory ? "btn-primary" : "btn-secondary")"
            asp-controller="Product" asp-action="List" asp-route-category="@category"
-           asp-route-productPage="1">
+           asp-route-productPage="1"
+           data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace" data-ajax-update="#div-products"> 
             @category
         </a>
     }

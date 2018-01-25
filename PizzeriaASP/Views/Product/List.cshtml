@@ -36,25 +36,7 @@
 }
 
     <div id="div-products" class="row">
-        <div id="categories" class="col-sm-2">
-            @await Component.InvokeAsync("FilteringMenu")
-        </div>
-        <div class="col-sm-10">
-            @foreach (var p in Model.Products)
-            {
-                @Html.Partial("_ProductSummary", new ProductViewModel()
-                {
-                    OrderItems = Model.OrderItems,
-                    Product = p
-                })
-            }
-            <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
-                 page-class="btn" page-class-normal="btn-secondary"
-                 page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
-                 class="btn-group m-1 col-sm-5" id="btn-group">
-
-            </div>
-        </div>
+        @{Html.RenderPartial("_ProductList", Model);}
     </div>
 
 

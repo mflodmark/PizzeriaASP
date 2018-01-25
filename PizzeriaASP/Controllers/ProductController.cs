@@ -35,7 +35,7 @@ namespace PizzeriaASP.Controllers
         public IActionResult List(string category, int productPage = 1)
         {
             var products = _productRepository.Products
-                .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null)
+                .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null || category == "All")
                 .OrderBy(p => p.MatrattNamn)
                 .Skip((productPage - 1) * PageSize)
                 .Take(PageSize)
@@ -52,7 +52,7 @@ namespace PizzeriaASP.Controllers
                 {
                     CurrentPage = productPage,
                     ItemsPerPage = PageSize,
-                    TotalItems = category == null ?
+                    TotalItems = category == null || category == "All" ?
                         _productRepository.Products.Count() :
                         _productRepository.Products.Count(x =>
                             x.MatrattTypNavigation.Beskrivning == category)
@@ -64,7 +64,9 @@ namespace PizzeriaASP.Controllers
 
             };
 
-            return View(model);
+            if(category == null) {return View(model);}
+
+            return PartialView("_ProductList", model);
         }
 
         private Bestallning GetCart()
