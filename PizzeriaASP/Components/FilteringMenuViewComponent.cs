@@ -27,7 +27,8 @@ namespace PizzeriaASP.Components
         public IViewComponentResult Invoke()
         {
             var currentCategory = 
-                RouteData?.Values["category"] == null ? "" : RouteData?.Values["category"].ToString();
+                RouteData?.Values["category"] == null 
+                || RouteData?.Values["category"].ToString() == "All" ? "" : RouteData?.Values["category"].ToString();
 
             var model = new CategoryViewModel()
             {

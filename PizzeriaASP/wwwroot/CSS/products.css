@@ -60,7 +60,8 @@
     text-decoration: none;
 }
 
-.div-single-product button, .div-single-product button:visited {
+.div-single-product button, .div-single-product button:active, 
+.div-single-product button:focus, .div-single-product button:visited {
     background-color: #575fcf;
     border-radius: 0 3px 0 10px;
     border-color: #575fcf;

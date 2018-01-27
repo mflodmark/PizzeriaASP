@@ -34,6 +34,26 @@ namespace PizzeriaASP.Controllers
 
         public IActionResult List(string category, int productPage = 1)
         {
+            var model = Products(category, productPage);
+           
+            if (category == null) {return View(model);}
+
+            RouteData.Values["category"] = category;
+            
+            return PartialView("_ProductList", model);
+        }
+
+        public IActionResult ProductList(string category, int productPage = 1)
+        {
+            var model = Products(category, productPage);
+
+            RouteData.Values["category"] = category;
+
+            return View("List", model);
+        }
+
+        private ProductsListViewModel Products(string category, int productPage = 1)
+        {
             var products = _productRepository.Products
                 .Where(p => p.MatrattTypNavigation.Beskrivning == category || category == null || category == "All")
                 .OrderBy(p => p.MatrattNamn)
@@ -44,6 +64,12 @@ namespace PizzeriaASP.Controllers
 
             var customer = _customerRepository.GetSingleCustomer(_userManager.GetUserName(User));
 
+            var totalItems = category == null || category == "All"
+                ? _productRepository.Products.Count()
+                : _productRepository.Products.Count(x =>
+                    x.MatrattTypNavigation.Beskrivning == category);
+
+            var pages = totalItems / PageSize + 1;
 
             var model = new ProductsListViewModel
             {
@@ -60,13 +86,13 @@ namespace PizzeriaASP.Controllers
                 CurrentCategory = category,
                 Customer = customer,
                 OrderItems = GetCart().BestallningMatratt.Count,
-                Categories = _productRepository.Categories
+                Categories = _productRepository.Categories,
+                Pages = pages,
+                CurrentPage = productPage
 
             };
 
-            if(category == null) {return View(model);}
-
-            return PartialView("_ProductList", model);
+            return model;
         }
 
         private Bestallning GetCart()
