@@ -6,7 +6,7 @@
 
 <div class="div-min-flex">
     <form asp-controller="AdminIngredients" asp-action="EditOrAddIngredient" method="post">
-        @if (Model.ProduktId == 0)
+        @if (Model != null)
         {
             <input type="hidden" asp-for="ProduktId" value="@Model.ProduktId" />
 

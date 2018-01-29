@@ -152,9 +152,9 @@ namespace PizzeriaASP
             return _context.Produkt.OrderBy(x => x.ProduktNamn).ToList();
         }
 
-        public bool CheckUniqueValue(string name)
+        public bool CheckUniqueValue(string name, int id)
         {
-            if (_context.Matratt.Any(p => p.MatrattNamn == name))
+            if (_context.Matratt.Any(p => p.MatrattNamn == name) && id == 0)
             {
                 return false;
             }

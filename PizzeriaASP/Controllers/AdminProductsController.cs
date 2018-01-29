@@ -78,7 +78,7 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditOrAddProduct(Matratt product)
         {
-            if (_productRepository.CheckUniqueValue(product.MatrattNamn) == false)
+            if (_productRepository.CheckUniqueValue(product.MatrattNamn, product.MatrattId) == false)
             {
                 ModelState.AddModelError("MatrattNamn", "Name must be unique");
             }
@@ -90,13 +90,21 @@ namespace PizzeriaASP.Controllers
                 var ingredientList = GetIngredientList(product.MatrattId);
                 
                 _productRepository.SaveIngredientList(product.MatrattId, ingredientList);
-                
+
+                HttpContext.Session.Clear();
+
                 return RedirectToAction("Index");
             }
 
-            HttpContext.Session.Clear();
-            
-            return View();
+            var model = new AdminEditViewModel()
+            {
+                Product = product,
+                ProductTypes = _productRepository.GetProductTypes(),
+                OptionalIngredientsList = _productRepository.GetAllIngredients(),
+                IngredientList = GetIngredientList(0)
+            };
+
+            return View(model);
         }
 
         public IActionResult AddProduct()

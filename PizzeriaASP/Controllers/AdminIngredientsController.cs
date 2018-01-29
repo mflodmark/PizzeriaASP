@@ -25,9 +25,9 @@ namespace PizzeriaASP.Controllers
             return View(model);
         }
 
-        public IActionResult AddIngredient(Produkt ingredient)
+        public IActionResult AddIngredient()
         {
-            return View("EditOrAddIngredient", ingredient);
+            return View("EditOrAddIngredient");
         }
 
         public IActionResult DeleteIngredient(int id)
