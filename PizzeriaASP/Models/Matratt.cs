@@ -33,6 +33,7 @@ namespace PizzeriaASP.Models
         public int Pris { get; set; }
 
         [Required]
+        [DisplayName("Product type")]
         public int MatrattTyp { get; set; }
 
         public MatrattTyp MatrattTypNavigation { get; set; }
