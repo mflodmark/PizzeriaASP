@@ -48,6 +48,7 @@ namespace PizzeriaASP.Models
         public string AnvandarNamn { get; set; }
 
         [Required]
+        [MinLength(6)]
         [MaxLength(20)]
         [DisplayName("Password*")]
         public string Losenord { get; set; }
