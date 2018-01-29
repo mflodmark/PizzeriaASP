@@ -90,6 +90,8 @@ namespace PizzeriaASP.Controllers
                 return RedirectToAction("Index");
             }
 
+            HttpContext.Session.Clear();
+            
             return View();
         }
 

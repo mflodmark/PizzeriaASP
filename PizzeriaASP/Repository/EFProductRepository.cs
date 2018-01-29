@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzeriaASP.Models;
@@ -80,6 +81,18 @@ namespace PizzeriaASP
 
         public void SaveIngredientList(int id, List<Produkt> productList)
         {
+
+            // Del all ingredients that aren't in list
+            foreach (var item in _context.MatrattProdukt.Where(p => p.MatrattId == id))
+            {
+                if (productList.SingleOrDefault(p => p.ProduktId == item.ProduktId) == null)
+                {
+                    _context.MatrattProdukt.Remove(item);
+                }
+            }
+
+
+            // Add all ingredients
             foreach (var item in productList)
             {
                 if (_context.MatrattProdukt.SingleOrDefault(p => 
@@ -94,6 +107,7 @@ namespace PizzeriaASP
             }
 
             _context.SaveChanges();
+
         }
 
 

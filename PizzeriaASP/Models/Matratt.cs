@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace PizzeriaASP.Models
@@ -16,14 +17,17 @@ namespace PizzeriaASP.Models
 
         [Required]
         [MaxLength(50)]
+        [DisplayName("Product name")]
         public string MatrattNamn { get; set; }
 
         [Required]
         [MaxLength(200)]
+        [DisplayName("Description")]
         public string Beskrivning { get; set; }
 
         [Required]
         [Range(1, 10000)]
+        [DisplayName("Price")]
         public int Pris { get; set; }
 
         [Required]
