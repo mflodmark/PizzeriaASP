@@ -35,6 +35,7 @@ namespace PizzeriaASP.Models
 
         List<Produkt> GetAllIngredients();
 
+        bool CheckUniqueValue(string name);
 
 
     }

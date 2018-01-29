@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace PizzeriaASP.Models
 {
+
     public partial class Matratt
     {
         public Matratt()

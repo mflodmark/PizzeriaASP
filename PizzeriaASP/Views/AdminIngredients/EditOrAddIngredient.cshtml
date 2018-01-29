@@ -6,15 +6,19 @@
 
 <div class="div-min-flex">
     <form asp-controller="AdminIngredients" asp-action="EditOrAddIngredient" method="post">
-        <input type="hidden" asp-for="ProduktId" value="@Model.ProduktId" />
+        @if (Model.ProduktId == 0)
+        {
+            <input type="hidden" asp-for="ProduktId" value="@Model.ProduktId" />
+
+        }
 
         <label asp-for="ProduktNamn"></label>
-        <input asp-for="ProduktNamn" /><br/>
+        <input asp-for="ProduktNamn" /><br />
 
         <button type="submit" class="btn btn-success">
             <i class="icon-save"></i> Save
         </button>
-        
+
         <div asp-validation-summary="All" class="text-danger"></div>
     </form>
 </div>

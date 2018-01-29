@@ -151,6 +151,16 @@ namespace PizzeriaASP
         {
             return _context.Produkt.OrderBy(x => x.ProduktNamn).ToList();
         }
+
+        public bool CheckUniqueValue(string name)
+        {
+            if (_context.Matratt.Any(p => p.MatrattNamn == name))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 
 

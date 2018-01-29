@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.ResultOperators.Internal;
 using PizzeriaASP.Models;
 
@@ -47,6 +48,11 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditOrAddIngredient(Produkt ingredient)
         {
+            if (_repository.CheckUniqueValue(ingredient.ProduktNamn) == false)
+            {
+                ModelState.AddModelError("ProduktNamn", "Name must be unique");
+            }
+
             if (ModelState.IsValid)
             {
                 _repository.SaveIngredient(ingredient);
@@ -54,7 +60,7 @@ namespace PizzeriaASP.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View();
+            return View(ingredient);
         }
     }
 }

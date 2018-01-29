@@ -78,6 +78,10 @@ namespace PizzeriaASP.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult EditOrAddProduct(Matratt product)
         {
+            if (_productRepository.CheckUniqueValue(product.MatrattNamn) == false)
+            {
+                ModelState.AddModelError("MatrattNamn", "Name must be unique");
+            }
 
             if (ModelState.IsValid)
             {

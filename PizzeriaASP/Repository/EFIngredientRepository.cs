@@ -23,6 +23,17 @@ namespace PizzeriaASP
             return _context.Produkt.Single(p => p.ProduktId == id);
         }
 
+        public bool CheckUniqueValue(string name)
+        {
+            if (_context.Produkt.Any(p => p.ProduktNamn == name))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+
         public void DeleteIngredient(int id)
         {
             _context.Produkt.Remove(GetSingleIngredient(id));
