@@ -99,7 +99,7 @@ namespace PizzeriaASP
 
         public List<Produkt> GetCurrentIngredients(int id)
         {
-            if (id == 0)
+            if (id != 0)
             {
                 var i = _context.MatrattProdukt
                     .Where(x => x.MatrattId == id)

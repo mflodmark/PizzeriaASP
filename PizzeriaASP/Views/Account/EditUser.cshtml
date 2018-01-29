@@ -10,13 +10,17 @@
 
 @Html.Partial("_H2Layout", "Edit User")
 
-<div id="edit-user"></div>
+<div id="edit-user">
 
 <div class="div-min-flex">
     <form asp-controller="Account" asp-action="EditUser" method="post"
           data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-update="#edit-user">
         <label asp-for="Customer.AnvandarNamn"></label>
-        @if (Model.Customer.AnvandarNamn.EndsWith("@gmail.com"))
+        <input disabled type="text" asp-for="Customer.AnvandarNamn" />
+        <br />
+        <input type="hidden" asp-for="Customer.AnvandarNamn" value="@Model.Customer.AnvandarNamn"/>
+
+        @*@if (Model.Customer.AnvandarNamn.EndsWith("@gmail.com"))
         {
             <input disabled type="text" asp-for="Customer.AnvandarNamn" />
             <br />
@@ -26,7 +30,7 @@
         {
             <input type="text" asp-for="Customer.AnvandarNamn" />
             <br />
-        }
+        }*@
 
         <input type="hidden" asp-for="Customer.Poang" value="@Model.Customer.Poang" />
 
@@ -56,5 +60,6 @@
         </button>
         <div asp-validation-summary="All" class="text-danger"></div>
     </form>
+</div>
 </div>
 
